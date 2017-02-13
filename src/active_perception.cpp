@@ -54,32 +54,25 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	if (!sensor_configuration.empty()) {
 		std::replace(sensor_configuration.begin(), sensor_configuration.end(), '+', ' ');
 		std::stringstream ss_sensor_configuration(sensor_configuration);
-		std::string sensor_config_str;
-		while (ss_sensor_configuration >> sensor_config_str && !sensor_config_str.empty()) {
-			size_t delimiter_pos = sensor_config_str.find(':');
-			if (delimiter_pos != std::string::npos) {
-				std::replace(sensor_config_str.begin(), sensor_config_str.end(), ':', ' ');
-				std::stringstream ss_sensor_config_str(sensor_config_str);
-				std::string sensor_model_name;
-				size_t sensor_quantity;
-				if (ss_sensor_config_str >> sensor_model_name && ss_sensor_config_str >> sensor_quantity) {
-					physics::ModelPtr model = world_->ModelByName(sensor_model_name);
-					if (model) {
-						sensors::DepthCameraSensorPtr sensor = std::dynamic_pointer_cast < sensors::DepthCameraSensor > (sensors::SensorManager::Instance()->GetSensor(sensor_model_name + "_sensor"));
-						if (sensor) {
-							sensors_models_.push_back(model);
-							sensors_.push_back(sensor);
-							sensors_quantity_.push_back(sensor_quantity);
-							publishers_sensor_poses_.push_back(rosnode_->advertise<geometry_msgs::PoseArray>(topic_sensor_poses_base_name + sensor_model_name, 1, true));
-						}
-					}
+		std::string sensor_model_name;
+		while (ss_sensor_configuration >> sensor_model_name && !sensor_model_name.empty()) {
+			physics::ModelPtr model = world_->ModelByName(sensor_model_name);
+			if (model) {
+				sensors::DepthCameraSensorPtr sensor = std::dynamic_pointer_cast < sensors::DepthCameraSensor > (sensors::SensorManager::Instance()->GetSensor(sensor_model_name + "_sensor"));
+				if (sensor) {
+					sensors_models_.push_back(model);
+					sensors_.push_back(sensor);
+					color_pointcloud_connections_.push_back(sensor->DepthCamera()->ConnectNewRGBPointCloud(std::bind(&ActivePerception::OnNewRGBPointCloud,
+							this, std::placeholders::_1, std::placeholders::_2,
+							std::placeholders::_3, std::placeholders::_4, std::placeholders::_5)));
+					publishers_sensor_poses_.push_back(rosnode_->advertise<geometry_msgs::PoseArray>(topic_sensor_poses_base_name + sensor_model_name, 1, true));
 				}
 			}
 		}
 	}
 
-	this->callback_queue_thread_ = boost::thread(boost::bind(&ActivePerception::QueueThread, this));
-	this->processing_thread_ = boost::thread(boost::bind(&ActivePerception::ProcessingThread, this));
+	callback_queue_thread_ = boost::thread(boost::bind(&ActivePerception::QueueThread, this));
+	//processing_thread_ = boost::thread(boost::bind(&ActivePerception::ProcessingThread, this));
 
 	ROS_INFO("ActivePerception has started (namespace=%s, sensor_configuraton=%s)\n", robot_namespace.c_str(), sensor_configuration.c_str());
 }
@@ -99,6 +92,12 @@ void ActivePerception::ProcessNewModelNames(const std_msgs::StringConstPtr& msg)
 void ActivePerception::ProcessingThread() {
 	/*if (sensors_models_.size() > 0)
 		sensors_models_[0]->SetWorldPose(math::Pose(1, 0, 1, 0, 0, 0));*/
+}
+
+void ActivePerception::OnNewRGBPointCloud(const float *_pcd,
+				unsigned int _width, unsigned int _height,
+				unsigned int _depth, const std::string &_format) {
+	ROS_INFO_STREAM("Received PCD with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
 }
 
 void ActivePerception::QueueThread() {

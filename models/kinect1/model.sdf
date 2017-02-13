@@ -25,6 +25,9 @@
 			<sensor name="kinect1_sensor" type="depth">
 				<update_rate>20</update_rate>
 				<camera>
+					<depth_camera>
+						<output>points</output>
+					</depth_camera>
 					<horizontal_fov>1.047198</horizontal_fov>
 					<image>
 						<width>640</width>

@@ -17,6 +17,7 @@
 #include <boost/thread.hpp>
 
 #include <ignition/math/Pose3.hh>
+#include <gazebo/rendering/rendering.hh>
 #include <gazebo/physics/physics.hh>
 #include <gazebo/sensors/sensors.hh>
 #include <gazebo/common/common.hh>
@@ -53,6 +54,9 @@ class ActivePerception : public WorldPlugin {
 		void ProcessNewModelNames(const std_msgs::StringConstPtr &msg);
 		void ProcessingThread();
 		void QueueThread();
+		void OnNewRGBPointCloud(const float *_pcd,
+				unsigned int _width, unsigned int _height,
+				unsigned int _depth, const std::string &_format);
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <gets>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -67,10 +71,10 @@ class ActivePerception : public WorldPlugin {
 		// Gazebo
 		physics::WorldPtr world_;
 		sdf::ElementPtr sdf_;
+		std::vector<event::ConnectionPtr> color_pointcloud_connections_;
 		physics::ModelPtr observation_model_;
 		std::vector<physics::ModelPtr> sensors_models_;
 		std::vector<sensors::DepthCameraSensorPtr> sensors_;
-		std::vector<size_t> sensors_quantity_;
 		std::vector<ros::Publisher> publishers_sensor_poses_;
 
 		// ROS
