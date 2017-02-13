@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+	<world name="default">
+		<include>
+			<uri>model://ground_plane</uri>
+		</include>
+
+		<include>
+			<uri>model://sun</uri>
+		</include>
+
+		<include>
+			<uri>model://kinect1</uri>
+		</include>
+
+		<plugin name="active_perception" filename="libactive_perception.so">
+			<robotNamespace>active_perception</robotNamespace>
+			<topicObservationPose>set_observation_pose</topicObservationPose>
+			<topicModelNames>set_model_names</topicModelNames>
+			<topicSensorPosesBaseName>optimal_sensor_placement_</topicSensorPosesBaseName>
+			<sensorConfiguration>kinect1:3+kinect2:2</sensorConfiguration>
+		</plugin>
+	</world>
+</sdf>

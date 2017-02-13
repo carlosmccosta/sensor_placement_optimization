@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<package>
+	<name>active_perception</name>
+	<version>1.0.0</version>
+	<description>ROS package for estimation of best sensor placement for object recognition</description>
+	<author email="carloscosta.cmcc@gmail.com">Carlos Miguel Correia da Costa</author>
+	<maintainer email="carloscosta.cmcc@gmail.com">Carlos Miguel Correia da Costa</maintainer>
+	<license>BSD</license>
+
+
+
+	<!-- ################################################################## -->
+	<!-- Build system -->
+	<!-- ################################################################## -->
+
+	<!-- if using catkin -->
+	<buildtool_depend>catkin</buildtool_depend>
+	
+	<!-- if using cmake only -->
+	<!-- <buildtool_depend>cmake</buildtool_depend>
+	<buildtool_depend>pkg-config</buildtool_depend>
+	<run_depend>catkin</run_depend> -->
+
+
+
+	<!-- ################################################################## -->
+	<!-- Build dependencies -->
+	<!-- ################################################################## -->
+
+	<build_depend>Boost</build_depend>
+	<build_depend>gazebo</build_depend>
+	<build_depend>geometry_msgs</build_depend>
+	<build_depend>roscpp</build_depend>
+	<build_depend>rosconsole</build_depend>
+	<build_depend>rostime</build_depend>
+	<build_depend>std_msgs</build_depend>
+
+
+
+	<!-- ################################################################## -->
+	<!-- Run dependencies -->
+	<!-- ################################################################## -->
+
+	<run_depend>Boost</run_depend>
+	<run_depend>gazebo</run_depend>
+	<run_depend>geometry_msgs</run_depend>
+	<run_depend>roscpp</run_depend>
+	<run_depend>rosconsole</run_depend>
+	<run_depend>rostime</run_depend>
+	<run_depend>std_msgs</run_depend>
+
+
+
+	<!-- if using cmake only -->
+	<!-- <export>
+    	<build_type>cmake</build_type>
+  	</export> -->
+
+</package>
