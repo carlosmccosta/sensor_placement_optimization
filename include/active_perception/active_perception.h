@@ -50,13 +50,16 @@ class ActivePerception : public WorldPlugin {
 
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <member-functions>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf);
-		void ProcessNewObservationPose(const geometry_msgs::PoseStampedConstPtr &msg);
-		void ProcessNewModelNames(const std_msgs::StringConstPtr &msg);
-		void ProcessingThread();
+		void Init();
 		void QueueThread();
-		void OnNewRGBPointCloud(const float *_pcd,
+		void ProcessNewObservationPose(const geometry_msgs::PoseStampedConstPtr &_msg);
+		void ProcessNewModelNames(const std_msgs::StringConstPtr &_msg);
+		void ProcessingThread();
+		void LoadSensors(common::Time _wait_time = common::Time(0, 200000000));
+		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
+		/*void OnNewRGBPointCloud(const float *_pcd,
 				unsigned int _width, unsigned int _height,
-				unsigned int _depth, const std::string &_format);
+				unsigned int _depth, const std::string &_format);*/
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <gets>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -71,15 +74,16 @@ class ActivePerception : public WorldPlugin {
 		// Gazebo
 		physics::WorldPtr world_;
 		sdf::ElementPtr sdf_;
-		std::vector<event::ConnectionPtr> color_pointcloud_connections_;
-		physics::ModelPtr observation_model_;
-		std::vector<physics::ModelPtr> sensors_models_;
 		std::vector<sensors::DepthCameraSensorPtr> sensors_;
-		std::vector<ros::Publisher> publishers_sensor_poses_;
 
 		// ROS
 		boost::shared_ptr<ros::NodeHandle> rosnode_;
 		ros::CallbackQueue queue_;
+
+		// Configurations
+		size_t number_of_sampling_sensors_;
+		size_t number_of_intended_sensors_;
+		std::string sampling_sensors_name_prefix_;
 
 		geometry_msgs::PoseStamped observation_pose_;
 		ros::Subscriber observation_pose_subscriber_;
