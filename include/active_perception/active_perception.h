@@ -23,12 +23,14 @@
 #include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
 
+#include <ignition/math.hh>
+
 #include <ros/advertise_options.h>
 #include <ros/callback_queue.h>
 #include <ros/ros.h>
 #include <ros/rate.h>
 #include <geometry_msgs/PoseArray.h>
-#include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/PointStamped.h>
 #include <std_msgs/String.h>
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </includes>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -52,11 +54,12 @@ class ActivePerception : public WorldPlugin {
 		void Load(physics::WorldPtr _world, sdf::ElementPtr _sdf);
 		void Init();
 		void QueueThread();
-		void ProcessNewObservationPose(const geometry_msgs::PoseStampedConstPtr &_msg);
+		void ProcessNewObservationPoint(const geometry_msgs::PointStampedConstPtr &_msg);
 		void ProcessNewModelNames(const std_msgs::StringConstPtr &_msg);
 		void ProcessingThread();
 		void LoadSensors(common::Time _wait_time = common::Time(0, 200000000));
 		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
+		void OrientSensorsToObservationPoint();
 		/*void OnNewRGBPointCloud(const float *_pcd,
 				unsigned int _width, unsigned int _height,
 				unsigned int _depth, const std::string &_format);*/
@@ -75,6 +78,7 @@ class ActivePerception : public WorldPlugin {
 		physics::WorldPtr world_;
 		sdf::ElementPtr sdf_;
 		std::vector<sensors::DepthCameraSensorPtr> sensors_;
+		std::vector<physics::ModelPtr> sensors_models_;
 
 		// ROS
 		boost::shared_ptr<ros::NodeHandle> rosnode_;
@@ -85,10 +89,10 @@ class ActivePerception : public WorldPlugin {
 		size_t number_of_intended_sensors_;
 		std::string sampling_sensors_name_prefix_;
 
-		geometry_msgs::PoseStamped observation_pose_;
-		ros::Subscriber observation_pose_subscriber_;
-		boost::mutex observation_pose_mutex_;
-		bool new_observation_pose_available_;
+		geometry_msgs::PointStamped observation_point_;
+		ros::Subscriber observation_point_subscriber_;
+		boost::mutex observation_point_mutex_;
+		bool new_observation_point_available_;
 
 		std::string observation_models_names_;
 		ros::Subscriber observation_models_names_subscriber_;

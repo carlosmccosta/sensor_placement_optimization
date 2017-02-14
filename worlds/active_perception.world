@@ -33,7 +33,7 @@
 						</geometry>
 					</visual>
 					<sensor name="active_perception_kinect1_sensor" type="depth">
-						<update_rate>0</update_rate>
+						<update_rate>1</update_rate>
 						<camera>
 							<!-- <depth_camera>
 								<output>points</output>
@@ -52,13 +52,20 @@
 					</sensor>
 				</link>
 			</model>
-			<pose>0 0 0.1 0 0 0</pose>
+			<pose>0 0 1 0 0 0</pose>
 			<box>
-				<size>2 2 0.01</size>
+				<size>2 1 2</size>
 			</box>
+			<!-- <cylinder>
+				<radius>2</radius>
+				<length>3</length>
+			</cylinder> -->
 			<model_count>100</model_count>
 			<distribution>
-				<type>uniform</type>
+				<type>random</type> <!-- random / uniform / grid -->
+				<!-- <rows>5</rows>
+				<cols>5</cols>
+				<step>1 1 1</step> -->
 			</distribution>
 		</population>
 
@@ -67,7 +74,7 @@
 			<numberOfIntendedSensors>1</numberOfIntendedSensors>
 			<samplingSensorsNamePrefix>active_perception</samplingSensorsNamePrefix>
 			<robotNamespace>active_perception</robotNamespace>
-			<topicObservationPose>set_observation_pose</topicObservationPose>
+			<topicObservationPoint>set_observation_point</topicObservationPoint>
 			<topicModelNames>set_model_names</topicModelNames>
 		</plugin>
 	</world>
