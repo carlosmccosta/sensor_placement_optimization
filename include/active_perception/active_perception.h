@@ -16,14 +16,15 @@
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 
-#include <ignition/math/Pose3.hh>
-#include <gazebo/rendering/rendering.hh>
-#include <gazebo/physics/physics.hh>
-#include <gazebo/sensors/sensors.hh>
+#include <ignition/math.hh>
+
 #include <gazebo/common/common.hh>
 #include <gazebo/gazebo.hh>
-
-#include <ignition/math.hh>
+#include <gazebo/math/Angle.hh>
+#include <gazebo/math/Rand.hh>
+#include <gazebo/physics/physics.hh>
+#include <gazebo/rendering/rendering.hh>
+#include <gazebo/sensors/sensors.hh>
 
 #include <ros/advertise_options.h>
 #include <ros/callback_queue.h>
@@ -87,6 +88,7 @@ class ActivePerception : public WorldPlugin {
 		// Configurations
 		size_t number_of_sampling_sensors_;
 		size_t number_of_intended_sensors_;
+		bool sensor_orientaion_random_roll_;
 		std::string sampling_sensors_name_prefix_;
 
 		geometry_msgs::PointStamped observation_point_;

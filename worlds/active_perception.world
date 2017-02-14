@@ -72,6 +72,7 @@
 		<plugin name="active_perception" filename="libactive_perception.so">
 			<numberOfSamplingSensors>100</numberOfSamplingSensors>
 			<numberOfIntendedSensors>1</numberOfIntendedSensors>
+			<sensorOrientaionRandomRoll>true</sensorOrientaionRandomRoll>
 			<samplingSensorsNamePrefix>active_perception</samplingSensorsNamePrefix>
 			<robotNamespace>active_perception</robotNamespace>
 			<topicObservationPoint>set_observation_point</topicObservationPoint>

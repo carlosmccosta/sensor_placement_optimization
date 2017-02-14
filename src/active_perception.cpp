@@ -16,6 +16,7 @@ namespace gazebo {
 ActivePerception::ActivePerception() :
 		number_of_sampling_sensors_(100),
 		number_of_intended_sensors_(1),
+		sensor_orientaion_random_roll_(true),
 		new_observation_point_available_(false),
 		new_observation_models_names_available_(false) {
 }
@@ -32,6 +33,7 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	// config
 	if (sdf_->HasElement("numberOfSamplingSensors")) number_of_sampling_sensors_ = sdf_->GetElement("numberOfSamplingSensors")->Get<size_t>();
 	if (sdf_->HasElement("numberOfIntendedSensors")) number_of_intended_sensors_ = sdf_->GetElement("numberOfIntendedSensors")->Get<size_t>();
+	if (sdf_->HasElement("sensorOrientaionRandomRoll")) sensor_orientaion_random_roll_ = sdf_->GetElement("sensorOrientaionRandomRoll")->Get<bool>();
 
 	sampling_sensors_name_prefix_ = "active_perception";
 	if (sdf_->HasElement("samplingSensorsNamePrefix")) sampling_sensors_name_prefix_ = sdf_->GetElement("samplingSensorsNamePrefix")->Get<std::string>();
@@ -147,6 +149,11 @@ void ActivePerception::OrientSensorsToObservationPoint() {
 		model_pose.rot.y = new_rotation.Y();
 		model_pose.rot.z = new_rotation.Z();
 		model_pose.rot.w = new_rotation.W();
+
+		if (sensor_orientaion_random_roll_) {
+			model_pose.rot.SetFromEuler(math::Rand::GetDblUniform(0, 2.0 * math::Angle::TwoPi.Radian()), model_pose.rot.GetPitch(), model_pose.rot.GetYaw());
+		}
+
 		sensors_models_[i]->SetWorldPose(model_pose);
 	}
 }
