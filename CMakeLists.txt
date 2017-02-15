@@ -11,9 +11,12 @@ project(active_perception)
 
 set(${PROJECT_NAME}_CATKIN_COMPONENTS
     geometry_msgs
+    pcl_conversions
+    pcl_ros
     roscpp
     rosconsole
     rostime
+    sensor_msgs
     std_msgs
 )
 
@@ -26,6 +29,7 @@ find_package(catkin REQUIRED COMPONENTS ${${PROJECT_NAME}_CATKIN_COMPONENTS})
 find_package(gazebo REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 find_package(Boost REQUIRED COMPONENTS thread)
+find_package(PCL REQUIRED)
 
 
 
@@ -43,6 +47,7 @@ catkin_package(
     DEPENDS
         Boost
         GAZEBO
+        PCL
 )
 
 
@@ -60,6 +65,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${catkin_INCLUDE_DIRS}
     ${GAZEBO_INCLUDE_DIRS}
+    ${PCL_INCLUDE_DIRS}
 )
 
 
@@ -95,6 +101,7 @@ add_library(active_perception
 target_link_libraries(active_perception
     ${catkin_LIBRARIES}
     ${GAZEBO_LIBRARIES}
+    ${PCL_LIBRARIES}
 )
 
 

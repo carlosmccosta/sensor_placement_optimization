@@ -9,6 +9,7 @@
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  <includes>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #include <algorithm>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -26,12 +27,18 @@
 #include <gazebo/rendering/rendering.hh>
 #include <gazebo/sensors/sensors.hh>
 
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <pcl/search/kdtree.h>
+#include <pcl_conversions/pcl_conversions.h>
+
 #include <ros/advertise_options.h>
 #include <ros/callback_queue.h>
 #include <ros/ros.h>
 #include <ros/rate.h>
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PointStamped.h>
+#include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/String.h>
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </includes>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -61,6 +68,10 @@ class ActivePerception : public WorldPlugin {
 		void LoadSensors(common::Time _wait_time = common::Time(0, 200000000));
 		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
 		void OrientSensorsToObservationPoint();
+		void SetSensorsState(bool _active);
+		void RetrieveSensorData();
+		typename pcl::PointCloud<pcl::PointXYZ>::Ptr SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points);
+		void ProcessSensorData();
 		/*void OnNewRGBPointCloud(const float *_pcd,
 				unsigned int _width, unsigned int _height,
 				unsigned int _depth, const std::string &_format);*/
@@ -88,8 +99,13 @@ class ActivePerception : public WorldPlugin {
 		// Configurations
 		size_t number_of_sampling_sensors_;
 		size_t number_of_intended_sensors_;
-		bool sensor_orientaion_random_roll_;
+		double elapsed_simulation_time_in_seconds_between_sensor_analysis_;
+		bool sensor_orientation_random_roll_;
+		float sensor_data_segmentation_color_rgb_;
 		std::string sampling_sensors_name_prefix_;
+		std::string topic_sampling_sensors_pointcloud_prefix_;
+		std::vector<typename pcl::PointCloud<pcl::PointXYZ>::Ptr> sampling_sensors_pointclouds_;
+		std::vector<ros::Publisher> sampling_sensors_pointcloud_publishers_;
 
 		geometry_msgs::PointStamped observation_point_;
 		ros::Subscriber observation_point_subscriber_;
