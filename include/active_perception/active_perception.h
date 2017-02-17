@@ -68,7 +68,7 @@ class ActivePerception : public WorldPlugin {
 		void ProcessNewObservationPoint(const geometry_msgs::PointStampedConstPtr &_msg);
 		void ProcessNewModelNames(const std_msgs::StringConstPtr &_msg);
 		void ProcessingThread();
-		void LoadSensors(common::Time _wait_time = common::Time(0, 200000000));
+		void LoadSensors();
 		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
 		void OrientSensorsToObservationPoint();
 		void SetSensorsState(bool _active);
@@ -80,7 +80,9 @@ class ActivePerception : public WorldPlugin {
 						unsigned int _depth, const std::string &_format, size_t _sensor_index);
 		typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points);
 		bool PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr _pointcloud, size_t _pubisher_index);
-		void ProcessSensorData();
+		void WaitForSensorData();
+		bool ProcessSensorData();
+		void PrepareNextAnalysis();
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <gets>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -108,12 +110,15 @@ class ActivePerception : public WorldPlugin {
 		size_t number_of_sampling_sensors_;
 		size_t number_of_intended_sensors_;
 		double elapsed_simulation_time_in_seconds_between_sensor_analysis_;
+		common::Time polling_sleep_time_;
+		size_t number_of_sensor_analysis_performed_;
 		bool sensor_orientation_random_roll_;
 		float sensor_data_segmentation_color_rgb_;
 		std::string sdf_sensors_name_prefix_;
 		std::string topics_sampling_sensors_prefix_;
 		std::string published_msgs_frame_id_suffix_;
 		std::vector<typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr> sampling_sensors_pointclouds_;
+		size_t number_of_sampling_sensors_pointclouds_received_;
 		std::vector<ros::Publisher> sampling_sensors_color_image_publishers_;
 		std::vector<ros::Publisher> sampling_sensors_pointcloud_publishers_;
 

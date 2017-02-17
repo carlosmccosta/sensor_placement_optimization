@@ -17,8 +17,11 @@ ActivePerception::ActivePerception() :
 		number_of_sampling_sensors_(100),
 		number_of_intended_sensors_(1),
 		elapsed_simulation_time_in_seconds_between_sensor_analysis_(1.0),
+		polling_sleep_time_(0, 200000000),
+		number_of_sensor_analysis_performed_(0),
 		sensor_orientation_random_roll_(true),
 		sensor_data_segmentation_color_rgb_(0xff00),
+		number_of_sampling_sensors_pointclouds_received_(0),
 		new_observation_point_available_(false),
 		new_observation_models_names_available_(false) {
 }
@@ -36,6 +39,9 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	if (sdf_->HasElement("numberOfSamplingSensors")) number_of_sampling_sensors_ = sdf_->GetElement("numberOfSamplingSensors")->Get<size_t>();
 	if (sdf_->HasElement("numberOfIntendedSensors")) number_of_intended_sensors_ = sdf_->GetElement("numberOfIntendedSensors")->Get<size_t>();
 	if (sdf_->HasElement("elapsedSimulationTimeInSecondsBetweenSensorAnalysis")) elapsed_simulation_time_in_seconds_between_sensor_analysis_ = sdf_->GetElement("elapsedSimulationTimeInSecondsBetweenSensorAnalysis")->Get<double>();
+	double polling_sleep_time = polling_sleep_time_.Double();
+	if (sdf_->HasElement("pollingSleepTime")) polling_sleep_time = sdf_->GetElement("pollingSleepTime")->Get<double>();
+	polling_sleep_time_.Set(polling_sleep_time);
 	if (sdf_->HasElement("sensorOrientationRandomRoll")) sensor_orientation_random_roll_ = sdf_->GetElement("sensorOrientationRandomRoll")->Get<bool>();
 
 	std::string sensor_data_segmentation_color_rgb_str = "0 255 0";
@@ -103,10 +109,8 @@ void ActivePerception::ProcessNewModelNames(const std_msgs::StringConstPtr& _msg
 void ActivePerception::ProcessingThread() {
 	LoadSensors();
 	OrientSensorsToObservationPoint();
-	common::Time last_analysis_simulation_time;
-
+	common::Time last_analysis_simulation_time = world_->SimTime();
 	SetSensorsState(true);
-	world_->SetPaused(false);
 
 	ROS_INFO_STREAM("ActivePerception has started with " << sensors_.size() << " sampling sensors for finding the optimal placement for " << number_of_intended_sensors_ << (number_of_intended_sensors_ == 1 ? " sensor" : " sensors"));
 	while (rosnode_->ok()) {
@@ -116,30 +120,26 @@ void ActivePerception::ProcessingThread() {
 			new_observation_point_available_ = false;
 			observation_models_names_mutex_.unlock();
 		}
-
-		common::Time::Sleep(common::Time(0, 20000000));
-
-		/*SetSensorsState(true);
-		world_->SetPaused(true);
-		RetrieveSensorData();
-		SetSensorsState(false);
-		ProcessSensorData();
 		world_->SetPaused(false);
-		last_analysis_simulation_time = world_->SimTime();
-
 		while (world_->SimTime().Double() - last_analysis_simulation_time.Double() < elapsed_simulation_time_in_seconds_between_sensor_analysis_) {
-			common::Time::Sleep(common::Time(0, 0.01));
-		}*/
+			common::Time::Sleep(polling_sleep_time_);
+		}
+		world_->SetPaused(true);
+		WaitForSensorData();
+		if (ProcessSensorData()) ++number_of_sensor_analysis_performed_;
+		PrepareNextAnalysis();
+		last_analysis_simulation_time = world_->SimTime();
 	}
 }
 
-void ActivePerception::LoadSensors(common::Time _wait_time) {
+void ActivePerception::LoadSensors() {
 	sensors_.clear();
 	sensors_models_.clear();
 	color_image_connections_.clear();
 	color_pointcloud_connections_.clear();
 	sampling_sensors_pointclouds_.clear();
 	sampling_sensors_pointclouds_.resize(number_of_sampling_sensors_);
+	number_of_sampling_sensors_pointclouds_received_ = 0;
 	sampling_sensors_color_image_publishers_.clear();
 	sampling_sensors_pointcloud_publishers_.clear();
 
@@ -148,7 +148,7 @@ void ActivePerception::LoadSensors(common::Time _wait_time) {
 	while (sampling_sensors_count < number_of_sampling_sensors_) {
 		sensors = sensors::SensorManager::Instance()->GetSensors();
 		sampling_sensors_count = CountNumberOfSamplingSensors(sensors, sdf_sensors_name_prefix_);
-		common::Time::Sleep(_wait_time);
+		common::Time::Sleep(polling_sleep_time_);
 	}
 
 	for (size_t i = 0; i < number_of_sampling_sensors_; ++i) {
@@ -244,6 +244,7 @@ void ActivePerception::OnNewRGBPointCloud(const float *_pcd,
 		pointcloud->header.frame_id = sensors_[_sensor_index]->ParentName() + published_msgs_frame_id_suffix_;
 		std::replace(pointcloud->header.frame_id.begin(), pointcloud->header.frame_id.end(), ':', '_');
 		PublishPointCloud(pointcloud, _sensor_index);
+		if (!sampling_sensors_pointclouds_[_sensor_index]) ++number_of_sampling_sensors_pointclouds_received_;
 		sampling_sensors_pointclouds_[_sensor_index] = pointcloud;
 	}
 }
@@ -274,7 +275,27 @@ bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZR
 	return false;
 }
 
-void ActivePerception::ProcessSensorData() {
+void ActivePerception::WaitForSensorData() {
+	common::Time processing_start_time = common::Time::GetWallTime();
+	while (number_of_sampling_sensors_pointclouds_received_ < sampling_sensors_pointclouds_.size()) {
+		common::Time::Sleep(polling_sleep_time_);
+		if (common::Time::GetWallTime().Double() - processing_start_time.Double() > 60) {
+			ROS_WARN("Continuing simulation for allowing sensor data generation");
+			world_->SetPaused(false);
+			common::Time::Sleep(common::Time(3 * polling_sleep_time_.Double()));
+			world_->SetPaused(true);
+		}
+	}
+}
+
+bool ActivePerception::ProcessSensorData() {
+
+}
+
+void ActivePerception::PrepareNextAnalysis() {
+	number_of_sampling_sensors_pointclouds_received_ = 0;
+	sampling_sensors_pointclouds_.clear();
+	sampling_sensors_pointclouds_.resize(number_of_sampling_sensors_);
 }
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 // =============================================================================  </public-section>  ===========================================================================
@@ -283,3 +304,4 @@ void ActivePerception::ProcessSensorData() {
 // =============================================================================   </protected-section>  =======================================================================
 
 } /* namespace gazebo */
+

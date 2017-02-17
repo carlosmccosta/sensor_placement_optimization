@@ -122,6 +122,7 @@
 			<numberOfSamplingSensors>3</numberOfSamplingSensors>
 			<numberOfIntendedSensors>1</numberOfIntendedSensors>
 			<elapsedSimulationTimeInSecondsBetweenSensorAnalysis>1</elapsedSimulationTimeInSecondsBetweenSensorAnalysis>
+			<pollingSleepTime>0.2</pollingSleepTime>
 			<sensorOrientationRandomRoll>false</sensorOrientationRandomRoll>
 			<sensorDataSegmentationColorRGB>0 255 0</sensorDataSegmentationColorRGB>
 			<sdfSensorsNamePrefix>active_perception</sdfSensorsNamePrefix>
