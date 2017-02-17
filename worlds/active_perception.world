@@ -84,8 +84,8 @@
 			</link>
 		</model>
 
-		<population name="sensors_population">
-			<model name="kinect1_sensor">
+		<population name="sensors_population_1">
+			<model name="depth_sensor_1">
 				<static>1</static>
 				<pose>0 0 0 0 0 0</pose>
 				<link name="link">
@@ -98,8 +98,8 @@
 								<size>0.073000 0.276000 0.072000</size>
 							</box>
 						</geometry>
-					</collision>
-					<visual name="visual">
+					</collision> -->
+					<!-- <visual name="visual">
 						<transparency>0</transparency>
 						<geometry>
 							<mesh>
@@ -107,7 +107,7 @@
 							</mesh>
 						</geometry>
 					</visual> -->
-					<sensor name="active_perception_kinect1_sensor" type="depth">
+					<sensor name="active_perception_depth_1_sensor" type="depth">
 						<update_rate>0.1</update_rate>
 						<camera>
 							<depth_camera>
@@ -135,7 +135,125 @@
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>5</model_count>
+			<model_count>30</model_count>
+			<distribution>
+				<type>uniform</type> <!-- random / uniform / grid -->
+				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
+			</distribution>
+		</population>
+		
+		
+		<population name="sensors_population_2">
+			<model name="depth_sensor_2">
+				<static>1</static>
+				<pose>0 0 0 0 0 0</pose>
+				<link name="link">
+					<inertial>
+						<mass>0.2</mass>
+					</inertial>
+					<!-- <collision name="collision">
+						<geometry>
+							<box>
+								<size>0.073000 0.276000 0.072000</size>
+							</box>
+						</geometry>
+					</collision> -->
+					<!-- <visual name="visual">
+						<transparency>0</transparency>
+						<geometry>
+							<mesh>
+								<uri>model://kinect1/meshes/asus_xtion_pro_live.dae</uri>
+							</mesh>
+						</geometry>
+					</visual> -->
+					<sensor name="active_perception_depth_2_sensor" type="depth">
+						<update_rate>0.1</update_rate>
+						<camera>
+							<depth_camera>
+								<output>points</output>
+							</depth_camera>
+							<horizontal_fov>1.047198</horizontal_fov>
+							<image>
+								<width>640</width>
+								<height>480</height>
+								<format>B8G8R8</format>
+							</image>
+							<clip>
+								<near>0.05</near>
+								<far>3</far>
+							</clip>
+						</camera>
+					</sensor>
+				</link>
+			</model>
+			<pose>0 0 1 0 0 0</pose>
+			<box>
+				<size>2 1 2</size>
+			</box>
+			<!-- <cylinder>
+				<radius>1</radius>
+				<length>2</length>
+			</cylinder> -->
+			<model_count>12</model_count>
+			<distribution>
+				<type>uniform</type> <!-- random / uniform / grid -->
+				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
+			</distribution>
+		</population>
+		
+		
+		<population name="sensors_population_3">
+			<model name="depth_sensor_3">
+				<static>1</static>
+				<pose>0 0 0 0 0 0</pose>
+				<link name="link">
+					<inertial>
+						<mass>0.2</mass>
+					</inertial>
+					<!-- <collision name="collision">
+						<geometry>
+							<box>
+								<size>0.073000 0.276000 0.072000</size>
+							</box>
+						</geometry>
+					</collision> -->
+					<!-- <visual name="visual">
+						<transparency>0</transparency>
+						<geometry>
+							<mesh>
+								<uri>model://kinect1/meshes/asus_xtion_pro_live.dae</uri>
+							</mesh>
+						</geometry>
+					</visual> -->
+					<sensor name="active_perception_depth_3_sensor" type="depth">
+						<update_rate>0.1</update_rate>
+						<camera>
+							<depth_camera>
+								<output>points</output>
+							</depth_camera>
+							<horizontal_fov>1.047198</horizontal_fov>
+							<image>
+								<width>720</width>
+								<height>540</height>
+								<format>B8G8R8</format>
+							</image>
+							<clip>
+								<near>0.05</near>
+								<far>3</far>
+							</clip>
+						</camera>
+					</sensor>
+				</link>
+			</model>
+			<pose>0 0 1 0 0 0</pose>
+			<box>
+				<size>2 1 2</size>
+			</box>
+			<!-- <cylinder>
+				<radius>1</radius>
+				<length>2</length>
+			</cylinder> -->
+			<model_count>8</model_count>
 			<distribution>
 				<type>uniform</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
@@ -169,8 +287,8 @@
 		</scene> -->
 
 		<plugin name="active_perception" filename="libactive_perception.so">
-			<numberOfSamplingSensors>5</numberOfSamplingSensors>
-			<numberOfIntendedSensors>2</numberOfIntendedSensors>
+			<numberOfSamplingSensors>50</numberOfSamplingSensors>
+			<numberOfIntendedSensors>10</numberOfIntendedSensors>
 			<ransacNumberOfIterations>100</ransacNumberOfIterations>
 			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
 			<elapsedSimulationTimeInSecondsBetweenSensorAnalysis>3.0</elapsedSimulationTimeInSecondsBetweenSensorAnalysis>

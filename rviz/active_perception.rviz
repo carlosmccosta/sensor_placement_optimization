@@ -5,10 +5,9 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /Status1
         - /TF1/Frames1
-        - /PointCloud2 best merged1
-        - /Kinect 11
+        - /Kinect 11/Image1
+        - /PoseArray sensor poses1
       Splitter Ratio: 0.620947659
     Tree Height: 539
   - Class: rviz/Selection
@@ -45,13 +44,19 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        gazebo_world:
+          Value: true
+        world:
+          Value: true
       Marker Scale: 0.200000003
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        world:
+          gazebo_world:
+            {}
       Update Interval: 0
       Value: true
     - Alpha: 0.5
@@ -159,14 +164,14 @@ Visualization Manager:
           Size (Pixels): 3
           Size (m): 0.00400000019
           Style: Spheres
-          Topic: /active_perception/sampling_point_cloud_kinect1_sensor_clone_0_pointcloud
+          Topic: /active_perception/sampling_point_cloud_depth_sensor_1_clone_0_pointcloud
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
           Value: true
         - Class: rviz/Image
           Enabled: true
-          Image Topic: /active_perception/sampling_point_cloud_kinect1_sensor_clone_1_color_image
+          Image Topic: /active_perception/sampling_point_cloud_depth_sensor_1_clone_5_color_image
           Max Value: 1
           Median window: 5
           Min Value: 0
@@ -196,7 +201,7 @@ Visualization Manager:
       Value: true
     - Alpha: 1
       Arrow Length: 0.300000012
-      Axes Length: 0.300000012
+      Axes Length: 0.100000001
       Axes Radius: 0.00999999978
       Class: rviz/PoseArray
       Color: 255; 25; 0
@@ -206,7 +211,7 @@ Visualization Manager:
       Name: PoseArray sensor poses
       Shaft Length: 0.0900000036
       Shaft Radius: 0.00999999978
-      Shape: Arrow (3D)
+      Shape: Axes
       Topic: /active_perception/sensor_poses
       Unreliable: false
       Value: true
@@ -234,7 +239,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.54126096
+      Distance: 2.93211102
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
