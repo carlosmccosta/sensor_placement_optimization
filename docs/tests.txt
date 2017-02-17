@@ -1,4 +1,4 @@
-roslaunch gazebo_ros empty_world.launch gui:=false world_name:=/home/carloscosta/catkin_ws_simulation/src/active_perception/worlds/active_perception.world
+roslaunch gazebo_ros empty_world.launch paused:=true gui:=false world_name:=/home/carloscosta/catkin_ws_simulation/src/active_perception/worlds/active_perception.world
 rosrun rviz rviz -d /home/carloscosta/catkin_ws_simulation/src/active_perception/rviz/active_perception.rviz
 
 rostopic echo /active_perception/sensor_names

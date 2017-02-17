@@ -3,7 +3,7 @@
 	<world name="default">
 		<!-- <include> <uri>model://ground_plane</uri> </include> <include> <uri>model://sun</uri> </include> -->
 
-		<!-- <model name='box_red'>
+		<model name='box_red'>
 			<static>1</static>
 			<pose frame=''>-0.2 0 0 0 0 0</pose>
 			<link name='link'>
@@ -41,7 +41,7 @@
 					</material>
 				</visual>
 			</link>
-		</model> -->
+		</model>
 
 		<model name="starter_motor">
 			<static>1</static>
@@ -97,8 +97,8 @@
 							</depth_camera>
 							<horizontal_fov>1.047198</horizontal_fov>
 							<image>
-								<width>640</width>
-								<height>480</height>
+								<width>320</width>
+								<height>240</height>
 								<format>B8G8R8</format>
 							</image>
 							<clip>
@@ -117,7 +117,7 @@
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>3</model_count>
+			<model_count>5</model_count>
 			<distribution>
 				<type>uniform</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
@@ -144,9 +144,17 @@
 			</ode>
 		</physics>
 
+		<scene>
+			<ambient>0 0 0 0</ambient>
+			<background>0 0 0 0</background>
+			<shadows>0</shadows>
+		</scene>
+
 		<plugin name="active_perception" filename="libactive_perception.so">
-			<numberOfSamplingSensors>3</numberOfSamplingSensors>
-			<numberOfIntendedSensors>1</numberOfIntendedSensors>
+			<numberOfSamplingSensors>5</numberOfSamplingSensors>
+			<numberOfIntendedSensors>2</numberOfIntendedSensors>
+			<ransacNumberOfIterations>100</ransacNumberOfIterations>
+			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
 			<elapsedSimulationTimeInSecondsBetweenSensorAnalysis>3.0</elapsedSimulationTimeInSecondsBetweenSensorAnalysis>
 			<pollingSleepTime>0.2</pollingSleepTime>
 			<sensorOrientationRandomRoll>false</sensorOrientationRandomRoll>

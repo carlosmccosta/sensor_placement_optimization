@@ -91,12 +91,13 @@ class ActivePerception : public WorldPlugin {
 		void OnNewRGBPointCloud(const float *_pcd,
 						unsigned int _width, unsigned int _height,
 						unsigned int _depth, const std::string &_format, size_t _sensor_index);
-		typename pcl::PointCloud<pcl::PointXYZ>::Ptr SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points, Eigen::Affine3f &_transform_sensor_to_world);
+		typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points, Eigen::Affine3f &_transform_sensor_to_world, size_t _sensor_index);
 		bool GetSensorTransformToWorld(size_t _sensor_index, Eigen::Affine3f &_transform);
-		bool FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr &_pointcloud);
-		bool PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr &_pointcloud, size_t _pubisher_index);
+		bool FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr &_pointcloud);
+		bool PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr &_pointcloud, size_t _pubisher_index);
 		void WaitForSensorData();
 		void ProcessSensorData();
+		void FillUniqueRandomIntNumbers(size_t number_of_random_numbers, int min, int max, std::vector<int> &random_numbers);
 		size_t PublishAnalysisSurfaceCoverageAnalysis();
 		void PrepareNextAnalysis();
 		geometry_msgs::Pose MathPoseToRosPose(math::Pose _math_pose);
@@ -160,16 +161,22 @@ class ActivePerception : public WorldPlugin {
 		// Configurations
 		size_t number_of_sampling_sensors_;
 		size_t number_of_intended_sensors_;
+		size_t ransac_number_of_iterations_;
+		double ransac_surface_percentage_stop_threshold_;
 		double elapsed_simulation_time_in_seconds_between_sensor_analysis_;
 		common::Time polling_sleep_time_;
 		size_t number_of_sensor_analysis_performed_;
 		bool sensor_orientation_random_roll_;
+		uint32_t sensor_data_segmentation_color_r_;
+		uint32_t sensor_data_segmentation_color_g_;
+		uint32_t sensor_data_segmentation_color_b_;
 		float sensor_data_segmentation_color_rgb_;
 		std::string sdf_sensors_name_prefix_;
 		std::string topics_sampling_sensors_prefix_;
 		std::string published_msgs_world_frame_id_;
 		std::string published_msgs_frame_id_suffix_;
-		std::vector<typename pcl::PointCloud<pcl::PointXYZ>::Ptr> sampling_sensors_pointclouds_;
+		std::vector<typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr> sampling_sensors_pointclouds_;
+		std::vector<sensor_msgs::Image::Ptr> sampling_sensors_images_;
 		size_t number_of_sampling_sensors_pointclouds_received_;
 		std::vector<ros::Publisher> sampling_sensors_color_image_publishers_;
 		std::vector<ros::Publisher> sampling_sensors_pointcloud_publishers_;
@@ -185,7 +192,7 @@ class ActivePerception : public WorldPlugin {
 		boost::mutex scene_model_path_mutex_;
 		bool new_scene_model_path_available_;
 		ros::Publisher scene_model_publisher_;
-		typename pcl::PointCloud<pcl::PointXYZ>::Ptr scene_model_;
+		typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr scene_model_;
 		double voxel_grid_filter_leaf_size_;
 
 		// analysis
@@ -195,6 +202,7 @@ class ActivePerception : public WorldPlugin {
 		ros::Publisher sensors_best_poses_publisher_;
 		ros::Publisher sensors_best_voxel_grid_surface_coverages_publisher_;
 		ros::Publisher sensors_best_names_publisher_;
+		ros::Publisher sensors_best_merged_pointcloud_publisher_;
 
 		// Processing threads
 		boost::thread processing_thread_;
