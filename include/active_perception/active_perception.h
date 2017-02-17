@@ -17,6 +17,8 @@
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 
+#include <Eigen/Core>
+
 #include <ignition/math.hh>
 
 #include <gazebo/common/common.hh>
@@ -27,6 +29,7 @@
 #include <gazebo/rendering/rendering.hh>
 #include <gazebo/sensors/sensors.hh>
 
+#include <pcl/common/transforms.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/search/kdtree.h>
@@ -66,11 +69,12 @@ class ActivePerception : public WorldPlugin {
 		void Init();
 		void QueueThread();
 		void ProcessNewObservationPoint(const geometry_msgs::PointStampedConstPtr &_msg);
-		void ProcessNewModelNames(const std_msgs::StringConstPtr &_msg);
+		void ProcessNewSceneModelPath(const std_msgs::StringConstPtr &_msg);
 		void ProcessingThread();
 		void LoadSensors();
 		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
 		void OrientSensorsToObservationPoint();
+		void LoadSceneModel();
 		void SetSensorsState(bool _active);
 		void OnNewImageFrame(const unsigned char *_image,
 						unsigned int _width, unsigned int _height,
@@ -78,8 +82,15 @@ class ActivePerception : public WorldPlugin {
 		void OnNewRGBPointCloud(const float *_pcd,
 						unsigned int _width, unsigned int _height,
 						unsigned int _depth, const std::string &_format, size_t _sensor_index);
-		typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points);
-		bool PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr _pointcloud, size_t _pubisher_index);
+		typename pcl::PointCloud<pcl::PointXYZ>::Ptr SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points, Eigen::Affine3f &_transform_sensor_to_world);
+		bool GetSensorTransformToWorld(size_t _sensor_index, Eigen::Affine3f &_transform);
+		template <typename Scalar>
+		Eigen::Transform<Scalar, 3, Eigen::Affine> PoseToTransform(const math::Pose &_pose) {
+			Eigen::Translation<Scalar, 3> translation(_pose.pos.x, _pose.pos.y, _pose.pos.z);
+			Eigen::Quaternion<Scalar> rotation(_pose.rot.w, _pose.rot.x, _pose.rot.y, _pose.rot.z);
+			return Eigen::Transform<Scalar, 3, Eigen::Affine>(translation * rotation);
+		}
+		bool PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr _pointcloud, size_t _pubisher_index);
 		void WaitForSensorData();
 		bool ProcessSensorData();
 		void PrepareNextAnalysis();
@@ -116,8 +127,9 @@ class ActivePerception : public WorldPlugin {
 		float sensor_data_segmentation_color_rgb_;
 		std::string sdf_sensors_name_prefix_;
 		std::string topics_sampling_sensors_prefix_;
+		std::string published_msgs_world_frame_id_;
 		std::string published_msgs_frame_id_suffix_;
-		std::vector<typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr> sampling_sensors_pointclouds_;
+		std::vector<typename pcl::PointCloud<pcl::PointXYZ>::Ptr> sampling_sensors_pointclouds_;
 		size_t number_of_sampling_sensors_pointclouds_received_;
 		std::vector<ros::Publisher> sampling_sensors_color_image_publishers_;
 		std::vector<ros::Publisher> sampling_sensors_pointcloud_publishers_;
@@ -127,10 +139,11 @@ class ActivePerception : public WorldPlugin {
 		boost::mutex observation_point_mutex_;
 		bool new_observation_point_available_;
 
-		std::string observation_models_names_;
-		ros::Subscriber observation_models_names_subscriber_;
-		boost::mutex observation_models_names_mutex_;
-		bool new_observation_models_names_available_;
+		std::string scene_model_path_;
+		ros::Subscriber scene_model_path_subscriber_;
+		boost::mutex scene_model_path_mutex_;
+		bool new_scene_model_path_available_;
+		typename pcl::PointCloud<pcl::PointXYZ>::Ptr scene_model_;
 
 		// Processing threads
 		boost::thread processing_thread_;

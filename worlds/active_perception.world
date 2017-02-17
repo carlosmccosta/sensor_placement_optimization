@@ -43,10 +43,33 @@
 			</link>
 		</model>
 
+		<model name="starter_motor">
+			<static>1</static>
+			<pose>0 0 0 0 0 0</pose>
+			<link name="starter_motor_link">
+				<visual name="starter_motor_visual">
+					<transparency>0</transparency>
+					<cast_shadows>false</cast_shadows>
+					<geometry>
+						<mesh>
+							<uri>model://starter_motor/meshes/starter_motor.dae</uri>
+						</mesh>
+					</geometry>
+					<material>
+						<script>
+							<name>ActivePerception/Green</name>
+							<uri>file://materials/active_perception.material</uri>
+						</script>
+					</material>
+				</visual>
+				<gravity>0</gravity>
+			</link>
+		</model>
+
 		<population name="sensors_population">
 			<model name="kinect1_sensor">
 				<static>1</static>
-				<pose>0 0 0.036 0 0 0</pose>
+				<pose>0 0 0 0 0 0</pose>
 				<link name="link">
 					<inertial>
 						<mass>0.2</mass>
@@ -121,12 +144,15 @@
 		<plugin name="active_perception" filename="libactive_perception.so">
 			<numberOfSamplingSensors>3</numberOfSamplingSensors>
 			<numberOfIntendedSensors>1</numberOfIntendedSensors>
-			<elapsedSimulationTimeInSecondsBetweenSensorAnalysis>1</elapsedSimulationTimeInSecondsBetweenSensorAnalysis>
+			<elapsedSimulationTimeInSecondsBetweenSensorAnalysis>3.0</elapsedSimulationTimeInSecondsBetweenSensorAnalysis>
 			<pollingSleepTime>0.2</pollingSleepTime>
 			<sensorOrientationRandomRoll>false</sensorOrientationRandomRoll>
 			<sensorDataSegmentationColorRGB>0 255 0</sensorDataSegmentationColorRGB>
+			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/active_perception/media/models/starter_motor/meshes/starter_motor.ply</sceneModelPath>
+			<observationPoint>0 0 0</observationPoint>
 			<sdfSensorsNamePrefix>active_perception</sdfSensorsNamePrefix>
 			<topicsSamplingSensorsPointcloudPrefix>sampling_point_cloud_</topicsSamplingSensorsPointcloudPrefix>
+			<publishedMsgsWorldFrameId>world</publishedMsgsWorldFrameId>
 			<publishedMsgsFrameIdSuffix>_frame</publishedMsgsFrameIdSuffix>
 			<topicObservationPoint>set_observation_point</topicObservationPoint>
 			<topicModelNames>set_model_names</topicModelNames>

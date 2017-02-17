@@ -26,9 +26,10 @@ set(${PROJECT_NAME}_CATKIN_COMPONENTS
 #######################################################################################################################
 
 find_package(catkin REQUIRED COMPONENTS ${${PROJECT_NAME}_CATKIN_COMPONENTS})
-find_package(gazebo REQUIRED)
+find_package(GAZEBO REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 find_package(Boost REQUIRED COMPONENTS thread)
+find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED)
 
 
@@ -46,6 +47,7 @@ catkin_package(
         ${${PROJECT_NAME}_CATKIN_COMPONENTS}
     DEPENDS
         Boost
+        Eigen3
         GAZEBO
         PCL
 )
@@ -64,6 +66,7 @@ include_directories(
     include
     ${Boost_INCLUDE_DIRS}
     ${catkin_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIRS}
     ${GAZEBO_INCLUDE_DIRS}
     ${PCL_INCLUDE_DIRS}
 )

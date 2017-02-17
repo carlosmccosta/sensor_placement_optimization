@@ -22,8 +22,8 @@ ActivePerception::ActivePerception() :
 		sensor_orientation_random_roll_(true),
 		sensor_data_segmentation_color_rgb_(0xff00),
 		number_of_sampling_sensors_pointclouds_received_(0),
-		new_observation_point_available_(false),
-		new_observation_models_names_available_(false) {
+		new_observation_point_available_(true),
+		new_scene_model_path_available_(false) {
 }
 
 ActivePerception::~ActivePerception() {
@@ -52,11 +52,27 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 		sensor_data_segmentation_color_rgb_ = r << 16 | g << 8 | b;
 	}
 
+	if (sdf_->HasElement("sceneModelPath")) scene_model_path_ = sdf_->GetElement("sceneModelPath")->Get<std::string>();
+	if (!scene_model_path_.empty()) new_scene_model_path_available_ = true;
+
+	std::string observation_point_str = "0 0 0";
+	if (sdf_->HasElement("observationPoint")) observation_point_str = sdf_->GetElement("observationPoint")->Get<std::string>();
+	std::stringstream observation_point_ss(observation_point_str);
+	double ox, oy, oz;
+	if (observation_point_ss >> ox && observation_point_ss >> oy && observation_point_ss >> oz) {
+		observation_point_.point.x = ox;
+		observation_point_.point.y = oy;
+		observation_point_.point.z = oz;
+	}
+
 	sdf_sensors_name_prefix_ = "active_perception";
 	if (sdf_->HasElement("sdfSensorsNamePrefix")) sdf_sensors_name_prefix_ = sdf_->GetElement("sdfSensorsNamePrefix")->Get<std::string>();
 
 	topics_sampling_sensors_prefix_ = "sampling_point_cloud_";
 	if (sdf_->HasElement("topicsSamplingSensorsPrefix")) topics_sampling_sensors_prefix_ = sdf_->GetElement("topicsSamplingSensorsPrefix")->Get<std::string>();
+
+	published_msgs_world_frame_id_ = "world";
+	if (sdf_->HasElement("publishedMsgsWorldFrameId")) published_msgs_world_frame_id_ = sdf_->GetElement("publishedMsgsWorldFrameId")->Get<std::string>();
 
 	published_msgs_frame_id_suffix_ = "_frame";
 	if (sdf_->HasElement("publishedMsgsFrameIdSuffix")) published_msgs_frame_id_suffix_ = sdf_->GetElement("publishedMsgsFrameIdSuffix")->Get<std::string>();
@@ -81,7 +97,7 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	rosnode_->setCallbackQueue(&queue_);
 
 	observation_point_subscriber_ = rosnode_->subscribe(topic_observation_point, 1, &ActivePerception::ProcessNewObservationPoint, this);
-	observation_models_names_subscriber_ = rosnode_->subscribe(topic_model_names, 1, &ActivePerception::ProcessNewModelNames, this);
+	scene_model_path_subscriber_ = rosnode_->subscribe(topic_model_names, 1, &ActivePerception::ProcessNewSceneModelPath, this);
 }
 
 void ActivePerception::Init() {
@@ -100,35 +116,38 @@ void ActivePerception::ProcessNewObservationPoint(const geometry_msgs::PointStam
 	new_observation_point_available_ = true;
 }
 
-void ActivePerception::ProcessNewModelNames(const std_msgs::StringConstPtr& _msg) {
-	boost::mutex::scoped_lock scoped_lock(observation_models_names_mutex_);
-	observation_models_names_ = _msg->data;
-	new_observation_models_names_available_ = true;
+void ActivePerception::ProcessNewSceneModelPath(const std_msgs::StringConstPtr& _msg) {
+	scene_model_path_mutex_.lock();
+	scene_model_path_ = _msg->data;
+	new_scene_model_path_available_ = true;
+	scene_model_path_mutex_.unlock();
+	LoadSceneModel();
 }
 
 void ActivePerception::ProcessingThread() {
 	LoadSensors();
-	OrientSensorsToObservationPoint();
-	common::Time last_analysis_simulation_time = world_->SimTime();
+	LoadSceneModel();
 	SetSensorsState(true);
+	world_->SetPaused(false);
 
 	ROS_INFO_STREAM("ActivePerception has started with " << sensors_.size() << " sampling sensors for finding the optimal placement for " << number_of_intended_sensors_ << (number_of_intended_sensors_ == 1 ? " sensor" : " sensors"));
+	bool sensor_analysis_required = true;
+
 	while (rosnode_->ok()) {
+		observation_point_mutex_.lock();
 		if (new_observation_point_available_) {
 			OrientSensorsToObservationPoint();
-			observation_models_names_mutex_.lock();
 			new_observation_point_available_ = false;
-			observation_models_names_mutex_.unlock();
+			sensor_analysis_required = true;
 		}
-		world_->SetPaused(false);
-		while (world_->SimTime().Double() - last_analysis_simulation_time.Double() < elapsed_simulation_time_in_seconds_between_sensor_analysis_) {
-			common::Time::Sleep(polling_sleep_time_);
+		observation_point_mutex_.unlock();
+
+		if (sensor_analysis_required) {
+			ROS_INFO_STREAM("Performing sensor analysis number " << number_of_sensor_analysis_performed_);
+			WaitForSensorData();
+			if (ProcessSensorData()) ++number_of_sensor_analysis_performed_;
+			PrepareNextAnalysis();
 		}
-		world_->SetPaused(true);
-		WaitForSensorData();
-		if (ProcessSensorData()) ++number_of_sensor_analysis_performed_;
-		PrepareNextAnalysis();
-		last_analysis_simulation_time = world_->SimTime();
 	}
 }
 
@@ -209,6 +228,15 @@ void ActivePerception::OrientSensorsToObservationPoint() {
 	}
 }
 
+void ActivePerception::LoadSceneModel() {
+	scene_model_path_mutex_.lock();
+	if (new_scene_model_path_available_) {
+		LoadSceneModel();
+		new_scene_model_path_available_ = false;
+	}
+	scene_model_path_mutex_.unlock();
+}
+
 void ActivePerception::SetSensorsState(bool _active) {
 	for (size_t i = 0; i < sensors_.size(); ++i) {
 		sensors_[i]->SetActive(_active);
@@ -239,32 +267,40 @@ void ActivePerception::OnNewRGBPointCloud(const float *_pcd,
 				unsigned int _depth, const std::string &_format, size_t _sensor_index) {
 	ROS_INFO_STREAM("Received PCD from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
 	if (_sensor_index < sensors_.size() && _sensor_index < sampling_sensors_pointclouds_.size()) {
-		typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud = SegmentSensorDataFromDepthSensor(_pcd, _width * _height);
-		pointcloud->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
-		pointcloud->header.frame_id = sensors_[_sensor_index]->ParentName() + published_msgs_frame_id_suffix_;
-		std::replace(pointcloud->header.frame_id.begin(), pointcloud->header.frame_id.end(), ':', '_');
-		PublishPointCloud(pointcloud, _sensor_index);
-		if (!sampling_sensors_pointclouds_[_sensor_index]) ++number_of_sampling_sensors_pointclouds_received_;
-		sampling_sensors_pointclouds_[_sensor_index] = pointcloud;
+		Eigen::Affine3f transform_sensor_to_world;
+		if (GetSensorTransformToWorld(_sensor_index, transform_sensor_to_world)) {
+			typename pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud = SegmentSensorDataFromDepthSensor(_pcd, _width * _height, transform_sensor_to_world);
+			pointcloud->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
+			pointcloud->header.frame_id = published_msgs_world_frame_id_;
+			PublishPointCloud(pointcloud, _sensor_index);
+			if (!sampling_sensors_pointclouds_[_sensor_index]) ++number_of_sampling_sensors_pointclouds_received_;
+			sampling_sensors_pointclouds_[_sensor_index] = pointcloud;
+		}
 	}
 }
 
-typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr ActivePerception::SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points) {
-	typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud(new pcl::PointCloud<pcl::PointXYZRGB>());
+typename pcl::PointCloud<pcl::PointXYZ>::Ptr ActivePerception::SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points, Eigen::Affine3f &_transform_sensor_to_world) {
+	typename pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud(new pcl::PointCloud<pcl::PointXYZ>());
 	size_t memory_index = 0;
 	for (size_t i = 0; i < _number_of_points; ++i) {
 		if (_xyzrgb_data[memory_index + 3] == sensor_data_segmentation_color_rgb_) {
-			pcl::PointXYZRGB new_point;
-			memcpy(&new_point.data[0], &_xyzrgb_data[memory_index], 3 * sizeof(float));
-			new_point.rgba = _xyzrgb_data[memory_index + 3];
-			pointcloud->push_back(new_point);
+			pointcloud->push_back(pcl::transformPoint(pcl::PointXYZ(_xyzrgb_data[memory_index], _xyzrgb_data[memory_index + 1], _xyzrgb_data[memory_index + 2]), _transform_sensor_to_world));
 		}
 		memory_index += 4;
 	}
 	return pointcloud;
 }
 
-bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr _pointcloud, size_t _pubisher_index) {
+bool ActivePerception::GetSensorTransformToWorld(size_t _sensor_index, Eigen::Affine3f &_transform_sensor_to_world) {
+	if (_sensor_index < sensors_models_.size()) {
+		math::Pose pose = sensors_models_[_sensor_index]->GetWorldPose();
+		_transform_sensor_to_world = PoseToTransform<float>(pose).inverse();
+		return true;
+	}
+	return false;
+}
+
+bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr _pointcloud, size_t _pubisher_index) {
 	if (_pointcloud && _pubisher_index < sampling_sensors_pointcloud_publishers_.size() &&
 			sampling_sensors_pointcloud_publishers_[_pubisher_index].getNumSubscribers() > 0) {
 		sensor_msgs::PointCloud2Ptr cloud_msg(new sensor_msgs::PointCloud2());
@@ -276,20 +312,18 @@ bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZR
 }
 
 void ActivePerception::WaitForSensorData() {
-	common::Time processing_start_time = common::Time::GetWallTime();
 	while (number_of_sampling_sensors_pointclouds_received_ < sampling_sensors_pointclouds_.size()) {
 		common::Time::Sleep(polling_sleep_time_);
-		if (common::Time::GetWallTime().Double() - processing_start_time.Double() > 60) {
-			ROS_WARN("Continuing simulation for allowing sensor data generation");
-			world_->SetPaused(false);
-			common::Time::Sleep(common::Time(3 * polling_sleep_time_.Double()));
-			world_->SetPaused(true);
-		}
 	}
 }
 
 bool ActivePerception::ProcessSensorData() {
+	while (!scene_model_) {
+		ROS_WARN("Waiting for scene model");
+		common::Time::Sleep(polling_sleep_time_);
+	}
 
+	return false;
 }
 
 void ActivePerception::PrepareNextAnalysis() {
@@ -304,4 +338,3 @@ void ActivePerception::PrepareNextAnalysis() {
 // =============================================================================   </protected-section>  =======================================================================
 
 } /* namespace gazebo */
-
