@@ -30,8 +30,14 @@
 #include <gazebo/sensors/sensors.hh>
 
 #include <pcl/common/transforms.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/io/ply_io.h>
+#include <pcl/io/vtk_lib_io.h>
+#include <pcl/PCLPointCloud2.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
+#include <pcl/PolygonMesh.h>
 #include <pcl/search/kdtree.h>
 #include <pcl_conversions/pcl_conversions.h>
 
@@ -84,17 +90,46 @@ class ActivePerception : public WorldPlugin {
 						unsigned int _depth, const std::string &_format, size_t _sensor_index);
 		typename pcl::PointCloud<pcl::PointXYZ>::Ptr SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points, Eigen::Affine3f &_transform_sensor_to_world);
 		bool GetSensorTransformToWorld(size_t _sensor_index, Eigen::Affine3f &_transform);
+		bool FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr &_pointcloud);
+		bool PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr &_pointcloud, size_t _pubisher_index);
+		void WaitForSensorData();
+		bool ProcessSensorData();
+		void PrepareNextAnalysis();
+		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <member-functions-templates>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		template <typename Scalar>
 		Eigen::Transform<Scalar, 3, Eigen::Affine> PoseToTransform(const math::Pose &_pose) {
 			Eigen::Translation<Scalar, 3> translation(_pose.pos.x, _pose.pos.y, _pose.pos.z);
 			Eigen::Quaternion<Scalar> rotation(_pose.rot.w, _pose.rot.x, _pose.rot.y, _pose.rot.z);
 			return Eigen::Transform<Scalar, 3, Eigen::Affine>(translation * rotation);
 		}
-		bool PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr _pointcloud, size_t _pubisher_index);
-		void WaitForSensorData();
-		bool ProcessSensorData();
-		void PrepareNextAnalysis();
-		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+		template<typename PointCloudT>
+		bool LoadPointCloudfromFile(const std::string& filename, PointCloudT& pointcloud) {
+			std::string::size_type index = filename.rfind(".");
+			if (index == std::string::npos) return false;
+			std::string extension = filename.substr(index + 1);
+			if (extension == "pcd") {
+				if (pcl::io::loadPCDFile(filename, pointcloud) == 0 && !pointcloud.empty()) return true;
+			} else if (extension == "ply") {
+				if (pcl::io::loadPLYFile(filename, pointcloud) == 0 && !pointcloud.empty()) {
+					// fix PLYReader import
+					pointcloud.sensor_origin_ = Eigen::Vector4f::Zero();
+					pointcloud.sensor_orientation_ = Eigen::Quaternionf::Identity();
+					return true;
+				}
+			} else {
+				pcl::PolygonMesh mesh;
+				if (pcl::io::loadPolygonFile(filename, mesh) != 0) { // obj | ply | stl | vtk | doesn't load normals curvature | doesn't load normals from .ply .stl
+					pcl::fromPCLPointCloud2(mesh.cloud, pointcloud);
+					return !pointcloud.empty();
+				}
+			}
+			return false;
+		}
+		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions-templates>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <gets>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </gets>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -144,6 +179,8 @@ class ActivePerception : public WorldPlugin {
 		boost::mutex scene_model_path_mutex_;
 		bool new_scene_model_path_available_;
 		typename pcl::PointCloud<pcl::PointXYZ>::Ptr scene_model_;
+		ros::Publisher scene_model_publisher_;
+		double voxel_grid_filter_leaf_size_;
 
 		// Processing threads
 		boost::thread processing_thread_;

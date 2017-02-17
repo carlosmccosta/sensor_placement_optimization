@@ -148,6 +148,7 @@
 			<pollingSleepTime>0.2</pollingSleepTime>
 			<sensorOrientationRandomRoll>false</sensorOrientationRandomRoll>
 			<sensorDataSegmentationColorRGB>0 255 0</sensorDataSegmentationColorRGB>
+			<voxelGridFilterLeafSize>0.005</voxelGridFilterLeafSize>
 			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/active_perception/media/models/starter_motor/meshes/starter_motor.ply</sceneModelPath>
 			<observationPoint>0 0 0</observationPoint>
 			<sdfSensorsNamePrefix>active_perception</sdfSensorsNamePrefix>

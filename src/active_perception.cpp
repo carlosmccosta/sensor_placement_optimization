@@ -23,7 +23,8 @@ ActivePerception::ActivePerception() :
 		sensor_data_segmentation_color_rgb_(0xff00),
 		number_of_sampling_sensors_pointclouds_received_(0),
 		new_observation_point_available_(true),
-		new_scene_model_path_available_(false) {
+		new_scene_model_path_available_(false),
+		voxel_grid_filter_leaf_size_(0.007) {
 }
 
 ActivePerception::~ActivePerception() {
@@ -52,6 +53,7 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 		sensor_data_segmentation_color_rgb_ = r << 16 | g << 8 | b;
 	}
 
+	if (sdf_->HasElement("voxelGridFilterLeafSize")) voxel_grid_filter_leaf_size_ = sdf_->GetElement("voxelGridFilterLeafSize")->Get<double>();
 	if (sdf_->HasElement("sceneModelPath")) scene_model_path_ = sdf_->GetElement("sceneModelPath")->Get<std::string>();
 	if (!scene_model_path_.empty()) new_scene_model_path_available_ = true;
 
@@ -98,6 +100,7 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 
 	observation_point_subscriber_ = rosnode_->subscribe(topic_observation_point, 1, &ActivePerception::ProcessNewObservationPoint, this);
 	scene_model_path_subscriber_ = rosnode_->subscribe(topic_model_names, 1, &ActivePerception::ProcessNewSceneModelPath, this);
+	scene_model_publisher_ = rosnode_->advertise<sensor_msgs::PointCloud2>(topics_sampling_sensors_prefix_ + "_scene_model", 1, true);
 }
 
 void ActivePerception::Init() {
@@ -117,11 +120,13 @@ void ActivePerception::ProcessNewObservationPoint(const geometry_msgs::PointStam
 }
 
 void ActivePerception::ProcessNewSceneModelPath(const std_msgs::StringConstPtr& _msg) {
-	scene_model_path_mutex_.lock();
-	scene_model_path_ = _msg->data;
-	new_scene_model_path_available_ = true;
-	scene_model_path_mutex_.unlock();
-	LoadSceneModel();
+	if (!_msg->data.empty()) {
+		scene_model_path_mutex_.lock();
+		scene_model_path_ = _msg->data;
+		new_scene_model_path_available_ = true;
+		scene_model_path_mutex_.unlock();
+		LoadSceneModel();
+	}
 }
 
 void ActivePerception::ProcessingThread() {
@@ -230,8 +235,17 @@ void ActivePerception::OrientSensorsToObservationPoint() {
 
 void ActivePerception::LoadSceneModel() {
 	scene_model_path_mutex_.lock();
-	if (new_scene_model_path_available_) {
-		LoadSceneModel();
+	if (new_scene_model_path_available_ && !scene_model_path_.empty()) {
+		scene_model_ = typename pcl::PointCloud<pcl::PointXYZ>::Ptr(new pcl::PointCloud<pcl::PointXYZ>());
+		if (!LoadPointCloudfromFile(scene_model_path_, *scene_model_) || !FilterPointCloud(scene_model_)) {
+			scene_model_ = typename pcl::PointCloud<pcl::PointXYZ>::Ptr();
+		} else {
+			scene_model_->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
+			scene_model_->header.frame_id = published_msgs_world_frame_id_;
+			sensor_msgs::PointCloud2Ptr cloud_msg(new sensor_msgs::PointCloud2());
+			pcl::toROSMsg(*scene_model_, *cloud_msg);
+			scene_model_publisher_.publish(cloud_msg);
+		}
 		new_scene_model_path_available_ = false;
 	}
 	scene_model_path_mutex_.unlock();
@@ -270,6 +284,7 @@ void ActivePerception::OnNewRGBPointCloud(const float *_pcd,
 		Eigen::Affine3f transform_sensor_to_world;
 		if (GetSensorTransformToWorld(_sensor_index, transform_sensor_to_world)) {
 			typename pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud = SegmentSensorDataFromDepthSensor(_pcd, _width * _height, transform_sensor_to_world);
+			FilterPointCloud(pointcloud);
 			pointcloud->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
 			pointcloud->header.frame_id = published_msgs_world_frame_id_;
 			PublishPointCloud(pointcloud, _sensor_index);
@@ -294,13 +309,25 @@ typename pcl::PointCloud<pcl::PointXYZ>::Ptr ActivePerception::SegmentSensorData
 bool ActivePerception::GetSensorTransformToWorld(size_t _sensor_index, Eigen::Affine3f &_transform_sensor_to_world) {
 	if (_sensor_index < sensors_models_.size()) {
 		math::Pose pose = sensors_models_[_sensor_index]->GetWorldPose();
-		_transform_sensor_to_world = PoseToTransform<float>(pose).inverse();
+		_transform_sensor_to_world = PoseToTransform<float>(pose);
+		Eigen::Quaternion<float> rotation_ros(0.5, 0.5, -0.5, -0.5);
+		_transform_sensor_to_world = _transform_sensor_to_world * rotation_ros;
 		return true;
 	}
 	return false;
 }
 
-bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr _pointcloud, size_t _pubisher_index) {
+bool ActivePerception::FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr &_pointcloud) {
+	typename pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud_filtered(new pcl::PointCloud<pcl::PointXYZ>());
+	pcl::VoxelGrid<pcl::PointXYZ> filter;
+	filter.setLeafSize(voxel_grid_filter_leaf_size_, voxel_grid_filter_leaf_size_, voxel_grid_filter_leaf_size_);
+	filter.setInputCloud(_pointcloud);
+	filter.filter(*pointcloud_filtered);
+	_pointcloud = pointcloud_filtered;
+	return _pointcloud->size() > 0;
+}
+
+bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr &_pointcloud, size_t _pubisher_index) {
 	if (_pointcloud && _pubisher_index < sampling_sensors_pointcloud_publishers_.size() &&
 			sampling_sensors_pointcloud_publishers_[_pubisher_index].getNumSubscribers() > 0) {
 		sensor_msgs::PointCloud2Ptr cloud_msg(new sensor_msgs::PointCloud2());
