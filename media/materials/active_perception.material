@@ -1,0 +1,44 @@
+material ActivePerception/Red
+{
+  technique
+  {
+    pass ambient
+    {
+      ambient 1 0 0
+      diffuse 1 0 0
+      specular 1 0 0
+      emissive 1 0 0
+      polygon_mode solid
+    }
+  }
+}
+
+material ActivePerception/Green
+{
+  technique
+  {
+    pass ambient
+    {
+      ambient 0 1 0
+      diffuse 0 1 0
+      specular 0 1 0
+      emissive 0 1 0
+      polygon_mode solid
+    }
+  }
+}
+
+material ActivePerception/Blue
+{
+  technique
+  {
+    pass ambient
+    {
+      ambient 0 0 1
+      diffuse 0 0 1
+      specular 0 0 1
+      emissive 0 0 1
+      polygon_mode solid
+    }
+  }
+}

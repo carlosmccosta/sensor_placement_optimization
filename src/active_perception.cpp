@@ -41,16 +41,16 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	std::string sensor_data_segmentation_color_rgb_str = "0 255 0";
 	if (sdf_->HasElement("sensorDataSegmentationColorRGB")) sensor_data_segmentation_color_rgb_str = sdf_->GetElement("sensorDataSegmentationColorRGB")->Get<std::string>();
 	std::stringstream sensor_data_segmentation_color_rgb_ss(sensor_data_segmentation_color_rgb_str);
-	uint8_t r, g, b;
+	uint32_t r, g, b;
 	if (sensor_data_segmentation_color_rgb_ss >> r && sensor_data_segmentation_color_rgb_ss >> g && sensor_data_segmentation_color_rgb_ss >> b) {
-		sensor_data_segmentation_color_rgb_ = ((int)r) << 16 | ((int)g) << 8 | ((int)b);
+		sensor_data_segmentation_color_rgb_ = r << 16 | g << 8 | b;
 	}
 
 	sampling_sensors_name_prefix_ = "active_perception";
 	if (sdf_->HasElement("samplingSensorsNamePrefix")) sampling_sensors_name_prefix_ = sdf_->GetElement("samplingSensorsNamePrefix")->Get<std::string>();
 
-	topic_sampling_sensors_pointcloud_prefix_ = "sampling_point_cloud_";
-	if (sdf_->HasElement("topicSamplingSensorsPointcloudPrefix")) topic_sampling_sensors_pointcloud_prefix_ = sdf_->GetElement("topicSamplingSensorsPointcloudPrefix")->Get<std::string>();
+	topic_sampling_sensors_prefix_ = "sampling_point_cloud_";
+	if (sdf_->HasElement("topicSamplingSensorsPrefix")) topic_sampling_sensors_prefix_ = sdf_->GetElement("topicSamplingSensorsPrefix")->Get<std::string>();
 
 	// ros topics
 	std::string topic_observation_point = "set_observation_point";
@@ -102,6 +102,9 @@ void ActivePerception::ProcessingThread() {
 	OrientSensorsToObservationPoint();
 	common::Time last_analysis_simulation_time;
 
+	SetSensorsState(true);
+	world_->SetPaused(false);
+
 	ROS_INFO_STREAM("ActivePerception has started with " << sensors_.size() << " sampling sensors for finding the optimal placement for " << number_of_intended_sensors_ << (number_of_intended_sensors_ == 1 ? " sensor" : " sensors"));
 	while (rosnode_->ok()) {
 		if (new_observation_point_available_) {
@@ -111,7 +114,9 @@ void ActivePerception::ProcessingThread() {
 			observation_models_names_mutex_.unlock();
 		}
 
-		SetSensorsState(true);
+		common::Time::Sleep(common::Time(0, 20000000));
+
+		/*SetSensorsState(true);
 		world_->SetPaused(true);
 		RetrieveSensorData();
 		SetSensorsState(false);
@@ -121,13 +126,22 @@ void ActivePerception::ProcessingThread() {
 
 		while (world_->SimTime().Double() - last_analysis_simulation_time.Double() < elapsed_simulation_time_in_seconds_between_sensor_analysis_) {
 			common::Time::Sleep(common::Time(0, 0.01));
-		}
+		}*/
 	}
 }
 
 void ActivePerception::LoadSensors(common::Time _wait_time) {
 	sensors_.clear();
 	sensors_models_.clear();
+	sampling_sensors_pointclouds_.clear();
+	sampling_sensors_pointclouds_.resize(number_of_sampling_sensors_);
+	sampling_sensors_depth_image_publishers_.clear();
+	sampling_sensors_color_image_publishers_.clear();
+	sampling_sensors_pointcloud_publishers_.clear();
+	depth_image_connections_.clear();
+	color_image_connections_.clear();
+	color_pointcloud_connections_.clear();
+
 	sensors::Sensor_V sensors = sensors::SensorManager::Instance()->GetSensors();
 	size_t sampling_sensors_count = CountNumberOfSamplingSensors(sensors, sampling_sensors_name_prefix_);
 	while (sampling_sensors_count < number_of_sampling_sensors_) {
@@ -147,10 +161,20 @@ void ActivePerception::LoadSensors(common::Time _wait_time) {
 				if (!sensor_parent_name.empty()) {
 					physics::ModelPtr sensor_model = world_->ModelByName(sensor_parent_name);
 					if (sensor_model && sensor_depth) {
-						sensor_depth->SetActive(false);
 						sensors_.push_back(sensor_depth);
+						depth_image_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewDepthFrame(std::bind(&ActivePerception::OnNewDepthFrame,
+														this, std::placeholders::_1, std::placeholders::_2,
+														std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
+						color_image_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewImageFrame(std::bind(&ActivePerception::OnNewImageFrame,
+														this, std::placeholders::_1, std::placeholders::_2,
+														std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
+						color_pointcloud_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewRGBPointCloud(std::bind(&ActivePerception::OnNewRGBPointCloud,
+								this, std::placeholders::_1, std::placeholders::_2,
+								std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
 						sensors_models_.push_back(sensor_model);
-						sampling_sensors_pointcloud_publishers_.push_back(rosnode_->advertise<sensor_msgs::PointCloud2>(topic_sampling_sensors_pointcloud_prefix_ + sensor_parent_name, 1, true));
+						sampling_sensors_depth_image_publishers_.push_back(rosnode_->advertise<sensor_msgs::PointCloud2>(topic_sampling_sensors_prefix_ + sensor_parent_name + "_depth_image", 1, true));
+						sampling_sensors_color_image_publishers_.push_back(rosnode_->advertise<sensor_msgs::PointCloud2>(topic_sampling_sensors_prefix_ + sensor_parent_name + "_color_image", 1, true));
+						sampling_sensors_pointcloud_publishers_.push_back(rosnode_->advertise<sensor_msgs::PointCloud2>(topic_sampling_sensors_prefix_ + sensor_parent_name + "_pointcloud", 1, true));
 					}
 				}
 			}
@@ -191,37 +215,65 @@ void ActivePerception::OrientSensorsToObservationPoint() {
 void ActivePerception::SetSensorsState(bool _active) {
 	for (size_t i = 0; i < sensors_.size(); ++i) {
 		sensors_[i]->SetActive(_active);
-		/*if (_active) {
-			sensors_[i]->ForceRender();
-			sensors_[i]->Update(true);
+	}
+}
+
+void ActivePerception::OnNewDepthFrame(const float* _image, unsigned int _width, unsigned int _height, unsigned int _depth, const std::string& _format, size_t _sensor_index) {
+}
+
+void ActivePerception::OnNewImageFrame(const unsigned char* _image, unsigned int _width, unsigned int _height, unsigned int _depth, const std::string& _format, size_t _sensor_index) {
+}
+
+void ActivePerception::OnNewRGBPointCloud(const float *_pcd,
+				unsigned int _width, unsigned int _height,
+				unsigned int _depth, const std::string &_format, size_t _sensor_index) {
+	if (_sensor_index < sensors_.size() && _sensor_index < sampling_sensors_pointclouds_.size()) {
+		sampling_sensors_pointclouds_[_sensor_index] = SegmentSensorDataFromDepthSensor(_pcd, _width * _height);
+
+		sampling_sensors_pointclouds_[_sensor_index]->header.frame_id = sensors_[_sensor_index]->ParentName() + "_frame";
+		std::replace(sampling_sensors_pointclouds_[_sensor_index]->header.frame_id.begin(), sampling_sensors_pointclouds_[_sensor_index]->header.frame_id.end(), ':', '_');
+
+		PublishPointCloud(sampling_sensors_pointclouds_[_sensor_index], _sensor_index);
+			ROS_INFO_STREAM("Received PCD from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
+	}
+}
+
+typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr ActivePerception::SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points) {
+	typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud(new pcl::PointCloud<pcl::PointXYZRGB>());
+	size_t memory_index = 0;
+	for (size_t i = 0; i < _number_of_points; ++i) {
+		/*if (_xyzrgb_data[memory_index + 3] != 1) {
+			ROS_INFO("Point color: %x", _xyzrgb_data[memory_index + 3]);
+			//gzlog << "[x: " << _xyzrgb_data[memory_index] << " | y: " << _xyzrgb_data[memory_index + 1] << " | z: " << _xyzrgb_data[memory_index + 2] << " | r: " << r << " | g: " << g << " | b: " << b << " | rgb: " << rgb << "]\n";
 		}*/
-	}
-}
 
-void ActivePerception::RetrieveSensorData() {
-	sampling_sensors_pointclouds_.clear();
-	for (size_t i = 0; i < sensors_.size(); ++i) {
-		sampling_sensors_pointclouds_.push_back(SegmentSensorDataFromDepthSensor(sensors_[i]->DepthCamera()->DepthPointcloudXYZRGB(),
-				sensors_[i]->DepthCamera()->ImageWidth() * sensors_[i]->DepthCamera()->ImageHeight()));
-	}
-}
-
-typename pcl::PointCloud<pcl::PointXYZ>::Ptr ActivePerception::SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points) {
-	typename pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud(new pcl::PointCloud<pcl::PointXYZ>());
-	for (size_t i = 0; i < _number_of_points; i += 4) {
-		if (_xyzrgb_data[i + 3] == sensor_data_segmentation_color_rgb_) {
-			pointcloud->push_back(pcl::PointXYZ(_xyzrgb_data[i], _xyzrgb_data[i + 1], _xyzrgb_data[i + 2]));
+		if (_xyzrgb_data[memory_index + 3] == sensor_data_segmentation_color_rgb_ || _xyzrgb_data[memory_index + 3] != 1) {
+			pcl::PointXYZRGB new_point;
+			memcpy(&new_point.data[0], &_xyzrgb_data[memory_index], 3 * sizeof(float));
+			new_point.rgba = _xyzrgb_data[memory_index + 3];
+			pointcloud->push_back(new_point);
+			/*ROS_INFO_STREAM("Point: " << new_point << "\n");
+			gzlog << "Point: " << new_point << "\n";*/
 		}
+
+		memory_index += 4;
 	}
 	return pointcloud;
 }
 
-void ActivePerception::ProcessSensorData() {
+bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr _pointcloud, size_t _pubisher_index) {
+	if (_pointcloud && _pubisher_index < sampling_sensors_pointcloud_publishers_.size() &&
+			sampling_sensors_pointcloud_publishers_[_pubisher_index].getNumSubscribers() > 0) {
+		sensor_msgs::PointCloud2Ptr cloud_msg(new sensor_msgs::PointCloud2());
+		pcl::toROSMsg(*_pointcloud, *cloud_msg);
+		sampling_sensors_pointcloud_publishers_[_pubisher_index].publish(cloud_msg);
+		return true;
+	}
+	return false;
 }
 
-/*void ActivePerception::OnNewRGBPointCloud(const float *_pcd, unsigned int _width, unsigned int _height, unsigned int _depth, const std::string &_format) {
-	ROS_INFO_STREAM("Received PCD with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
-}*/
+void ActivePerception::ProcessSensorData() {
+}
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 // =============================================================================  </public-section>  ===========================================================================
 

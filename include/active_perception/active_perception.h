@@ -69,12 +69,18 @@ class ActivePerception : public WorldPlugin {
 		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
 		void OrientSensorsToObservationPoint();
 		void SetSensorsState(bool _active);
-		void RetrieveSensorData();
-		typename pcl::PointCloud<pcl::PointXYZ>::Ptr SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points);
-		void ProcessSensorData();
-		/*void OnNewRGBPointCloud(const float *_pcd,
+		void OnNewDepthFrame(const float *_image,
 				unsigned int _width, unsigned int _height,
-				unsigned int _depth, const std::string &_format);*/
+				unsigned int _depth, const std::string &_format, size_t _sensor_index);
+		void OnNewImageFrame(const unsigned char *_image,
+						unsigned int _width, unsigned int _height,
+						unsigned int _depth, const std::string &_format, size_t _sensor_index);
+		void OnNewRGBPointCloud(const float *_pcd,
+						unsigned int _width, unsigned int _height,
+						unsigned int _depth, const std::string &_format, size_t _sensor_index);
+		typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points);
+		bool PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr _pointcloud, size_t _pubisher_index);
+		void ProcessSensorData();
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <gets>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -91,6 +97,9 @@ class ActivePerception : public WorldPlugin {
 		sdf::ElementPtr sdf_;
 		std::vector<sensors::DepthCameraSensorPtr> sensors_;
 		std::vector<physics::ModelPtr> sensors_models_;
+		std::vector<event::ConnectionPtr> depth_image_connections_;
+		std::vector<event::ConnectionPtr> color_image_connections_;
+		std::vector<event::ConnectionPtr> color_pointcloud_connections_;
 
 		// ROS
 		boost::shared_ptr<ros::NodeHandle> rosnode_;
@@ -103,8 +112,10 @@ class ActivePerception : public WorldPlugin {
 		bool sensor_orientation_random_roll_;
 		float sensor_data_segmentation_color_rgb_;
 		std::string sampling_sensors_name_prefix_;
-		std::string topic_sampling_sensors_pointcloud_prefix_;
-		std::vector<typename pcl::PointCloud<pcl::PointXYZ>::Ptr> sampling_sensors_pointclouds_;
+		std::string topic_sampling_sensors_prefix_;
+		std::vector<typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr> sampling_sensors_pointclouds_;
+		std::vector<ros::Publisher> sampling_sensors_depth_image_publishers_;
+		std::vector<ros::Publisher> sampling_sensors_color_image_publishers_;
 		std::vector<ros::Publisher> sampling_sensors_pointcloud_publishers_;
 
 		geometry_msgs::PointStamped observation_point_;
