@@ -343,20 +343,15 @@ typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr ActivePerception::SegmentSensorD
 	typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud(new pcl::PointCloud<pcl::PointXYZRGB>());
 	size_t memory_index = 0;
 	for (size_t i = 0; i < _number_of_points; ++i) {
-		//if (_xyzrgb_data[memory_index + 3] == sensor_data_segmentation_color_rgb_) {
-			//pointcloud->push_back(pcl::transformPoint(pcl::PointXYZ(_xyzrgb_data[memory_index], _xyzrgb_data[memory_index + 1], _xyzrgb_data[memory_index + 2]), _transform_sensor_to_world));
 		uint8_t c0 = color_image->data[i * 3];
 		uint8_t c1 = color_image->data[i * 3 + 1];
 		uint8_t c2 = color_image->data[i * 3 + 2];
-
-		//if (c0 != 0 || c1 != 0 || c2 != 0) {
-			if (c0 == sensor_data_segmentation_color_b_ && c1 == sensor_data_segmentation_color_g_ && c2 == sensor_data_segmentation_color_r_) {
-				pcl::PointXYZRGB new_point(c2, c1, c0);
-				memcpy(&new_point.data[0], &_xyzrgb_data[memory_index], 3 * sizeof(float));
-				//new_point.rgba = _xyzrgb_data[memory_index + 3];
-				pointcloud->push_back(pcl::transformPoint(new_point, _transform_sensor_to_world));
-			}
-		//}
+		if (c0 == sensor_data_segmentation_color_b_ && c1 == sensor_data_segmentation_color_g_ && c2 == sensor_data_segmentation_color_r_) {
+			pcl::PointXYZRGB new_point(c2, c1, c0);
+			memcpy(&new_point.data[0], &_xyzrgb_data[memory_index], 3 * sizeof(float));
+			//new_point.rgba = _xyzrgb_data[memory_index + 3];
+			pointcloud->push_back(pcl::transformPoint(new_point, _transform_sensor_to_world));
+		}
 		memory_index += 4;
 	}
 	return pointcloud;
@@ -395,12 +390,10 @@ bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZR
 }
 
 void ActivePerception::WaitForSensorData() {
-	//SetSensorsState(true);
 	if (!sensors_.empty()) sensors_[0]->SetActive(true);
 	while (number_of_sampling_sensors_pointclouds_received_ < sampling_sensors_pointclouds_.size()) {
 		common::Time::Sleep(polling_sleep_time_);
 	}
-	//SetSensorsState(false);
 }
 
 void ActivePerception::ProcessSensorData() {
