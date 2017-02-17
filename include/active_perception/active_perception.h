@@ -35,9 +35,12 @@
 #include <ros/advertise_options.h>
 #include <ros/callback_queue.h>
 #include <ros/ros.h>
+#include <ros/time.h>
 #include <ros/rate.h>
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PointStamped.h>
+#include <sensor_msgs/Image.h>
+#include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/String.h>
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </includes>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -69,9 +72,6 @@ class ActivePerception : public WorldPlugin {
 		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
 		void OrientSensorsToObservationPoint();
 		void SetSensorsState(bool _active);
-		void OnNewDepthFrame(const float *_image,
-				unsigned int _width, unsigned int _height,
-				unsigned int _depth, const std::string &_format, size_t _sensor_index);
 		void OnNewImageFrame(const unsigned char *_image,
 						unsigned int _width, unsigned int _height,
 						unsigned int _depth, const std::string &_format, size_t _sensor_index);
@@ -97,7 +97,6 @@ class ActivePerception : public WorldPlugin {
 		sdf::ElementPtr sdf_;
 		std::vector<sensors::DepthCameraSensorPtr> sensors_;
 		std::vector<physics::ModelPtr> sensors_models_;
-		std::vector<event::ConnectionPtr> depth_image_connections_;
 		std::vector<event::ConnectionPtr> color_image_connections_;
 		std::vector<event::ConnectionPtr> color_pointcloud_connections_;
 
@@ -111,10 +110,10 @@ class ActivePerception : public WorldPlugin {
 		double elapsed_simulation_time_in_seconds_between_sensor_analysis_;
 		bool sensor_orientation_random_roll_;
 		float sensor_data_segmentation_color_rgb_;
-		std::string sampling_sensors_name_prefix_;
-		std::string topic_sampling_sensors_prefix_;
+		std::string sdf_sensors_name_prefix_;
+		std::string topics_sampling_sensors_prefix_;
+		std::string published_msgs_frame_id_suffix_;
 		std::vector<typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr> sampling_sensors_pointclouds_;
-		std::vector<ros::Publisher> sampling_sensors_depth_image_publishers_;
 		std::vector<ros::Publisher> sampling_sensors_color_image_publishers_;
 		std::vector<ros::Publisher> sampling_sensors_pointcloud_publishers_;
 
