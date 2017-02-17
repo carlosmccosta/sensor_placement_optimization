@@ -3,7 +3,7 @@
 	<world name="default">
 		<!-- <include> <uri>model://ground_plane</uri> </include> <include> <uri>model://sun</uri> </include> -->
 
-		<model name='box_green'>
+		<!-- <model name='box_red'>
 			<static>1</static>
 			<pose frame=''>-0.2 0 0 0 0 0</pose>
 			<link name='link'>
@@ -15,7 +15,7 @@
 					</geometry>
 					<material>
 						<script>
-							<name>ActivePerception/Green</name>
+							<name>ActivePerception/Red</name>
 							<uri>file://materials/active_perception.material</uri>
 						</script>
 					</material>
@@ -41,7 +41,7 @@
 					</material>
 				</visual>
 			</link>
-		</model>
+		</model> -->
 
 		<model name="starter_motor">
 			<static>1</static>
@@ -113,7 +113,10 @@
 			<box>
 				<size>2 1 2</size>
 			</box>
-			<!-- <cylinder> <radius>2</radius> <length>3</length> </cylinder> -->
+			<!-- <cylinder>
+				<radius>1</radius>
+				<length>2</length>
+			</cylinder> -->
 			<model_count>3</model_count>
 			<distribution>
 				<type>uniform</type> <!-- random / uniform / grid -->
@@ -155,6 +158,7 @@
 			<topicsSamplingSensorsPointcloudPrefix>sampling_point_cloud_</topicsSamplingSensorsPointcloudPrefix>
 			<publishedMsgsWorldFrameId>world</publishedMsgsWorldFrameId>
 			<publishedMsgsFrameIdSuffix>_frame</publishedMsgsFrameIdSuffix>
+			<publishMessagesOnlyWhenThereIsSubscribers>false</publishMessagesOnlyWhenThereIsSubscribers>
 			<topicObservationPoint>set_observation_point</topicObservationPoint>
 			<topicModelNames>set_model_names</topicModelNames>
 			<robotNamespace>active_perception</robotNamespace>

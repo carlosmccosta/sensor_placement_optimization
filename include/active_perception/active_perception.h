@@ -38,7 +38,6 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/PolygonMesh.h>
-#include <pcl/search/kdtree.h>
 #include <pcl_conversions/pcl_conversions.h>
 
 #include <ros/advertise_options.h>
@@ -47,10 +46,13 @@
 #include <ros/time.h>
 #include <ros/rate.h>
 #include <geometry_msgs/PoseArray.h>
+#include <geometry_msgs/Pose.h>
 #include <geometry_msgs/PointStamped.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <std_msgs/Float32.h>
+#include <std_msgs/Float32MultiArray.h>
 #include <std_msgs/String.h>
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </includes>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -80,6 +82,7 @@ class ActivePerception : public WorldPlugin {
 		void LoadSensors();
 		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
 		void OrientSensorsToObservationPoint();
+		void PublishSensorsPoses();
 		void LoadSceneModel();
 		void SetSensorsState(bool _active);
 		void OnNewImageFrame(const unsigned char *_image,
@@ -93,8 +96,10 @@ class ActivePerception : public WorldPlugin {
 		bool FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr &_pointcloud);
 		bool PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr &_pointcloud, size_t _pubisher_index);
 		void WaitForSensorData();
-		bool ProcessSensorData();
+		void ProcessSensorData();
+		size_t PublishAnalysisSurfaceCoverageAnalysis();
 		void PrepareNextAnalysis();
+		geometry_msgs::Pose MathPoseToRosPose(math::Pose _math_pose);
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
@@ -168,6 +173,7 @@ class ActivePerception : public WorldPlugin {
 		size_t number_of_sampling_sensors_pointclouds_received_;
 		std::vector<ros::Publisher> sampling_sensors_color_image_publishers_;
 		std::vector<ros::Publisher> sampling_sensors_pointcloud_publishers_;
+		bool publish_messages_only_when_there_is_subscribers_;
 
 		geometry_msgs::PointStamped observation_point_;
 		ros::Subscriber observation_point_subscriber_;
@@ -178,9 +184,17 @@ class ActivePerception : public WorldPlugin {
 		ros::Subscriber scene_model_path_subscriber_;
 		boost::mutex scene_model_path_mutex_;
 		bool new_scene_model_path_available_;
-		typename pcl::PointCloud<pcl::PointXYZ>::Ptr scene_model_;
 		ros::Publisher scene_model_publisher_;
+		typename pcl::PointCloud<pcl::PointXYZ>::Ptr scene_model_;
 		double voxel_grid_filter_leaf_size_;
+
+		// analysis
+		ros::Publisher sensors_poses_publisher_;
+		ros::Publisher sensors_names_publisher_;
+		ros::Publisher sensors_voxel_grid_surface_coverage_publisher_;
+		ros::Publisher sensors_best_poses_publisher_;
+		ros::Publisher sensors_best_voxel_grid_surface_coverages_publisher_;
+		ros::Publisher sensors_best_names_publisher_;
 
 		// Processing threads
 		boost::thread processing_thread_;

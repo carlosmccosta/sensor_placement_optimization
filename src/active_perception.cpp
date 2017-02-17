@@ -22,7 +22,8 @@ ActivePerception::ActivePerception() :
 		sensor_orientation_random_roll_(true),
 		sensor_data_segmentation_color_rgb_(0xff00),
 		number_of_sampling_sensors_pointclouds_received_(0),
-		new_observation_point_available_(true),
+		publish_messages_only_when_there_is_subscribers_(true),
+		new_observation_point_available_(false),
 		new_scene_model_path_available_(false),
 		voxel_grid_filter_leaf_size_(0.007) {
 }
@@ -79,6 +80,8 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	published_msgs_frame_id_suffix_ = "_frame";
 	if (sdf_->HasElement("publishedMsgsFrameIdSuffix")) published_msgs_frame_id_suffix_ = sdf_->GetElement("publishedMsgsFrameIdSuffix")->Get<std::string>();
 
+	if (sdf_->HasElement("publishMessagesOnlyWhenThereIsSubscribers")) publish_messages_only_when_there_is_subscribers_ = sdf_->GetElement("publishMessagesOnlyWhenThereIsSubscribers")->Get<bool>();
+
 	// ros topics
 	std::string topic_observation_point = "set_observation_point";
 	if (sdf_->HasElement("topicObservationPoint")) topic_observation_point = sdf_->GetElement("topicObservationPoint")->Get<std::string>();
@@ -100,7 +103,13 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 
 	observation_point_subscriber_ = rosnode_->subscribe(topic_observation_point, 1, &ActivePerception::ProcessNewObservationPoint, this);
 	scene_model_path_subscriber_ = rosnode_->subscribe(topic_model_names, 1, &ActivePerception::ProcessNewSceneModelPath, this);
-	scene_model_publisher_ = rosnode_->advertise<sensor_msgs::PointCloud2>(topics_sampling_sensors_prefix_ + "_scene_model", 1, true);
+	scene_model_publisher_ = rosnode_->advertise<sensor_msgs::PointCloud2>("scene_model", 1, true);
+	sensors_poses_publisher_ = rosnode_->advertise<geometry_msgs::PoseArray>("sensor_poses", 1, true);
+	sensors_names_publisher_ = rosnode_->advertise<std_msgs::String>("sensor_names", 1, true);
+	sensors_voxel_grid_surface_coverage_publisher_ = rosnode_->advertise<std_msgs::Float32MultiArray>("sensors_surface_coverage_percentage", 1, true);
+	sensors_best_poses_publisher_ = rosnode_->advertise<geometry_msgs::PoseArray>("best_sensor_poses", 1, true);
+	sensors_best_voxel_grid_surface_coverages_publisher_ = rosnode_->advertise<std_msgs::Float32MultiArray>("best_sensors_surface_coverage_percentage", 1, true);
+	sensors_best_names_publisher_ = rosnode_->advertise<std_msgs::String>("best_sensor_names", 1, true);
 }
 
 void ActivePerception::Init() {
@@ -131,8 +140,9 @@ void ActivePerception::ProcessNewSceneModelPath(const std_msgs::StringConstPtr& 
 
 void ActivePerception::ProcessingThread() {
 	LoadSensors();
+	OrientSensorsToObservationPoint();
+	PublishSensorsPoses();
 	LoadSceneModel();
-	SetSensorsState(true);
 	world_->SetPaused(false);
 
 	ROS_INFO_STREAM("ActivePerception has started with " << sensors_.size() << " sampling sensors for finding the optimal placement for " << number_of_intended_sensors_ << (number_of_intended_sensors_ == 1 ? " sensor" : " sensors"));
@@ -142,6 +152,7 @@ void ActivePerception::ProcessingThread() {
 		observation_point_mutex_.lock();
 		if (new_observation_point_available_) {
 			OrientSensorsToObservationPoint();
+			PublishSensorsPoses();
 			new_observation_point_available_ = false;
 			sensor_analysis_required = true;
 		}
@@ -150,8 +161,10 @@ void ActivePerception::ProcessingThread() {
 		if (sensor_analysis_required) {
 			ROS_INFO_STREAM("Performing sensor analysis number " << number_of_sensor_analysis_performed_);
 			WaitForSensorData();
-			if (ProcessSensorData()) ++number_of_sensor_analysis_performed_;
+			ProcessSensorData();
 			PrepareNextAnalysis();
+			++number_of_sensor_analysis_performed_;
+			sensor_analysis_required = false;
 		}
 	}
 }
@@ -166,6 +179,7 @@ void ActivePerception::LoadSensors() {
 	number_of_sampling_sensors_pointclouds_received_ = 0;
 	sampling_sensors_color_image_publishers_.clear();
 	sampling_sensors_pointcloud_publishers_.clear();
+	std::stringstream sensor_names;
 
 	sensors::Sensor_V sensors = sensors::SensorManager::Instance()->GetSensors();
 	size_t sampling_sensors_count = CountNumberOfSamplingSensors(sensors, sdf_sensors_name_prefix_);
@@ -186,6 +200,8 @@ void ActivePerception::LoadSensors() {
 				if (!sensor_parent_name.empty()) {
 					physics::ModelPtr sensor_model = world_->ModelByName(sensor_parent_name);
 					if (sensor_model && sensor_depth) {
+						if (!sensors_.empty()) sensor_names << "|";
+						sensor_names << sensor_parent_name;
 						sensors_.push_back(sensor_depth);
 						sensors_models_.push_back(sensor_model);
 						color_image_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewImageFrame(std::bind(&ActivePerception::OnNewImageFrame,
@@ -201,6 +217,10 @@ void ActivePerception::LoadSensors() {
 			}
 		}
 	}
+
+	std_msgs::String sensor_names_msg;
+	sensor_names_msg.data = sensor_names.str();
+	sensors_names_publisher_.publish(sensor_names_msg);
 }
 
 size_t ActivePerception::CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix) {
@@ -233,6 +253,16 @@ void ActivePerception::OrientSensorsToObservationPoint() {
 	}
 }
 
+void ActivePerception::PublishSensorsPoses() {
+	geometry_msgs::PoseArray sensor_poses;
+	sensor_poses.header.frame_id = published_msgs_world_frame_id_;
+	sensor_poses.header.stamp.fromSec(world_->SimTime().Double());
+	for (size_t i = 0; i < sensors_models_.size(); ++i) {
+		sensor_poses.poses.push_back(MathPoseToRosPose(sensors_models_[i]->GetWorldPose()));
+	}
+	sensors_poses_publisher_.publish(sensor_poses);
+}
+
 void ActivePerception::LoadSceneModel() {
 	scene_model_path_mutex_.lock();
 	if (new_scene_model_path_available_ && !scene_model_path_.empty()) {
@@ -259,7 +289,7 @@ void ActivePerception::SetSensorsState(bool _active) {
 
 void ActivePerception::OnNewImageFrame(const unsigned char* _image, unsigned int _width, unsigned int _height, unsigned int _depth, const std::string& _format, size_t _sensor_index) {
 	ROS_INFO_STREAM("Received color image from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
-	if (_sensor_index < sampling_sensors_color_image_publishers_.size() && sampling_sensors_color_image_publishers_[_sensor_index].getNumSubscribers() > 0) {
+	if (_sensor_index < sampling_sensors_color_image_publishers_.size() && (!publish_messages_only_when_there_is_subscribers_ || sampling_sensors_color_image_publishers_[_sensor_index].getNumSubscribers() > 0)) {
 		sensor_msgs::Image image_msg;
 		image_msg.header.stamp.fromSec(world_->SimTime().Double());
 		image_msg.header.frame_id = sensors_[_sensor_index]->ParentName() + published_msgs_frame_id_suffix_;
@@ -329,7 +359,7 @@ bool ActivePerception::FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZ>:
 
 bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZ>::Ptr &_pointcloud, size_t _pubisher_index) {
 	if (_pointcloud && _pubisher_index < sampling_sensors_pointcloud_publishers_.size() &&
-			sampling_sensors_pointcloud_publishers_[_pubisher_index].getNumSubscribers() > 0) {
+			(!publish_messages_only_when_there_is_subscribers_ || sampling_sensors_pointcloud_publishers_[_pubisher_index].getNumSubscribers() > 0)) {
 		sensor_msgs::PointCloud2Ptr cloud_msg(new sensor_msgs::PointCloud2());
 		pcl::toROSMsg(*_pointcloud, *cloud_msg);
 		sampling_sensors_pointcloud_publishers_[_pubisher_index].publish(cloud_msg);
@@ -339,24 +369,75 @@ bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZ>
 }
 
 void ActivePerception::WaitForSensorData() {
+	SetSensorsState(true);
 	while (number_of_sampling_sensors_pointclouds_received_ < sampling_sensors_pointclouds_.size()) {
 		common::Time::Sleep(polling_sleep_time_);
 	}
+	SetSensorsState(false);
 }
 
-bool ActivePerception::ProcessSensorData() {
+void ActivePerception::ProcessSensorData() {
 	while (!scene_model_) {
 		ROS_WARN("Waiting for scene model");
 		common::Time::Sleep(polling_sleep_time_);
 	}
 
-	return false;
+	geometry_msgs::PoseArray best_sensors_poses;
+	best_sensors_poses.header.frame_id = published_msgs_world_frame_id_;
+	best_sensors_poses.header.stamp.fromSec(world_->SimTime().Double());
+	std_msgs::Float32MultiArray sensors_best_voxel_grid_surface_coverages_msg;
+	std::stringstream best_sensor_names;
+
+	size_t best_sensor_coverage_index = PublishAnalysisSurfaceCoverageAnalysis();
+	if (number_of_intended_sensors_ == 1) {
+		double best_coverage = ((double)sampling_sensors_pointclouds_[best_sensor_coverage_index]->size() / (double)scene_model_->size()) * 100.0;
+		best_sensors_poses.poses.push_back(MathPoseToRosPose(sensors_models_[best_sensor_coverage_index]->GetWorldPose()));
+		sensors_best_voxel_grid_surface_coverages_msg.data.push_back(best_coverage);
+		best_sensor_names << sensors_models_[best_sensor_coverage_index]->GetName();
+	} else {
+
+	}
+
+	sensors_best_poses_publisher_.publish(best_sensors_poses);
+	sensors_best_voxel_grid_surface_coverages_publisher_.publish(sensors_best_voxel_grid_surface_coverages_msg);
+	std_msgs::String best_sensor_names_msg;
+	best_sensor_names_msg.data = best_sensor_names.str();
+	sensors_best_names_publisher_.publish(best_sensor_names_msg);
+}
+
+size_t ActivePerception::PublishAnalysisSurfaceCoverageAnalysis() {
+	size_t best_coverage_sensor_index = 0;
+	double best_coverage_percentage = 0;
+	std_msgs::Float32MultiArray sensors_coverage;
+
+	for (size_t i = 0; i < sampling_sensors_pointclouds_.size(); ++i) {
+		double sensor_coverage = ((double)sampling_sensors_pointclouds_[i]->size() / (double)scene_model_->size()) * 100.0;
+		sensors_coverage.data.push_back(sensor_coverage);
+		if (sensor_coverage > best_coverage_percentage) {
+			best_coverage_percentage = sensor_coverage;
+			best_coverage_sensor_index = i;
+		}
+	}
+	sensors_voxel_grid_surface_coverage_publisher_.publish(sensors_coverage);
+	return best_coverage_sensor_index;
 }
 
 void ActivePerception::PrepareNextAnalysis() {
 	number_of_sampling_sensors_pointclouds_received_ = 0;
 	sampling_sensors_pointclouds_.clear();
 	sampling_sensors_pointclouds_.resize(number_of_sampling_sensors_);
+}
+
+geometry_msgs::Pose ActivePerception::MathPoseToRosPose(math::Pose _math_pose) {
+	geometry_msgs::Pose ros_pose;
+	ros_pose.position.x = _math_pose.pos.x;
+	ros_pose.position.y = _math_pose.pos.y;
+	ros_pose.position.z = _math_pose.pos.z;
+	ros_pose.orientation.x = _math_pose.rot.x;
+	ros_pose.orientation.y = _math_pose.rot.y;
+	ros_pose.orientation.z = _math_pose.rot.z;
+	ros_pose.orientation.w = _math_pose.rot.w;
+	return ros_pose;
 }
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 // =============================================================================  </public-section>  ===========================================================================
@@ -365,3 +446,4 @@ void ActivePerception::PrepareNextAnalysis() {
 // =============================================================================   </protected-section>  =======================================================================
 
 } /* namespace gazebo */
+
