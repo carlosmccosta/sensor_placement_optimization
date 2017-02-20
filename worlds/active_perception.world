@@ -153,9 +153,9 @@
 					<sensor name="active_perception_depth_1_sensor" type="depth">
 						<update_rate>0.1</update_rate>
 						<camera>
-							<depth_camera>
+							<!-- <depth_camera>
 								<output>points</output>
-							</depth_camera>
+							</depth_camera> -->
 							<horizontal_fov>1.047198</horizontal_fov>
 							<image>
 								<width>320</width>
@@ -178,7 +178,7 @@
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>24</model_count>
+			<model_count>25</model_count>
 			<distribution>
 				<type>random</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
@@ -212,9 +212,9 @@
 					<sensor name="active_perception_depth_2_sensor" type="depth">
 						<update_rate>0.1</update_rate>
 						<camera>
-							<depth_camera>
+							<!-- <depth_camera>
 								<output>points</output>
-							</depth_camera>
+							</depth_camera> -->
 							<horizontal_fov>1.047198</horizontal_fov>
 							<image>
 								<width>640</width>
@@ -237,7 +237,7 @@
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>4</model_count>
+			<model_count>15</model_count>
 			<distribution>
 				<type>random</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
@@ -271,9 +271,9 @@
 					<sensor name="active_perception_depth_3_sensor" type="depth">
 						<update_rate>0.1</update_rate>
 						<camera>
-							<depth_camera>
+							<!-- <depth_camera>
 								<output>points</output>
-							</depth_camera>
+							</depth_camera> -->
 							<horizontal_fov>1.047198</horizontal_fov>
 							<image>
 								<width>720</width>
@@ -296,7 +296,7 @@
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>2</model_count>
+			<model_count>10</model_count>
 			<distribution>
 				<type>random</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
@@ -330,11 +330,11 @@
 		</scene>
 
 		<plugin name="active_perception" filename="libactive_perception.so">
-			<numberOfSamplingSensors>30</numberOfSamplingSensors>
-			<numberOfIntendedSensors>1</numberOfIntendedSensors>
+			<numberOfSamplingSensors>50</numberOfSamplingSensors>
+			<numberOfIntendedSensors>10</numberOfIntendedSensors>
 			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
 			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
-			<sensorsSequentialSceneRendering>true</sensorsSequentialSceneRendering>
+			<sensorsSequentialSceneRendering>false</sensorsSequentialSceneRendering>
 			<elapsedSimulationTimeInSecondsBetweenSensorAnalysis>3.0</elapsedSimulationTimeInSecondsBetweenSensorAnalysis>
 			<pollingSleepTime>0.2</pollingSleepTime>
 			<sensorOrientationRandomRoll>false</sensorOrientationRandomRoll>

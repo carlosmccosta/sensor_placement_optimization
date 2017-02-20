@@ -10,6 +10,7 @@
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  <includes>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 #include <algorithm>
 #include <cstdint>
+#include <cmath>
 #include <memory>
 #include <string>
 #include <vector>
@@ -88,11 +89,13 @@ class ActivePerception : public WorldPlugin {
 		void OnNewImageFrame(const unsigned char *_image,
 						unsigned int _width, unsigned int _height,
 						unsigned int _depth, const std::string &_format, size_t _sensor_index);
-		void OnNewRGBPointCloud(const float *_pcd,
+		void OnNewPointCloud(const float *_pcd,
 						unsigned int _width, unsigned int _height,
 						unsigned int _depth, const std::string &_format, size_t _sensor_index);
-		typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points, Eigen::Affine3f &_transform_sensor_to_world, size_t _sensor_index);
+		typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr SegmentSensorDataFromDepthSensor(const float* _data, const std::string &_format, unsigned int _width, unsigned int _height, Eigen::Affine3f &_transform_sensor_to_world, size_t _sensor_index);
 		bool GetSensorTransformToWorld(size_t _sensor_index, Eigen::Affine3f &_transform);
+		bool IsPointWithinValidRange(const sensors::DepthCameraSensorPtr& _depth_camera, float _point);
+		void GetSensorIntrinsics(const sensors::DepthCameraSensorPtr& _depth_camera, float &_fx_inverse, float &_fy_inverse, float &_cx, float &_cy);
 		bool FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr &_pointcloud);
 		bool PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr &_pointcloud, size_t _pubisher_index);
 		void WaitForSensorData();
@@ -156,6 +159,7 @@ class ActivePerception : public WorldPlugin {
 		std::vector<sensors::DepthCameraSensorPtr> sensors_;
 		std::vector<physics::ModelPtr> sensors_models_;
 		std::vector<event::ConnectionPtr> color_image_connections_;
+		std::vector<event::ConnectionPtr> depth_image_connections_;
 		std::vector<event::ConnectionPtr> color_pointcloud_connections_;
 
 		// ROS

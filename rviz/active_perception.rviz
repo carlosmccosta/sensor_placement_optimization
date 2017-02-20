@@ -45,6 +45,12 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        op:
+          Value: true
+        op1:
+          Value: true
+        op2:
+          Value: true
       Marker Scale: 0.200000003
       Name: TF
       Show Arrows: true
@@ -159,14 +165,14 @@ Visualization Manager:
           Size (Pixels): 3
           Size (m): 0.00100000005
           Style: Spheres
-          Topic: /active_perception/sampling_point_cloud_depth_sensor_77_pointcloud
+          Topic: /active_perception/sampling_point_cloud_depth_sensor_1_clone_0_pointcloud
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
           Value: true
         - Class: rviz/Image
           Enabled: true
-          Image Topic: /active_perception/sampling_point_cloud_depth_sensor_77_color_image
+          Image Topic: /active_perception/sampling_point_cloud_depth_sensor_1_clone_0_color_image
           Max Value: 1
           Median window: 5
           Min Value: 0
@@ -234,24 +240,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.64456201
+      Distance: 0.80257231
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.0360394828
-        Y: 0.190878525
-        Z: 0.209850371
+        X: 0.0533005707
+        Y: 0.108878247
+        Z: 0.0775004402
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.529796958
+      Pitch: 0.914796293
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.83819938
+      Yaw: 2.28871059
     Saved: ~
 Window Geometry:
   Displays:

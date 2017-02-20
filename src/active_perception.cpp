@@ -217,7 +217,10 @@ void ActivePerception::LoadSensors() {
 						color_image_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewImageFrame(std::bind(&ActivePerception::OnNewImageFrame,
 														this, std::placeholders::_1, std::placeholders::_2,
 														std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
-						color_pointcloud_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewRGBPointCloud(std::bind(&ActivePerception::OnNewRGBPointCloud,
+						depth_image_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewDepthFrame(std::bind(&ActivePerception::OnNewPointCloud,
+														this, std::placeholders::_1, std::placeholders::_2,
+														std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
+						color_pointcloud_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewRGBPointCloud(std::bind(&ActivePerception::OnNewPointCloud,
 								this, std::placeholders::_1, std::placeholders::_2,
 								std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
 						sampling_sensors_color_image_publishers_.push_back(rosnode_->advertise<sensor_msgs::Image>(topics_sampling_sensors_prefix_ + sensor_parent_name + "_color_image", 1, true));
@@ -318,14 +321,14 @@ void ActivePerception::OnNewImageFrame(const unsigned char* _image, unsigned int
 	}
 }
 
-void ActivePerception::OnNewRGBPointCloud(const float *_pcd,
+void ActivePerception::OnNewPointCloud(const float *_pcd,
 				unsigned int _width, unsigned int _height,
 				unsigned int _depth, const std::string &_format, size_t _sensor_index) {
 	if (_sensor_index < sensors_.size() && _sensor_index < sampling_sensors_pointclouds_.size() && !sampling_sensors_pointclouds_[_sensor_index]) {
 		if (!sampling_sensors_images_[_sensor_index]) return;
 		Eigen::Affine3f transform_sensor_to_world;
 		if (GetSensorTransformToWorld(_sensor_index, transform_sensor_to_world)) {
-			typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud = SegmentSensorDataFromDepthSensor(_pcd, _width * _height, transform_sensor_to_world, _sensor_index);
+			typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud = SegmentSensorDataFromDepthSensor(_pcd, _format, _width, _height, transform_sensor_to_world, _sensor_index);
 			FilterPointCloud(pointcloud);
 			pointcloud->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
 			pointcloud->header.frame_id = published_msgs_world_frame_id_;
@@ -344,24 +347,47 @@ void ActivePerception::OnNewRGBPointCloud(const float *_pcd,
 	}
 }
 
-typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr ActivePerception::SegmentSensorDataFromDepthSensor(const float* _xyzrgb_data, size_t _number_of_points, Eigen::Affine3f &_transform_sensor_to_world, size_t _sensor_index) {
+typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr ActivePerception::SegmentSensorDataFromDepthSensor(const float* _data, const std::string &_format, unsigned int _width, unsigned int _height, Eigen::Affine3f &_transform_sensor_to_world, size_t _sensor_index) {
 	sensor_msgs::Image::Ptr color_image = sampling_sensors_images_[_sensor_index];
+	bool depth_image = _format == "FLOAT32";
 	typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud(new pcl::PointCloud<pcl::PointXYZRGB>());
 	size_t memory_index = 0;
-	for (size_t i = 0; i < _number_of_points; ++i) {
-		uint8_t c0 = color_image->data[i * 3];
-		uint8_t c1 = color_image->data[i * 3 + 1];
-		uint8_t c2 = color_image->data[i * 3 + 2];
-		//float x = _xyzrgb_data[memory_index];
-		//float y = _xyzrgb_data[memory_index + 1];
-		//float z = _xyzrgb_data[memory_index + 2];
-		//ROS_DEBUG_STREAM("[x: " << x << " | y: " << y << " | z: " << z << "]");
-		if (c0 == sensor_data_segmentation_color_b_ && c1 == sensor_data_segmentation_color_g_ && c2 == sensor_data_segmentation_color_r_) {
-			pcl::PointXYZRGB new_point(c2, c1, c0);
-			memcpy(&new_point.data[0], &_xyzrgb_data[memory_index], 3 * sizeof(float));
-			pointcloud->push_back(pcl::transformPoint(new_point, _transform_sensor_to_world));
+	size_t color_point_index_ = 0;
+	size_t current_point_index_ = 0;
+	float fx_inverse, fy_inverse, cx, cy;
+	if (depth_image) {
+		GetSensorIntrinsics(sensors_[_sensor_index], fx_inverse, fy_inverse, cx, cy);
+		Eigen::Quaternion<float> rotation_optical_to_camera_frame(0.5, -0.5, 0.5, -0.5);
+		_transform_sensor_to_world = _transform_sensor_to_world * rotation_optical_to_camera_frame;
+	} else {
+		Eigen::Quaternion<float> rotation_optical_to_camera_frame(0.5, 0.5, -0.5, -0.5);
+		_transform_sensor_to_world = _transform_sensor_to_world * rotation_optical_to_camera_frame;
+	}
+
+	for (size_t row = 0; row < _height; ++row) {
+		for (size_t column = 0; column < _width; ++column) {
+			uint8_t c_blue = color_image->data[color_point_index_++];
+			uint8_t c_green = color_image->data[color_point_index_++];
+			uint8_t c_red = color_image->data[color_point_index_++];
+			if (c_blue == sensor_data_segmentation_color_b_ && c_green == sensor_data_segmentation_color_g_ && c_red == sensor_data_segmentation_color_r_) {
+				pcl::PointXYZRGB new_point(c_red, c_green, c_blue);
+				if (depth_image) {
+					if (IsPointWithinValidRange(sensors_[_sensor_index], std::abs(_data[current_point_index_]))) {
+						new_point.z = _data[current_point_index_];
+						new_point.x = (static_cast<float>(column) - cx) * new_point.z * fx_inverse;
+						new_point.y = (static_cast<float>(row) - cy) * new_point.z * fy_inverse;
+						pointcloud->push_back(pcl::transformPoint(new_point, _transform_sensor_to_world));
+					}
+				} else {
+					if (IsPointWithinValidRange(sensors_[_sensor_index], std::abs(_data[memory_index + 2]))) {
+						memcpy(&new_point.data[0], &_data[memory_index], 3 * sizeof(float));
+						pointcloud->push_back(pcl::transformPoint(new_point, _transform_sensor_to_world));
+					}
+				}
+			}
+			++current_point_index_;
+			memory_index += 4;
 		}
-		memory_index += 4;
 	}
 	return pointcloud;
 }
@@ -370,11 +396,22 @@ bool ActivePerception::GetSensorTransformToWorld(size_t _sensor_index, Eigen::Af
 	if (_sensor_index < sensors_models_.size()) {
 		math::Pose pose = sensors_models_[_sensor_index]->GetWorldPose();
 		_transform_sensor_to_world = PoseToTransform<float>(pose);
-		Eigen::Quaternion<float> rotation_ros(0.5, 0.5, -0.5, -0.5);
-		_transform_sensor_to_world = _transform_sensor_to_world * rotation_ros;
 		return true;
 	}
 	return false;
+}
+
+bool ActivePerception::IsPointWithinValidRange(const sensors::DepthCameraSensorPtr& _depth_camera, float _point) {
+	if (_point >= _depth_camera->DepthCamera()->NearClip() && _point <= _depth_camera->DepthCamera()->FarClip()) return true;
+	return false;
+}
+
+void ActivePerception::GetSensorIntrinsics(const sensors::DepthCameraSensorPtr& _depth_camera, float &_fx_inverse, float &_fy_inverse, float &_cx, float &_cy) {
+	_fx_inverse = 1.0 / (_depth_camera->DepthCamera()->ImageWidth() / (2 * std::tan(_depth_camera->DepthCamera()->HFOV().Radian() / 2.0)));
+	_fy_inverse = 1.0 / (_depth_camera->DepthCamera()->ImageHeight() / (2 * std::tan(_depth_camera->DepthCamera()->VFOV().Radian() / 2.0)));
+	_cx = _depth_camera->DepthCamera()->ImageWidth() / 2.0;
+	_cy = _depth_camera->DepthCamera()->ImageHeight() / 2.0;
+
 }
 
 bool ActivePerception::FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr &_pointcloud) {
