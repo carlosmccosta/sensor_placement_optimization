@@ -84,6 +84,49 @@
 			</link>
 		</model>
 
+		<!-- <model name="depth_sensor_77">
+			<static>1</static>
+			<pose>0 0 0.3 0 1.5707 0</pose>
+			<link name="link">
+				<inertial>
+					<mass>0.2</mass>
+				</inertial>
+				<collision name="collision">
+					<geometry>
+						<box>
+							<size>0.073000 0.276000 0.072000</size>
+						</box>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<transparency>0</transparency>
+					<geometry>
+						<mesh>
+							<uri>model://kinect1/meshes/kinect.dae</uri>
+						</mesh>
+					</geometry>
+				</visual>
+				<sensor name="active_perception_depth_1_sensor" type="depth">
+					<update_rate>0.1</update_rate>
+					<camera>
+						<depth_camera>
+							<output>points</output>
+						</depth_camera>
+						<horizontal_fov>1.047198</horizontal_fov>
+						<image>
+							<width>320</width>
+							<height>240</height>
+							<format>B8G8R8</format>
+						</image>
+						<clip>
+							<near>0.05</near>
+							<far>3</far>
+						</clip>
+					</camera>
+				</sensor>
+			</link>
+		</model> -->
+
 		<population name="sensors_population_1">
 			<model name="depth_sensor_1">
 				<static>1</static>
@@ -121,7 +164,7 @@
 							</image>
 							<clip>
 								<near>0.05</near>
-								<far>3</far>
+								<far>4</far>
 							</clip>
 						</camera>
 					</sensor>
@@ -135,9 +178,9 @@
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>30</model_count>
+			<model_count>24</model_count>
 			<distribution>
-				<type>uniform</type> <!-- random / uniform / grid -->
+				<type>random</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
 			</distribution>
 		</population>
@@ -180,7 +223,7 @@
 							</image>
 							<clip>
 								<near>0.05</near>
-								<far>3</far>
+								<far>4</far>
 							</clip>
 						</camera>
 					</sensor>
@@ -194,9 +237,9 @@
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>12</model_count>
+			<model_count>4</model_count>
 			<distribution>
-				<type>uniform</type> <!-- random / uniform / grid -->
+				<type>random</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
 			</distribution>
 		</population>
@@ -239,7 +282,7 @@
 							</image>
 							<clip>
 								<near>0.05</near>
-								<far>3</far>
+								<far>4</far>
 							</clip>
 						</camera>
 					</sensor>
@@ -253,9 +296,9 @@
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>8</model_count>
+			<model_count>2</model_count>
 			<distribution>
-				<type>uniform</type> <!-- random / uniform / grid -->
+				<type>random</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
 			</distribution>
 		</population>
@@ -280,17 +323,18 @@
 			</ode>
 		</physics>
 
-		<!-- <scene>
+		<scene>
 			<ambient>0 0 0 0</ambient>
 			<background>0 0 0 0</background>
 			<shadows>0</shadows>
-		</scene> -->
+		</scene>
 
 		<plugin name="active_perception" filename="libactive_perception.so">
-			<numberOfSamplingSensors>50</numberOfSamplingSensors>
-			<numberOfIntendedSensors>10</numberOfIntendedSensors>
-			<ransacNumberOfIterations>100</ransacNumberOfIterations>
+			<numberOfSamplingSensors>30</numberOfSamplingSensors>
+			<numberOfIntendedSensors>1</numberOfIntendedSensors>
+			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
 			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
+			<sensorsSequentialSceneRendering>true</sensorsSequentialSceneRendering>
 			<elapsedSimulationTimeInSecondsBetweenSensorAnalysis>3.0</elapsedSimulationTimeInSecondsBetweenSensorAnalysis>
 			<pollingSleepTime>0.2</pollingSleepTime>
 			<sensorOrientationRandomRoll>false</sensorOrientationRandomRoll>

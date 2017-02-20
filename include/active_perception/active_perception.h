@@ -141,6 +141,10 @@ class ActivePerception : public WorldPlugin {
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </gets>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <sets>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		void ResetNumberOfSamplingSensorsPointcloudsReceived();
+		void SetNumberOfSamplingSensorsPointcloudsReceived(size_t value);
+		void IncrementNumberOfSamplingSensorsPointcloudsReceived();
+		size_t GetNumberOfSamplingSensorsPointcloudsReceived();
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </sets>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	// ========================================================================   </public-section>  ===========================================================================
 
@@ -163,7 +167,7 @@ class ActivePerception : public WorldPlugin {
 		size_t number_of_intended_sensors_;
 		size_t ransac_number_of_iterations_;
 		double ransac_surface_percentage_stop_threshold_;
-		double elapsed_simulation_time_in_seconds_between_sensor_analysis_;
+		bool sensors_sequential_scene_rendering_;
 		common::Time polling_sleep_time_;
 		size_t number_of_sensor_analysis_performed_;
 		bool sensor_orientation_random_roll_;
@@ -178,6 +182,7 @@ class ActivePerception : public WorldPlugin {
 		std::vector<typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr> sampling_sensors_pointclouds_;
 		std::vector<sensor_msgs::Image::Ptr> sampling_sensors_images_;
 		size_t number_of_sampling_sensors_pointclouds_received_;
+		boost::mutex number_of_sampling_sensors_pointclouds_received_mutex_;
 		std::vector<ros::Publisher> sampling_sensors_color_image_publishers_;
 		std::vector<ros::Publisher> sampling_sensors_pointcloud_publishers_;
 		bool publish_messages_only_when_there_is_subscribers_;

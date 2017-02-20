@@ -6,8 +6,9 @@ Panels:
       Expanded:
         - /Global Options1
         - /TF1/Frames1
+        - /Kinect 11
+        - /Kinect 11/PointCloud21
         - /Kinect 11/Image1
-        - /PoseArray sensor poses1
       Splitter Ratio: 0.620947659
     Tree Height: 539
   - Class: rviz/Selection
@@ -44,19 +45,13 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        gazebo_world:
-          Value: true
-        world:
-          Value: true
       Marker Scale: 0.200000003
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        world:
-          gazebo_world:
-            {}
+        {}
       Update Interval: 0
       Value: true
     - Alpha: 0.5
@@ -162,16 +157,16 @@ Visualization Manager:
           Queue Size: 1
           Selectable: false
           Size (Pixels): 3
-          Size (m): 0.00400000019
+          Size (m): 0.00100000005
           Style: Spheres
-          Topic: /active_perception/sampling_point_cloud_depth_sensor_1_clone_0_pointcloud
+          Topic: /active_perception/sampling_point_cloud_depth_sensor_77_pointcloud
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
           Value: true
         - Class: rviz/Image
           Enabled: true
-          Image Topic: /active_perception/sampling_point_cloud_depth_sensor_1_clone_5_color_image
+          Image Topic: /active_perception/sampling_point_cloud_depth_sensor_77_color_image
           Max Value: 1
           Median window: 5
           Min Value: 0
@@ -201,8 +196,8 @@ Visualization Manager:
       Value: true
     - Alpha: 1
       Arrow Length: 0.300000012
-      Axes Length: 0.100000001
-      Axes Radius: 0.00999999978
+      Axes Length: 0.0299999993
+      Axes Radius: 0.00499999989
       Class: rviz/PoseArray
       Color: 255; 25; 0
       Enabled: true
@@ -239,24 +234,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.93211102
+      Distance: 1.64456201
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.163706183
-        Y: -0.264031261
-        Z: 0.696411908
+        X: -0.0360394828
+        Y: 0.190878525
+        Z: 0.209850371
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.849796474
+      Pitch: 0.529796958
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.53818846
+      Yaw: 2.83819938
     Saved: ~
 Window Geometry:
   Displays:
