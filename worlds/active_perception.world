@@ -1,48 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.4">
 	<world name="default">
-		<!-- <include> <uri>model://ground_plane</uri> </include> <include> <uri>model://sun</uri> </include> -->
-
-		<!-- <model name='box_red'>
-			<static>1</static>
-			<pose frame=''>-0.2 0 0 0 0 0</pose>
-			<link name='link'>
-				<visual name='visual'>
-					<geometry>
-						<box>
-							<size>0.1 0.2 0.3</size>
-						</box>
-					</geometry>
-					<material>
-						<script>
-							<name>ActivePerception/Red</name>
-							<uri>file://materials/active_perception.material</uri>
-						</script>
-					</material>
-				</visual>
-			</link>
-		</model>
-
-		<model name='box_blue'>
-			<static>1</static>
-			<pose frame=''>0 0 0 0 0 0</pose>
-			<link name='link'>
-				<visual name='visual'>
-					<geometry>
-						<box>
-							<size>0.2 0.1 0.3</size>
-						</box>
-					</geometry>
-					<material>
-						<script>
-							<name>ActivePerception/Blue</name>
-							<uri>file://materials/active_perception.material</uri>
-						</script>
-					</material>
-				</visual>
-			</link>
-		</model> -->
-
 		<include>
 			<static>1</static>
 			<pose>0.105 0.688 -0.0366 0 0 0</pose>
@@ -83,49 +41,6 @@
 				<gravity>0</gravity>
 			</link>
 		</model>
-
-		<!-- <model name="depth_sensor_77">
-			<static>1</static>
-			<pose>0 0 0.3 0 1.5707 0</pose>
-			<link name="link">
-				<inertial>
-					<mass>0.2</mass>
-				</inertial>
-				<collision name="collision">
-					<geometry>
-						<box>
-							<size>0.073000 0.276000 0.072000</size>
-						</box>
-					</geometry>
-				</collision>
-				<visual name="visual">
-					<transparency>0</transparency>
-					<geometry>
-						<mesh>
-							<uri>model://kinect1/meshes/kinect.dae</uri>
-						</mesh>
-					</geometry>
-				</visual>
-				<sensor name="active_perception_depth_1_sensor" type="depth">
-					<update_rate>0.1</update_rate>
-					<camera>
-						<depth_camera>
-							<output>points</output>
-						</depth_camera>
-						<horizontal_fov>1.047198</horizontal_fov>
-						<image>
-							<width>320</width>
-							<height>240</height>
-							<format>B8G8R8</format>
-						</image>
-						<clip>
-							<near>0.05</near>
-							<far>3</far>
-						</clip>
-					</camera>
-				</sensor>
-			</link>
-		</model> -->
 
 		<population name="sensors_population_1">
 			<model name="depth_sensor_1">
@@ -170,15 +85,15 @@
 					</sensor>
 				</link>
 			</model>
-			<pose>0 0 1 0 0 0</pose>
+			<pose>0 0 0.5 0 0 0</pose>
 			<box>
-				<size>2 1 2</size>
+				<size>2 1 1</size>
 			</box>
 			<!-- <cylinder>
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>25</model_count>
+			<model_count>300</model_count>
 			<distribution>
 				<type>random</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
@@ -229,15 +144,15 @@
 					</sensor>
 				</link>
 			</model>
-			<pose>0 0 1 0 0 0</pose>
+			<pose>0 0 0.5 0 0 0</pose>
 			<box>
-				<size>2 1 2</size>
+				<size>2 1 1</size>
 			</box>
 			<!-- <cylinder>
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>15</model_count>
+			<model_count>300</model_count>
 			<distribution>
 				<type>random</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
@@ -288,15 +203,15 @@
 					</sensor>
 				</link>
 			</model>
-			<pose>0 0 1 0 0 0</pose>
+			<pose>0 0 0.5 0 0 0</pose>
 			<box>
-				<size>2 1 2</size>
+				<size>2 1 1</size>
 			</box>
 			<!-- <cylinder>
 				<radius>1</radius>
 				<length>2</length>
 			</cylinder> -->
-			<model_count>10</model_count>
+			<model_count>300</model_count>
 			<distribution>
 				<type>random</type> <!-- random / uniform / grid -->
 				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
@@ -305,13 +220,13 @@
 
 		<physics type="ode">
 			<gravity>0 0 -9.81</gravity>
-			<max_step_size>0.001</max_step_size>
-			<real_time_factor>0.1</real_time_factor>
-			<real_time_update_rate>1000</real_time_update_rate>
+			<max_step_size>0.01</max_step_size>
+			<real_time_factor>1</real_time_factor>
+			<real_time_update_rate>100</real_time_update_rate>
 			<ode>
 				<solver>
 					<type>quick</type>
-					<iters>50</iters>
+					<iters>1</iters>
 					<sor>1.4</sor>
 				</solver>
 				<constraints>
@@ -330,14 +245,14 @@
 		</scene>
 
 		<plugin name="active_perception" filename="libactive_perception.so">
-			<numberOfSamplingSensors>50</numberOfSamplingSensors>
+			<numberOfSamplingSensors>900</numberOfSamplingSensors>
 			<numberOfIntendedSensors>10</numberOfIntendedSensors>
 			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
 			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
 			<sensorsSequentialSceneRendering>false</sensorsSequentialSceneRendering>
 			<elapsedSimulationTimeInSecondsBetweenSensorAnalysis>3.0</elapsedSimulationTimeInSecondsBetweenSensorAnalysis>
 			<pollingSleepTime>0.2</pollingSleepTime>
-			<sensorOrientationRandomRoll>false</sensorOrientationRandomRoll>
+			<sensorOrientationRandomRoll>true</sensorOrientationRandomRoll>
 			<sensorDataSegmentationColorRGB>0 255 0</sensorDataSegmentationColorRGB>
 			<voxelGridFilterLeafSize>0.005</voxelGridFilterLeafSize>
 			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/active_perception/media/models/starter_motor/meshes/starter_motor.ply</sceneModelPath>
@@ -346,7 +261,7 @@
 			<topicsSamplingSensorsPointcloudPrefix>sampling_point_cloud_</topicsSamplingSensorsPointcloudPrefix>
 			<publishedMsgsWorldFrameId>world</publishedMsgsWorldFrameId>
 			<publishedMsgsFrameIdSuffix>_frame</publishedMsgsFrameIdSuffix>
-			<publishMessagesOnlyWhenThereIsSubscribers>false</publishMessagesOnlyWhenThereIsSubscribers>
+			<publishMessagesOnlyWhenThereIsSubscribers>true</publishMessagesOnlyWhenThereIsSubscribers>
 			<topicObservationPoint>set_observation_point</topicObservationPoint>
 			<topicModelNames>set_model_names</topicModelNames>
 			<robotNamespace>active_perception</robotNamespace>
