@@ -1,5 +1,6 @@
 roslaunch gazebo_ros empty_world.launch paused:=true gui:=false world_name:=/home/carloscosta/catkin_ws_simulation/src/active_perception/worlds/active_perception.world
 rosrun rviz rviz -d /home/carloscosta/catkin_ws_simulation/src/active_perception/rviz/active_perception.rviz
+roslaunch gazebo2rviz gazebo2rviz.launch
 
 rostopic echo /active_perception/sensor_names
 rostopic echo /active_perception/sensors_surface_coverage_percentage
