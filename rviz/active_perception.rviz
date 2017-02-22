@@ -8,8 +8,6 @@ Panels:
         - /TF1/Frames1
         - /Kinect 11/PointCloud21
         - /Kinect 11/Image1
-        - /Marker1
-        - /MarkerArray1
       Splitter Ratio: 0.620947659
     Tree Height: 539
   - Class: rviz/Selection
@@ -46,15 +44,55 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        asus_xtion_pro_live__link:
+        asus_xtion_pro_live_sensor__link:
+          Value: true
+        asus_xtion_pro_live_sensor__link_frame:
+          Value: true
+        ensenso_n35_sensor__link:
+          Value: true
+        ensenso_n35_sensor__link_frame:
           Value: true
         gazebo_world:
           Value: true
         ground_plane__link:
           Value: true
-        kinect_1__link:
+        intel_realsense_sr300_sensor__link:
+          Value: true
+        intel_realsense_sr300_sensor__link_frame:
+          Value: true
+        kinect_xbox_360_sensor__link:
+          Value: true
+        kinect_xbox_360_sensor__link_frame:
+          Value: true
+        kinect_xbox_one_sensor__link:
+          Value: true
+        kinect_xbox_one_sensor__link_frame:
+          Value: true
+        multisense_s7_sensor__link:
+          Value: true
+        multisense_s7_sensor__link_frame:
+          Value: true
+        orbbec_astra_sensor__link:
+          Value: true
+        orbbec_astra_sensor__link_frame:
+          Value: true
+        starter_motor__starter_motor_link:
+          Value: true
+        unit_cylinder__link:
           Value: true
         world:
+          Value: true
+        zed_sensor_0__link:
+          Value: true
+        zed_sensor_0__link_frame:
+          Value: true
+        zed_sensor_1__link:
+          Value: true
+        zed_sensor_1__link_frame:
+          Value: true
+        zed_sensor__link:
+          Value: true
+        zed_sensor__link_frame:
           Value: true
       Marker Scale: 0.200000003
       Name: TF
@@ -64,10 +102,34 @@ Visualization Manager:
       Tree:
         world:
           gazebo_world:
-            asus_xtion_pro_live__link:
-              {}
+            asus_xtion_pro_live_sensor__link:
+              asus_xtion_pro_live_sensor__link_frame:
+                {}
+            ensenso_n35_sensor__link:
+              ensenso_n35_sensor__link_frame:
+                {}
             ground_plane__link:
               {}
+            intel_realsense_sr300_sensor__link:
+              intel_realsense_sr300_sensor__link_frame:
+                {}
+            kinect_xbox_360_sensor__link:
+              kinect_xbox_360_sensor__link_frame:
+                {}
+            kinect_xbox_one_sensor__link:
+              kinect_xbox_one_sensor__link_frame:
+                {}
+            multisense_s7_sensor__link:
+              multisense_s7_sensor__link_frame:
+                {}
+            orbbec_astra_sensor__link:
+              orbbec_astra_sensor__link_frame:
+                {}
+            starter_motor__starter_motor_link:
+              {}
+            zed_sensor__link:
+              zed_sensor__link_frame:
+                {}
       Update Interval: 0
       Value: true
     - Alpha: 0.5
@@ -231,8 +293,16 @@ Visualization Manager:
       Marker Topic: /visualization_marker
       Name: Marker
       Namespaces:
-        asus_xtion_pro_live__link__visual: true
+        asus_xtion_pro_live_sensor__link__visual: true
+        ensenso_n35_sensor__link__visual: true
         ground_plane__link__visual: true
+        intel_realsense_sr300_sensor__link__visual: true
+        kinect_xbox_360_sensor__link__visual: true
+        kinect_xbox_one_sensor__link__visual: true
+        multisense_s7_sensor__link__visual: true
+        orbbec_astra_sensor__link__visual: true
+        starter_motor__starter_motor_link__starter_motor_visual: true
+        zed_sensor__link__visual: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -262,7 +332,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: gazebo_world
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
@@ -283,42 +353,42 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.158283487
+      Distance: 0.694722772
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.686106265
-        Y: -0.612100005
-        Z: 0.483403862
+        X: -0.0305190012
+        Y: -0.348958135
+        Z: 0.123846948
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.380398482
+      Pitch: 0.440398514
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.90540427
+      Yaw: 6.11358929
     Saved: ~
 Window Geometry:
   Displays:
     collapsed: false
   Height: 1056
   Hide Left Dock: false
-  Hide Right Dock: true
+  Hide Right Dock: false
   Image:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd000000040000000000000193000003c3fc020000000ffb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006100fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003f0000025c000000d700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000100049006d00610067006500200069007200000002f40000010e0000000000000000fb000000160049006d00610067006500200063006f006c006f00720000000300000001020000000000000000fb000000160049006d00610067006500200064006500700074006802000000000000031c0000016a000000fefb000000100049006d0061006700650020006900720100000353000000af0000000000000000fb000000160049006d00610067006500200044006500700074006800000002cf000001330000000000000000fb000000120049006d0061006700650020005200470042000000031e000000e40000000000000000fb000000100049006d0061006700650020004900520000000335000000cd0000000000000000fb0000000a0049006d00610067006501000002a1000001610000001600ffffff000000010000010f000003c3fc0200000004fb0000001e0054006f006f006c002000500072006f0070006500720074006900650073000000003f000002230000006100fffffffc000002680000019a0000000000fffffffa000000000100000003fb000000160049006d0061006700650020006400650070007400680200000186000002c60000020900000155fb000000160049006d00610067006500200063006f006c006f00720200000549000002c9000002330000015afb0000000a00560069006500770073000000066f0000010f0000010f00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007301000001be000002440000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000077e0000003efc0100000002fb0000000800540069006d006500000000000000077e000002ff00fffffffb0000000800540069006d00650100000000000004500000000000000000000005e7000003c300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd000000040000000000000193000003c3fc020000000ffb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006100fffffffb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003f0000025c000000d700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb000000100049006d00610067006500200069007200000002f40000010e0000000000000000fb000000160049006d00610067006500200063006f006c006f00720000000300000001020000000000000000fb000000160049006d00610067006500200064006500700074006802000000000000031c0000016a000000fefb000000100049006d0061006700650020006900720100000353000000af0000000000000000fb000000160049006d00610067006500200044006500700074006800000002cf000001330000000000000000fb000000120049006d0061006700650020005200470042000000031e000000e40000000000000000fb000000100049006d0061006700650020004900520000000335000000cd0000000000000000fb0000000a0049006d00610067006501000002a1000001610000001600ffffff000000010000010f000003c3fc0200000004fb0000001e0054006f006f006c002000500072006f0070006500720074006900650073010000003f0000029f0000006100fffffffc000002e40000011e000000ad00fffffffa000000020100000003fb000000160049006d0061006700650020006400650070007400680200000186000002c60000020900000155fb000000160049006d00610067006500200063006f006c006f00720200000549000002c9000002330000015afb0000000a00560069006500770073010000066f0000010f0000010f00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007301000001be000002440000000000000000fb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000077e0000003efc0100000002fb0000000800540069006d006500000000000000077e000002ff00fffffffb0000000800540069006d00650100000000000004500000000000000000000004d2000003c300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
     collapsed: false
   Tool Properties:
-    collapsed: true
+    collapsed: false
   Views:
-    collapsed: true
+    collapsed: false
   Width: 1920
   X: 1920
   Y: 24

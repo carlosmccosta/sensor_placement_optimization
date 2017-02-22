@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+	<model name="asus_xtion_pro_live_sensor">
+		<static>1</static>
+		<pose>0 0 0.0334 0 0 0</pose>
+		<link name="link">
+			<inertial>
+				<mass>0.1</mass>
+			</inertial>
+			<collision name="collision">
+				<pose>-0.01 0 -0.01 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>0.04 0.18 0.0468</size>
+					</box>
+				</geometry>
+			</collision>
+			<visual name="visual">
+				<transparency>0</transparency>
+				<geometry>
+					<mesh>
+						<uri>model://asus_xtion_pro_live_sensor/meshes/asus_xtion_pro_live_sensor.stl</uri>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>ActivePerception/Gray</name>
+						<uri>file://materials/active_perception.material</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name="sensor" type="depth">
+				<update_rate>30</update_rate>
+				<camera>
+					<horizontal_fov>1.021018</horizontal_fov>
+					<image>
+						<width>640</width>
+						<height>480</height>
+						<format>B8G8R8</format>
+					</image>
+					<clip>
+						<near>0.5</near>
+						<far>3.5</far>
+					</clip>
+				</camera>
+			</sensor>
+		</link>
+	</model>
+</sdf>

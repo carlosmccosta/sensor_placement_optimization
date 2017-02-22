@@ -1,3 +1,18 @@
+material ActivePerception/Gray
+{
+  technique
+  {
+    pass ambient
+    {
+      ambient 0.1 0.1 0.1
+      diffuse 0.1 0.1 0.1
+      specular 1 1 1
+      emissive 0.1 0.1 0.1
+      polygon_mode solid
+    }
+  }
+}
+
 material ActivePerception/Red
 {
   technique
