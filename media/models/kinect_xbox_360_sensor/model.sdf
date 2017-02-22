@@ -2,16 +2,16 @@
 <sdf version="1.5">
 	<model name="kinect_xbox_360_sensor">
 		<static>1</static>
-		<pose>0 0 0.0519 0 0 0</pose>
+		<pose>0 0 0.0504 0 0 0</pose>
 		<link name="link">
 			<inertial>
 				<mass>0.1</mass>
 			</inertial>
 			<collision name="collision">
-				<pose>-0.02 0 -0.016 0 0 0</pose>
+				<pose>-0.02 0 -0.015 0 0 0</pose>
 				<geometry>
 					<box>
-						<size>0.0728 0.2794 0.0718</size>
+						<size>0.0728 0.2794 0.0708</size>
 					</box>
 				</geometry>
 			</collision>
