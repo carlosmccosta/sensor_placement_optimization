@@ -8,7 +8,7 @@
 				<mass>0.1</mass>
 			</inertial>
 			<collision name="collision">
-				<pose>-0.02 0 -0.015 0 0 0</pose>
+				<pose>-0.02 -0.0117 -0.015 0 0 0</pose>
 				<geometry>
 					<box>
 						<size>0.0728 0.2794 0.0708</size>
@@ -32,7 +32,7 @@
 			<sensor name="sensor" type="depth">
 				<update_rate>30</update_rate>
 				<camera>
-					<horizontal_fov>1.021018</horizontal_fov>
+					<horizontal_fov>0.994838</horizontal_fov>
 					<image>
 						<width>640</width>
 						<height>480</height>
