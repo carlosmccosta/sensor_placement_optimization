@@ -2,18 +2,33 @@
 <sdf version="1.5">
 	<model name="starter_motor">
 		<static>1</static>
-		<pose>0 0 0 0 0 0</pose>
-		<link name="starter_motor_link">
-			<visual name="starter_motor_visual">
+		<pose>0 0 0.043 0 0 0</pose>
+		<link name="link">
+			<inertial>
+				<mass>0.5</mass>
+			</inertial>
+			<collision name="collision">
+				<pose>0.1122 -0.0244 0 0 0 0</pose>
+				<geometry>
+					<box>
+						<size>0.2244 0.1442 0.086</size>
+					</box>
+				</geometry>
+			</collision>
+			<visual name="visual">
 				<transparency>0</transparency>
-				<cast_shadows>false</cast_shadows>
 				<geometry>
 					<mesh>
-						<uri>model://starter_motor/meshes/starter_motor.dae</uri>
+						<uri>model://starter_motor/meshes/starter_motor.stl</uri>
 					</mesh>
 				</geometry>
+				<material>
+					<script>
+						<name>ActivePerception/Green</name>
+						<uri>file://materials/active_perception.material</uri>
+					</script>
+				</material>
 			</visual>
-			<gravity>0</gravity>
 		</link>
 	</model>
 </sdf>
