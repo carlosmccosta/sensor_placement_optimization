@@ -24,7 +24,7 @@
 				</geometry>
 				<material>
 					<script>
-						<name>ActivePerception/Silver</name>
+						<name>ActivePerception/LightGray</name>
 						<uri>file://materials/active_perception.material</uri>
 					</script>
 				</material>
