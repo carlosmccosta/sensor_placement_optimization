@@ -2,6 +2,7 @@
 <launch>
 	<env name="GAZEBO_RESOURCE_PATH" value='$(find active_perception)/media:$(optenv GAZEBO_RESOURCE_PATH "")' />
 	<env name="GAZEBO_MODEL_PATH" value='$(find active_perception)/media/models:$(optenv GAZEBO_MODEL_PATH "")' />
+	<arg name="paused" default="false" />
 	<arg name="use_gazebo_gui" default="true" />
 	<arg name="use_gazebo2rviz" default="true" />
 	<arg name="show_rviz" default="true" />
@@ -11,7 +12,7 @@
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
 		<arg name="world_name" default="$(arg world_folder)$(arg world_name)" />
-		<arg name="paused" default="false" />
+		<arg name="paused" default="$(arg paused)" />
 		<arg name="use_sim_time" default="false" />
 		<arg name="remap_clock" default="true" />
 		<arg name="gui" default="$(arg use_gazebo_gui)" />

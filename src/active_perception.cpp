@@ -150,8 +150,10 @@ void ActivePerception::ProcessingThread() {
 	OrientSensorsToObservationPoint();
 	PublishSensorsPoses();
 	LoadSceneModel();
-	SetSensorsState(false);
-	world_->SetPaused(false);
+
+	while (world_->IsPaused()) {
+		common::Time::Sleep(polling_sleep_time_);
+	}
 
 	ROS_INFO_STREAM("ActivePerception has started with " << sensors_.size() << " sampling sensors for finding the optimal placement for " << number_of_intended_sensors_ << (number_of_intended_sensors_ == 1 ? " sensor" : " sensors"));
 	bool sensor_analysis_required = true;
@@ -168,6 +170,8 @@ void ActivePerception::ProcessingThread() {
 
 		if (sensor_analysis_required) {
 			ROS_INFO_STREAM("Performing sensor analysis number " << number_of_sensor_analysis_performed_);
+			HideSensors();
+			common::Time::Sleep(polling_sleep_time_);
 			WaitForSensorData();
 			ProcessSensorData();
 			PrepareNextAnalysis();
@@ -215,6 +219,7 @@ void ActivePerception::LoadSensors() {
 						if (!sensors_.empty()) sensor_names << "|";
 						sensor_names << sensor_parent_name;
 						sensors_.push_back(sensor_depth);
+						sensor_depth->SetActive(false);
 						sensors_models_.push_back(sensor_model);
 						color_image_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewImageFrame(std::bind(&ActivePerception::OnNewImageFrame,
 														this, std::placeholders::_1, std::placeholders::_2,
@@ -265,6 +270,18 @@ void ActivePerception::OrientSensorsToObservationPoint() {
 		}
 
 		sensors_models_[i]->SetWorldPose(model_pose);
+	}
+}
+
+void ActivePerception::HideSensors() {
+	for (size_t i = 0; i < sensors_models_.size(); ++i) {
+		sensors_models_[i]->SetScale(ignition::math::Vector3d(0.00001,0.00001,0.00001), true);
+	}
+}
+
+void ActivePerception::ShowSensor(size_t _sensor_index) {
+	if (_sensor_index < sensors_models_.size()) {
+		sensors_models_[_sensor_index]->SetScale(ignition::math::Vector3d(1,1,1), true);
 	}
 }
 
@@ -472,6 +489,7 @@ void ActivePerception::ProcessSensorData() {
 		best_sensors_poses.poses.push_back(MathPoseToRosPose(sensors_models_[best_sensor_coverage_index]->GetWorldPose()));
 		sensors_best_voxel_grid_surface_coverages_msg.data.push_back(best_coverage);
 		best_sensor_names << sensors_models_[best_sensor_coverage_index]->GetName();
+		ShowSensor(best_sensor_coverage_index);
 		ROS_INFO_STREAM("Finished analyzing the sensor data with the best view achieving " << best_coverage << " surface coverage percentage");
 	} else {
 		size_t current_ransac_iteration = 0;
@@ -498,6 +516,7 @@ void ActivePerception::ProcessSensorData() {
 		for (size_t i = 0; i < best_merged_pointclouds_indexes.size(); ++i) {
 			best_sensors_poses.poses.push_back(MathPoseToRosPose(sensors_models_[best_merged_pointclouds_indexes[i]]->GetWorldPose()));
 			best_sensor_names << sensors_models_[best_merged_pointclouds_indexes[i]]->GetName();
+			ShowSensor(best_merged_pointclouds_indexes[i]);
 		}
 		sensors_best_voxel_grid_surface_coverages_msg.data.push_back(best_merged_point_cloud_surface_coverage_percentage);
 		best_merged_pointcloud->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);

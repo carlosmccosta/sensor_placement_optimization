@@ -83,6 +83,8 @@ class ActivePerception : public WorldPlugin {
 		void LoadSensors();
 		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
 		void OrientSensorsToObservationPoint();
+		void HideSensors();
+		void ShowSensor(size_t _sensor_index);
 		void PublishSensorsPoses();
 		void LoadSceneModel();
 		void SetSensorsState(bool _active);
