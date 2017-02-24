@@ -28,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud2 model
 Visualization Manager:
   Class: ""
   Displays:
@@ -40,98 +40,19 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        asus_xtion_pro_live_sensor__link:
-          Value: true
-        asus_xtion_pro_live_sensor__link_frame:
-          Value: true
-        ensenso_n35_sensor__link:
-          Value: true
-        ensenso_n35_sensor__link_frame:
-          Value: true
-        gazebo_world:
-          Value: true
-        ground_plane__link:
-          Value: true
-        intel_realsense_sr300_sensor__link:
-          Value: true
-        intel_realsense_sr300_sensor__link_frame:
-          Value: true
-        kinect_xbox_360_sensor__link:
-          Value: true
-        kinect_xbox_360_sensor__link_frame:
-          Value: true
-        kinect_xbox_one_sensor__link:
-          Value: true
-        kinect_xbox_one_sensor__link_frame:
-          Value: true
-        multisense_s7_sensor__link:
-          Value: true
-        multisense_s7_sensor__link_frame:
-          Value: true
-        orbbec_astra_sensor__link:
-          Value: true
-        orbbec_astra_sensor__link_frame:
-          Value: true
-        starter_motor__starter_motor_link:
-          Value: true
-        unit_cylinder__link:
-          Value: true
-        world:
-          Value: true
-        zed_sensor_0__link:
-          Value: true
-        zed_sensor_0__link_frame:
-          Value: true
-        zed_sensor_1__link:
-          Value: true
-        zed_sensor_1__link_frame:
-          Value: true
-        zed_sensor__link:
-          Value: true
-        zed_sensor__link_frame:
-          Value: true
       Marker Scale: 0.200000003
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        world:
-          gazebo_world:
-            asus_xtion_pro_live_sensor__link:
-              asus_xtion_pro_live_sensor__link_frame:
-                {}
-            ensenso_n35_sensor__link:
-              ensenso_n35_sensor__link_frame:
-                {}
-            ground_plane__link:
-              {}
-            intel_realsense_sr300_sensor__link:
-              intel_realsense_sr300_sensor__link_frame:
-                {}
-            kinect_xbox_360_sensor__link:
-              kinect_xbox_360_sensor__link_frame:
-                {}
-            kinect_xbox_one_sensor__link:
-              kinect_xbox_one_sensor__link_frame:
-                {}
-            multisense_s7_sensor__link:
-              multisense_s7_sensor__link_frame:
-                {}
-            orbbec_astra_sensor__link:
-              orbbec_astra_sensor__link_frame:
-                {}
-            starter_motor__starter_motor_link:
-              {}
-            zed_sensor__link:
-              zed_sensor__link_frame:
-                {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Alpha: 0.5
       Cell Size: 1
       Class: rviz/Grid
@@ -289,22 +210,13 @@ Visualization Manager:
       Unreliable: false
       Value: true
     - Class: rviz/Marker
-      Enabled: true
+      Enabled: false
       Marker Topic: /visualization_marker
       Name: Marker
       Namespaces:
-        asus_xtion_pro_live_sensor__link__visual: true
-        ensenso_n35_sensor__link__visual: true
-        ground_plane__link__visual: true
-        intel_realsense_sr300_sensor__link__visual: true
-        kinect_xbox_360_sensor__link__visual: true
-        kinect_xbox_one_sensor__link__visual: true
-        multisense_s7_sensor__link__visual: true
-        orbbec_astra_sensor__link__visual: true
-        starter_motor__starter_motor_link__starter_motor_visual: true
-        zed_sensor__link__visual: true
+        {}
       Queue Size: 100
-      Value: true
+      Value: false
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -353,24 +265,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.694722772
+      Distance: 1.89568686
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.0305190012
-        Y: -0.348958135
-        Z: 0.123846948
+        X: 0.0609822161
+        Y: 0.0534374341
+        Z: 0.146898836
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.440398514
+      Pitch: 0.804796755
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.11358929
+      Yaw: 0.070391126
     Saved: ~
 Window Geometry:
   Displays:

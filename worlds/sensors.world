@@ -1,0 +1,638 @@
+<?xml version="1.0"?>
+<sdf version='1.6'>
+	<world name='default'>
+		<light name='sun' type='directional'>
+			<cast_shadows>1</cast_shadows>
+			<pose frame=''>0 0 10 0 -0 0</pose>
+			<diffuse>0.8 0.8 0.8 1</diffuse>
+			<specular>0.2 0.2 0.2 1</specular>
+			<attenuation>
+				<range>1000</range>
+				<constant>0.9</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<direction>-0.5 0.1 -0.9</direction>
+		</light>
+		<gravity>0 0 -9.8</gravity>
+		<physics name='default_physics' default='0' type='ode'>
+			<max_step_size>0.001</max_step_size>
+			<real_time_factor>1</real_time_factor>
+			<real_time_update_rate>1000</real_time_update_rate>
+		</physics>
+		<scene>
+			<ambient>1 1 1 1</ambient>
+			<background>1 1 1 1</background>
+			<shadows>1</shadows>
+		</scene>
+		<model name='asus_xtion_pro_live_sensor'>
+			<static>1</static>
+			<pose frame=''>0.098699 -0.832418 0.0334 0 -0 0</pose>
+			<link name='link'>
+				<inertial>
+					<mass>0.1</mass>
+				</inertial>
+				<collision name='collision'>
+					<pose frame=''>-0.01 -0.045 -0.01 0 -0 0</pose>
+					<geometry>
+						<box>
+							<size>0.04 0.18 0.0468</size>
+						</box>
+					</geometry>
+					<max_contacts>10</max_contacts>
+					<surface>
+						<contact>
+							<ode />
+						</contact>
+						<bounce />
+						<friction>
+							<torsional>
+								<ode />
+							</torsional>
+							<ode />
+						</friction>
+					</surface>
+				</collision>
+				<visual name='visual'>
+					<transparency>0</transparency>
+					<geometry>
+						<mesh>
+							<uri>model://asus_xtion_pro_live_sensor/meshes/asus_xtion_pro_live_sensor.stl</uri>
+							<scale>1 1 1</scale>
+						</mesh>
+					</geometry>
+					<material>
+						<script>
+							<name>ActivePerception/LightGray</name>
+							<uri>file://materials/active_perception.material</uri>
+						</script>
+					</material>
+				</visual>
+				<sensor name='sensor' type='depth'>
+					<update_rate>30</update_rate>
+					<camera name='__default__'>
+						<horizontal_fov>1.01229</horizontal_fov>
+						<image>
+							<width>640</width>
+							<height>480</height>
+							<format>B8G8R8</format>
+						</image>
+						<clip>
+							<near>0.5</near>
+							<far>3.5</far>
+						</clip>
+					</camera>
+				</sensor>
+				<self_collide>0</self_collide>
+				<enable_wind>0</enable_wind>
+				<kinematic>0</kinematic>
+			</link>
+		</model>
+		<model name='ensenso_n35_sensor'>
+			<static>1</static>
+			<pose frame=''>0.10913 -0.655261 0.025 0 -0 0</pose>
+			<link name='link'>
+				<inertial>
+					<mass>0.1</mass>
+				</inertial>
+				<collision name='collision'>
+					<pose frame=''>-0.02 0.008 0 0 -0 0</pose>
+					<geometry>
+						<box>
+							<size>0.0566 0.1918 0.05</size>
+						</box>
+					</geometry>
+					<max_contacts>10</max_contacts>
+					<surface>
+						<contact>
+							<ode />
+						</contact>
+						<bounce />
+						<friction>
+							<torsional>
+								<ode />
+							</torsional>
+							<ode />
+						</friction>
+					</surface>
+				</collision>
+				<visual name='visual'>
+					<transparency>0</transparency>
+					<geometry>
+						<mesh>
+							<uri>model://ensenso_n35_sensor/meshes/ensenso_n35_sensor.stl</uri>
+							<scale>1 1 1</scale>
+						</mesh>
+					</geometry>
+					<material>
+						<script>
+							<name>ActivePerception/LightGray</name>
+							<uri>file://materials/active_perception.material</uri>
+						</script>
+					</material>
+				</visual>
+				<sensor name='sensor' type='depth'>
+					<update_rate>10</update_rate>
+					<camera name='__default__'>
+						<horizontal_fov>1.01229</horizontal_fov>
+						<image>
+							<width>1280</width>
+							<height>1024</height>
+							<format>B8G8R8</format>
+						</image>
+						<clip>
+							<near>0.46</near>
+							<far>3</far>
+						</clip>
+					</camera>
+				</sensor>
+				<self_collide>0</self_collide>
+				<enable_wind>0</enable_wind>
+				<kinematic>0</kinematic>
+			</link>
+		</model>
+		<model name='intel_realsense_sr300_sensor'>
+			<static>1</static>
+			<pose frame=''>0.128386 -0.446327 0.0327 0 -0 0</pose>
+			<link name='link'>
+				<inertial>
+					<mass>0.1</mass>
+				</inertial>
+				<collision name='collision'>
+					<pose frame=''>-0.027 0.025 -0.01 0 -0 0</pose>
+					<geometry>
+						<box>
+							<size>0.0608 0.148 0.0454</size>
+						</box>
+					</geometry>
+					<max_contacts>10</max_contacts>
+					<surface>
+						<contact>
+							<ode />
+						</contact>
+						<bounce />
+						<friction>
+							<torsional>
+								<ode />
+							</torsional>
+							<ode />
+						</friction>
+					</surface>
+				</collision>
+				<visual name='visual'>
+					<transparency>0</transparency>
+					<geometry>
+						<mesh>
+							<uri>model://intel_realsense_sr300_sensor/meshes/intel_realsense_sr300_sensor.stl</uri>
+							<scale>1 1 1</scale>
+						</mesh>
+					</geometry>
+					<material>
+						<script>
+							<name>ActivePerception/LightGray</name>
+							<uri>file://materials/active_perception.material</uri>
+						</script>
+					</material>
+				</visual>
+				<sensor name='sensor' type='depth'>
+					<update_rate>60</update_rate>
+					<camera name='__default__'>
+						<horizontal_fov>1.24791</horizontal_fov>
+						<image>
+							<width>640</width>
+							<height>480</height>
+							<format>B8G8R8</format>
+						</image>
+						<clip>
+							<near>0.2</near>
+							<far>1.5</far>
+						</clip>
+					</camera>
+				</sensor>
+				<self_collide>0</self_collide>
+				<enable_wind>0</enable_wind>
+				<kinematic>0</kinematic>
+			</link>
+		</model>
+		<model name='kinect_xbox_360_sensor'>
+			<static>1</static>
+			<pose frame=''>0.13358 -0.143306 0.0504 0 -0 0</pose>
+			<link name='link'>
+				<inertial>
+					<mass>0.1</mass>
+				</inertial>
+				<collision name='collision'>
+					<pose frame=''>-0.02 -0.0117 -0.015 0 -0 0</pose>
+					<geometry>
+						<box>
+							<size>0.0728 0.2794 0.0708</size>
+						</box>
+					</geometry>
+					<max_contacts>10</max_contacts>
+					<surface>
+						<contact>
+							<ode />
+						</contact>
+						<bounce />
+						<friction>
+							<torsional>
+								<ode />
+							</torsional>
+							<ode />
+						</friction>
+					</surface>
+				</collision>
+				<visual name='visual'>
+					<transparency>0</transparency>
+					<geometry>
+						<mesh>
+							<uri>model://kinect_xbox_360_sensor/meshes/kinect_xbox_360_sensor.stl</uri>
+							<scale>1 1 1</scale>
+						</mesh>
+					</geometry>
+					<material>
+						<script>
+							<name>ActivePerception/LightGray</name>
+							<uri>file://materials/active_perception.material</uri>
+						</script>
+					</material>
+				</visual>
+				<sensor name='sensor' type='depth'>
+					<update_rate>30</update_rate>
+					<camera name='__default__'>
+						<horizontal_fov>0.994838</horizontal_fov>
+						<image>
+							<width>640</width>
+							<height>480</height>
+							<format>B8G8R8</format>
+						</image>
+						<clip>
+							<near>0.4</near>
+							<far>3</far>
+						</clip>
+					</camera>
+				</sensor>
+				<self_collide>0</self_collide>
+				<enable_wind>0</enable_wind>
+				<kinematic>0</kinematic>
+			</link>
+		</model>
+		<model name='kinect_xbox_one_sensor'>
+			<static>1</static>
+			<pose frame=''>0.346606 -0.205906 0.0423 0 -0 0</pose>
+			<link name='link'>
+				<inertial>
+					<mass>0.1</mass>
+				</inertial>
+				<collision name='collision'>
+					<pose frame=''>-0.05 0.06 -0.01 0 -0 0</pose>
+					<geometry>
+						<box>
+							<size>0.1176 0.25 0.0646</size>
+						</box>
+					</geometry>
+					<max_contacts>10</max_contacts>
+					<surface>
+						<contact>
+							<ode />
+						</contact>
+						<bounce />
+						<friction>
+							<torsional>
+								<ode />
+							</torsional>
+							<ode />
+						</friction>
+					</surface>
+				</collision>
+				<visual name='visual'>
+					<transparency>0</transparency>
+					<geometry>
+						<mesh>
+							<uri>model://kinect_xbox_one_sensor/meshes/kinect_xbox_one_sensor.stl</uri>
+							<scale>1 1 1</scale>
+						</mesh>
+					</geometry>
+					<material>
+						<script>
+							<name>ActivePerception/LightGray</name>
+							<uri>file://materials/active_perception.material</uri>
+						</script>
+					</material>
+				</visual>
+				<sensor name='sensor' type='depth'>
+					<update_rate>30</update_rate>
+					<camera name='__default__'>
+						<horizontal_fov>1.22173</horizontal_fov>
+						<image>
+							<width>512</width>
+							<height>424</height>
+							<format>B8G8R8</format>
+						</image>
+						<clip>
+							<near>0.5</near>
+							<far>4.5</far>
+						</clip>
+					</camera>
+				</sensor>
+				<self_collide>0</self_collide>
+				<enable_wind>0</enable_wind>
+				<kinematic>0</kinematic>
+			</link>
+		</model>
+		<model name='multisense_s7_sensor'>
+			<static>1</static>
+			<pose frame=''>0.357601 -0.412201 0.0319 0 -0 0</pose>
+			<link name='link'>
+				<inertial>
+					<mass>0.1</mass>
+				</inertial>
+				<collision name='collision'>
+					<pose frame=''>-0.05 0 0 0 -0 0</pose>
+					<geometry>
+						<box>
+							<size>0.131 0.125 0.0638</size>
+						</box>
+					</geometry>
+					<max_contacts>10</max_contacts>
+					<surface>
+						<contact>
+							<ode />
+						</contact>
+						<bounce />
+						<friction>
+							<torsional>
+								<ode />
+							</torsional>
+							<ode />
+						</friction>
+					</surface>
+				</collision>
+				<visual name='visual'>
+					<transparency>0</transparency>
+					<geometry>
+						<mesh>
+							<uri>model://multisense_s7_sensor/meshes/multisense_s7_sensor.stl</uri>
+							<scale>1 1 1</scale>
+						</mesh>
+					</geometry>
+					<material>
+						<script>
+							<name>ActivePerception/LightGray</name>
+							<uri>file://materials/active_perception.material</uri>
+						</script>
+					</material>
+				</visual>
+				<sensor name='sensor' type='depth'>
+					<update_rate>15</update_rate>
+					<camera name='__default__'>
+						<horizontal_fov>1.39626</horizontal_fov>
+						<image>
+							<width>2048</width>
+							<height>1088</height>
+							<format>B8G8R8</format>
+						</image>
+						<clip>
+							<near>0.4</near>
+							<far>5</far>
+						</clip>
+					</camera>
+				</sensor>
+				<self_collide>0</self_collide>
+				<enable_wind>0</enable_wind>
+				<kinematic>0</kinematic>
+			</link>
+		</model>
+		<model name='orbbec_astra_sensor'>
+			<static>1</static>
+			<pose frame=''>0.344087 -0.612798 0.035 0 -0 0</pose>
+			<link name='link'>
+				<inertial>
+					<mass>0.1</mass>
+				</inertial>
+				<collision name='collision'>
+					<pose frame=''>-0.03 0.037 -0.01 0 -0 0</pose>
+					<geometry>
+						<box>
+							<size>0.079 0.1648 0.05</size>
+						</box>
+					</geometry>
+					<max_contacts>10</max_contacts>
+					<surface>
+						<contact>
+							<ode />
+						</contact>
+						<bounce />
+						<friction>
+							<torsional>
+								<ode />
+							</torsional>
+							<ode />
+						</friction>
+					</surface>
+				</collision>
+				<visual name='visual'>
+					<transparency>0</transparency>
+					<geometry>
+						<mesh>
+							<uri>model://orbbec_astra_sensor/meshes/orbbec_astra_sensor.stl</uri>
+							<scale>1 1 1</scale>
+						</mesh>
+					</geometry>
+					<material>
+						<script>
+							<name>ActivePerception/LightGray</name>
+							<uri>file://materials/active_perception.material</uri>
+						</script>
+					</material>
+				</visual>
+				<sensor name='sensor' type='depth'>
+					<update_rate>30</update_rate>
+					<camera name='__default__'>
+						<horizontal_fov>1.0472</horizontal_fov>
+						<image>
+							<width>640</width>
+							<height>480</height>
+							<format>B8G8R8</format>
+						</image>
+						<clip>
+							<near>0.6</near>
+							<far>8</far>
+						</clip>
+					</camera>
+				</sensor>
+				<self_collide>0</self_collide>
+				<enable_wind>0</enable_wind>
+				<kinematic>0</kinematic>
+			</link>
+		</model>
+		<model name='zed_sensor'>
+			<static>1</static>
+			<pose frame=''>0.310577 -0.864938 0.015 0 -0 0</pose>
+			<link name='link'>
+				<inertial>
+					<mass>0.1</mass>
+				</inertial>
+				<collision name='collision'>
+					<pose frame=''>-0.0007 0 0 0 -0 0</pose>
+					<geometry>
+						<box>
+							<size>0.0318 0.1748 0.03</size>
+						</box>
+					</geometry>
+					<max_contacts>10</max_contacts>
+					<surface>
+						<contact>
+							<ode />
+						</contact>
+						<bounce />
+						<friction>
+							<torsional>
+								<ode />
+							</torsional>
+							<ode />
+						</friction>
+					</surface>
+				</collision>
+				<visual name='visual'>
+					<transparency>0</transparency>
+					<geometry>
+						<mesh>
+							<uri>model://zed_sensor/meshes/zed_sensor.stl</uri>
+							<scale>1 1 1</scale>
+						</mesh>
+					</geometry>
+					<material>
+						<script>
+							<name>ActivePerception/LightGray</name>
+							<uri>file://materials/active_perception.material</uri>
+						</script>
+					</material>
+				</visual>
+				<sensor name='sensor' type='depth'>
+					<update_rate>15</update_rate>
+					<camera name='__default__'>
+						<horizontal_fov>1.91986</horizontal_fov>
+						<image>
+							<width>4416</width>
+							<height>1242</height>
+							<format>B8G8R8</format>
+						</image>
+						<clip>
+							<near>0.7</near>
+							<far>20</far>
+						</clip>
+					</camera>
+				</sensor>
+				<self_collide>0</self_collide>
+				<enable_wind>0</enable_wind>
+				<kinematic>0</kinematic>
+			</link>
+		</model>
+		<light name='user_point_light_0' type='point'>
+			<pose frame=''>1.06723 -0.424902 1 0 -0 0</pose>
+			<diffuse>0.5 0.5 0.5 1</diffuse>
+			<specular>0.1 0.1 0.1 1</specular>
+			<attenuation>
+				<range>20</range>
+				<constant>0.5</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<cast_shadows>0</cast_shadows>
+			<direction>0 0 -1</direction>
+		</light>
+		<state world_name='default'>
+			<model name='asus_xtion_pro_live_sensor'>
+				<pose frame=''>-0.812952 -0.531809 0.0334 0 -0 0</pose>
+				<scale>1 1 1</scale>
+				<link name='link'>
+					<pose frame=''>-0.812952 -0.531809 0.0334 0 -0 0</pose>
+					<velocity>0 0 0 0 -0 0</velocity>
+					<acceleration>0 0 0 0 -0 0</acceleration>
+					<wrench>0 0 0 0 -0 0</wrench>
+				</link>
+			</model>
+			<model name='ensenso_n35_sensor'>
+				<pose frame=''>-0.775849 -0.350539 0.025 0 -0 0</pose>
+				<scale>1 1 1</scale>
+				<link name='link'>
+					<pose frame=''>-0.775849 -0.350539 0.025 0 -0 0</pose>
+					<velocity>0 0 0 0 -0 0</velocity>
+					<acceleration>0 0 0 0 -0 0</acceleration>
+					<wrench>0 0 0 0 -0 0</wrench>
+				</link>
+			</model>
+			<model name='intel_realsense_sr300_sensor'>
+				<pose frame=''>-0.422495 -0.717552 0.0327 0 -0 0</pose>
+				<scale>1 1 1</scale>
+				<link name='link'>
+					<pose frame=''>-0.422495 -0.717552 0.0327 0 -0 0</pose>
+					<velocity>0 0 0 0 -0 0</velocity>
+					<acceleration>0 0 0 0 -0 0</acceleration>
+					<wrench>0 0 0 0 -0 0</wrench>
+				</link>
+			</model>
+			<model name='kinect_xbox_360_sensor'>
+				<pose frame=''>-0.798877 -0.841057 0.0504 0 -0 0</pose>
+				<scale>1 1 1</scale>
+				<link name='link'>
+					<pose frame=''>-0.798877 -0.841057 0.0504 0 -0 0</pose>
+					<velocity>0 0 0 0 -0 0</velocity>
+					<acceleration>0 0 0 0 -0 0</acceleration>
+					<wrench>0 0 0 0 -0 0</wrench>
+				</link>
+			</model>
+			<model name='kinect_xbox_one_sensor'>
+				<pose frame=''>-0.587684 -0.902426 0.0423 0 -0 0</pose>
+				<scale>1 1 1</scale>
+				<link name='link'>
+					<pose frame=''>-0.587684 -0.902426 0.0423 0 -0 0</pose>
+					<velocity>0 0 0 0 -0 0</velocity>
+					<acceleration>0 0 0 0 -0 0</acceleration>
+					<wrench>0 0 0 0 -0 0</wrench>
+				</link>
+			</model>
+			<model name='multisense_s7_sensor'>
+				<pose frame=''>-0.543971 -0.366869 0.030029 0 -0 0</pose>
+				<scale>1 1 1</scale>
+				<link name='link'>
+					<pose frame=''>-0.543971 -0.366869 0.030029 0 -0 0</pose>
+					<velocity>0 0 0 0 -0 0</velocity>
+					<acceleration>0 0 0 0 -0 0</acceleration>
+					<wrench>0 0 0 0 -0 0</wrench>
+				</link>
+			</model>
+			<model name='orbbec_astra_sensor'>
+				<pose frame=''>-0.589125 -0.541112 0.035 0 -0 0</pose>
+				<scale>1 1 1</scale>
+				<link name='link'>
+					<pose frame=''>-0.589125 -0.541112 0.035 0 -0 0</pose>
+					<velocity>0 0 0 0 -0 0</velocity>
+					<acceleration>0 0 0 0 -0 0</acceleration>
+					<wrench>0 0 0 0 -0 0</wrench>
+				</link>
+			</model>
+			<model name='zed_sensor'>
+				<pose frame=''>-0.449522 -0.361508 0.015 0 -0 0</pose>
+				<scale>1 1 1</scale>
+				<link name='link'>
+					<pose frame=''>-0.449522 -0.361508 0.015 0 -0 0</pose>
+					<velocity>0 0 0 0 -0 0</velocity>
+					<acceleration>0 0 0 0 -0 0</acceleration>
+					<wrench>0 0 0 0 -0 0</wrench>
+				</link>
+			</model>
+			<light name='sun'>
+				<pose frame=''>0 0 10 0 -0 0</pose>
+			</light>
+		</state>
+		<gui fullscreen='0'>
+			<camera name='user_camera'>
+				<pose frame=''>-0.008487 -0.595728 0.442698 0 0.627643 -3.13099</pose>
+				<view_controller>orbit</view_controller>
+				<projection_type>perspective</projection_type>
+			</camera>
+		</gui>
+	</world>
+</sdf>
