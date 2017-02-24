@@ -61,8 +61,7 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	}
 
 	if (sdf_->HasElement("voxelGridFilterLeafSize")) voxel_grid_filter_leaf_size_ = sdf_->GetElement("voxelGridFilterLeafSize")->Get<double>();
-	if (sdf_->HasElement("sceneModelPath")) scene_model_path_ = sdf_->GetElement("sceneModelPath")->Get<std::string>();
-	if (!scene_model_path_.empty()) new_scene_model_path_available_ = true;
+	if (sdf_->HasElement("sceneModelPath")) SetNewSceneModelPath(sdf_->GetElement("sceneModelPath")->Get<std::string>());
 
 	std::string observation_point_str = "0 0 0";
 	if (sdf_->HasElement("observationPoint")) observation_point_str = sdf_->GetElement("observationPoint")->Get<std::string>();
@@ -138,11 +137,24 @@ void ActivePerception::ProcessNewObservationPoint(const geometry_msgs::PointStam
 void ActivePerception::ProcessNewSceneModelPath(const std_msgs::StringConstPtr& _msg) {
 	if (!_msg->data.empty()) {
 		scene_model_path_mutex_.lock();
-		scene_model_path_ = _msg->data;
-		new_scene_model_path_available_ = true;
+		SetNewSceneModelPath(_msg->data);
 		scene_model_path_mutex_.unlock();
 		LoadSceneModel();
 	}
+}
+
+void ActivePerception::SetNewSceneModelPath(std::string _path_and_model) {
+	if (_path_and_model.find('|') != std::string::npos) {
+		std::replace(_path_and_model.begin(), _path_and_model.end(), '|', ' ');
+		std::stringstream scene_model_ss(_path_and_model);
+		scene_model_ss >> scene_model_path_;
+		scene_model_ss >> scene_model_name_;
+	} else {
+		scene_model_path_ = _path_and_model;
+		scene_model_name_ = "";
+	}
+
+	if (!scene_model_path_.empty()) new_scene_model_path_available_ = true;
 }
 
 void ActivePerception::ProcessingThread() {
@@ -304,6 +316,12 @@ void ActivePerception::LoadSceneModel() {
 		} else {
 			scene_model_->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
 			scene_model_->header.frame_id = published_msgs_world_frame_id_;
+
+			Eigen::Affine3f transform_to_world;
+			if (!scene_model_name_.empty() && GetModelTransformToWorld(scene_model_name_, transform_to_world)) {
+				pcl::transformPointCloud(*scene_model_, *scene_model_, transform_to_world);
+			}
+
 			sensor_msgs::PointCloud2Ptr cloud_msg(new sensor_msgs::PointCloud2());
 			pcl::toROSMsg(*scene_model_, *cloud_msg);
 			scene_model_publisher_.publish(cloud_msg);
@@ -418,6 +436,16 @@ bool ActivePerception::GetSensorTransformToWorld(size_t _sensor_index, Eigen::Af
 	if (_sensor_index < sensors_models_.size()) {
 		math::Pose pose = sensors_models_[_sensor_index]->GetWorldPose();
 		_transform_sensor_to_world = PoseToTransform<float>(pose);
+		return true;
+	}
+	return false;
+}
+
+bool ActivePerception::GetModelTransformToWorld(std::string _model_name, Eigen::Affine3f &_transform) {
+	physics::ModelPtr model = world_->ModelByName(_model_name);
+	if (model) {
+		math::Pose pose = model->GetWorldPose();
+		_transform = PoseToTransform<float>(pose);
 		return true;
 	}
 	return false;

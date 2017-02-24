@@ -101,7 +101,7 @@
 		<!-- ============================== PLUGINS ============================== -->
 		<plugin name="active_perception" filename="libactive_perception.so">
 			<numberOfSamplingSensors>101</numberOfSamplingSensors>
-			<numberOfIntendedSensors>1</numberOfIntendedSensors>
+			<numberOfIntendedSensors>5</numberOfIntendedSensors>
 			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
 			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
 			<sensorsSequentialSceneRendering>false</sensorsSequentialSceneRendering>
@@ -109,7 +109,7 @@
 			<sensorOrientationRandomRoll>true</sensorOrientationRandomRoll>
 			<sensorDataSegmentationColorRGB>0 255 0</sensorDataSegmentationColorRGB>
 			<voxelGridFilterLeafSize>0.005</voxelGridFilterLeafSize>
-			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/active_perception/media/models/starter_motor/meshes/starter_motor.ply</sceneModelPath>
+			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/active_perception/media/models/starter_motor/meshes/starter_motor.ply|starter_motor</sceneModelPath>
 			<observationPoint>0 0 0</observationPoint>
 			<sdfSensorsNamePrefix>sensor</sdfSensorsNamePrefix>
 			<topicsSamplingSensorsPointcloudPrefix>sampling_point_cloud_</topicsSamplingSensorsPointcloudPrefix>

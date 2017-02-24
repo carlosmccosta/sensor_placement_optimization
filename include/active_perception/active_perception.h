@@ -79,6 +79,7 @@ class ActivePerception : public WorldPlugin {
 		void QueueThread();
 		void ProcessNewObservationPoint(const geometry_msgs::PointStampedConstPtr &_msg);
 		void ProcessNewSceneModelPath(const std_msgs::StringConstPtr &_msg);
+		void SetNewSceneModelPath(std::string _path_and_model);
 		void ProcessingThread();
 		void LoadSensors();
 		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
@@ -96,6 +97,7 @@ class ActivePerception : public WorldPlugin {
 						unsigned int _depth, const std::string &_format, size_t _sensor_index);
 		typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr SegmentSensorDataFromDepthSensor(const float* _data, const std::string &_format, unsigned int _width, unsigned int _height, Eigen::Affine3f &_transform_sensor_to_world, size_t _sensor_index);
 		bool GetSensorTransformToWorld(size_t _sensor_index, Eigen::Affine3f &_transform);
+		bool GetModelTransformToWorld(std::string _model_name, Eigen::Affine3f &_transform);
 		bool IsPointWithinValidRange(const sensors::DepthCameraSensorPtr& _depth_camera, float _point);
 		void GetSensorIntrinsics(const sensors::DepthCameraSensorPtr& _depth_camera, float &_fx_inverse, float &_fy_inverse, float &_cx, float &_cy);
 		bool FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr &_pointcloud);
@@ -199,6 +201,7 @@ class ActivePerception : public WorldPlugin {
 		bool new_observation_point_available_;
 
 		std::string scene_model_path_;
+		std::string scene_model_name_;
 		ros::Subscriber scene_model_path_subscriber_;
 		boost::mutex scene_model_path_mutex_;
 		bool new_scene_model_path_available_;

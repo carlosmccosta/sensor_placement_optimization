@@ -9,6 +9,7 @@ Panels:
         - /Kinect 11
         - /Kinect 11/PointCloud21
         - /Kinect 11/Image1
+        - /PoseArray best poses1
       Splitter Ratio: 0.620947659
     Tree Height: 539
   - Class: rviz/Selection
@@ -183,7 +184,7 @@ Visualization Manager:
       Axes Length: 0.300000012
       Axes Radius: 0.00999999978
       Class: rviz/PoseArray
-      Color: 85; 255; 0
+      Color: 255; 85; 0
       Enabled: true
       Head Length: 0.0700000003
       Head Radius: 0.0299999993
@@ -266,24 +267,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.810346007
+      Distance: 1.71779859
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.0509627201
-        Y: 0.0602670461
-        Z: 0.155865088
+        X: -0.123710915
+        Y: 0.118416212
+        Z: 0.257923096
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.774797201
+      Pitch: 1.02479672
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.92357492
+      Yaw: 0.100406267
     Saved: ~
 Window Geometry:
   Displays:
