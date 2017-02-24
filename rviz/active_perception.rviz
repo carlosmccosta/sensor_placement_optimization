@@ -7,8 +7,6 @@ Panels:
         - /Global Options1
         - /TF1/Frames1
         - /Kinect 11
-        - /Kinect 11/PointCloud21
-        - /Kinect 11/Image1
         - /PoseArray best poses1
       Splitter Ratio: 0.620947659
     Tree Height: 539
@@ -212,13 +210,17 @@ Visualization Manager:
       Unreliable: false
       Value: true
     - Class: rviz/Marker
-      Enabled: false
+      Enabled: true
       Marker Topic: /visualization_marker
       Name: Marker
       Namespaces:
-        {}
+        alternator__link__visual: true
+        differential_gearbox__link__visual: true
+        stacking_box__link__visual: true
+        starter_motor__link__visual: true
+        tool_trolley__link__visual: true
       Queue Size: 100
-      Value: false
+      Value: true
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -267,24 +269,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.71779859
+      Distance: 1.11783135
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.123710915
-        Y: 0.118416212
-        Z: 0.257923096
+        X: 0.01360243
+        Y: 0.0211219452
+        Z: 0.0477291867
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.02479672
+      Pitch: 0.879796505
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.100406267
+      Yaw: 5.913589
     Saved: ~
 Window Geometry:
   Displays:

@@ -40,20 +40,29 @@
 
 
 		<!-- ============================== SENSORS ============================== -->
-		<include>
-			<pose>0 0 0.5 1.5707 1.5707 0</pose>
-			<uri>model://asus_xtion_pro_live_sensor</uri>
-		</include>
-
 		<population name="sensors_population_1">
 			<include>
-				<uri>model://asus_xtion_pro_live_sensor</uri>
+				<uri>model://intel_realsense_sr300_sensor</uri>
 			</include>
-			<pose>0 0 0.75 0 0 0</pose>
+			<pose>0 0 0.35 0 0 0</pose>
 			<box>
-				<size>0.4 0.27 0.2</size>
+				<size>0.6 0.5 0.1</size>
 			</box>
-			<model_count>100</model_count>
+			<model_count>50</model_count>
+			<distribution>
+				<type>random</type>
+			</distribution>
+		</population>
+
+		<population name="sensors_population_2">
+			<include>
+				<uri>model://multisense_s7_sensor</uri>
+			</include>
+			<pose>0 0 0.55 0 0 0</pose>
+			<box>
+				<size>0.5 0.4 0.1</size>
+			</box>
+			<model_count>20</model_count>
 			<distribution>
 				<type>random</type>
 			</distribution>
@@ -100,7 +109,7 @@
 
 		<!-- ============================== PLUGINS ============================== -->
 		<plugin name="active_perception" filename="libactive_perception.so">
-			<numberOfSamplingSensors>101</numberOfSamplingSensors>
+			<numberOfSamplingSensors>70</numberOfSamplingSensors>
 			<numberOfIntendedSensors>5</numberOfIntendedSensors>
 			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
 			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
