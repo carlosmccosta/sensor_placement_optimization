@@ -1,225 +1,170 @@
 <?xml version="1.0"?>
-<sdf version="1.4">
+<sdf version="1.5">
 	<world name="default">
+		<!-- ============================== MODELS ============================== -->
 		<include>
-			<static>1</static>
-			<pose>0.105 0.688 -0.0366 0 0 0</pose>
-			<uri>model://mpl_haptix_right_forearm</uri>
+			<uri>model://sun</uri>
 		</include>
-		
-		<include>
-			<static>1</static>
-			<pose>0 0 -0.31 0 0 0</pose>
-			<uri>model://table_marble</uri>
-		</include>
+
+		<!-- <include> <static>1</static> <pose>0.105 0.688 -0.0366 0 0 0</pose> <uri>model://mpl_haptix_right_forearm</uri> </include> -->
 
 		<include>
 			<static>1</static>
-			<pose>-0.058 -0.043 -0.085 0 0 0</pose>
-			<uri>model://beam</uri>
+			<pose>0 0 -0.81 0 0 1.5707</pose>
+			<uri>model://tool_trolley</uri>
 		</include>
 
-		<model name="starter_motor">
+		<include>
 			<static>1</static>
-			<pose>0 0 0 0 0 0</pose>
-			<link name="starter_motor_link">
-				<visual name="starter_motor_visual">
-					<transparency>0</transparency>
-					<cast_shadows>false</cast_shadows>
-					<geometry>
-						<mesh>
-							<uri>model://starter_motor/meshes/starter_motor.dae</uri>
-						</mesh>
-					</geometry>
-					<material>
-						<script>
-							<name>ActivePerception/Green</name>
-							<uri>file://materials/active_perception.material</uri>
-						</script>
-					</material>
-				</visual>
-				<gravity>0</gravity>
-			</link>
-		</model>
+			<pose>0 0 -0.01 0 0 0</pose>
+			<uri>model://stacking_box</uri>
+		</include>
 
-		<population name="sensors_population_1">
-			<model name="depth_sensor_1">
-				<static>1</static>
-				<pose>0 0 0 0 0 0</pose>
-				<link name="link">
-					<inertial>
-						<mass>0.2</mass>
-					</inertial>
-					<!-- <collision name="collision">
-						<geometry>
-							<box>
-								<size>0.073000 0.276000 0.072000</size>
-							</box>
-						</geometry>
-					</collision> -->
-					<!-- <visual name="visual">
-						<transparency>0</transparency>
-						<geometry>
-							<mesh>
-								<uri>model://kinect1/meshes/kinect.dae</uri>
-							</mesh>
-						</geometry>
-					</visual> -->
-					<sensor name="active_perception_depth_1_sensor" type="depth">
-						<update_rate>0.1</update_rate>
-						<camera>
-							<!-- <depth_camera>
-								<output>points</output>
-							</depth_camera> -->
-							<horizontal_fov>1.047198</horizontal_fov>
-							<image>
-								<width>320</width>
-								<height>240</height>
-								<format>B8G8R8</format>
-							</image>
-							<clip>
-								<near>0.05</near>
-								<far>4</far>
-							</clip>
-						</camera>
-					</sensor>
-				</link>
-			</model>
-			<pose>0 0 0.5 0 0 0</pose>
-			<box>
-				<size>2 1 1</size>
-			</box>
-			<!-- <cylinder>
-				<radius>1</radius>
-				<length>2</length>
-			</cylinder> -->
-			<model_count>300</model_count>
-			<distribution>
-				<type>random</type> <!-- random / uniform / grid -->
-				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
-			</distribution>
-		</population>
-		
-		
-		<population name="sensors_population_2">
-			<model name="depth_sensor_2">
-				<static>1</static>
-				<pose>0 0 0 0 0 0</pose>
-				<link name="link">
-					<inertial>
-						<mass>0.2</mass>
-					</inertial>
-					<!-- <collision name="collision">
-						<geometry>
-							<box>
-								<size>0.073000 0.276000 0.072000</size>
-							</box>
-						</geometry>
-					</collision> -->
-					<!-- <visual name="visual">
-						<transparency>0</transparency>
-						<geometry>
-							<mesh>
-								<uri>model://kinect1/meshes/asus_xtion_pro_live.dae</uri>
-							</mesh>
-						</geometry>
-					</visual> -->
-					<sensor name="active_perception_depth_2_sensor" type="depth">
-						<update_rate>0.1</update_rate>
-						<camera>
-							<!-- <depth_camera>
-								<output>points</output>
-							</depth_camera> -->
-							<horizontal_fov>1.047198</horizontal_fov>
-							<image>
-								<width>640</width>
-								<height>480</height>
-								<format>B8G8R8</format>
-							</image>
-							<clip>
-								<near>0.05</near>
-								<far>4</far>
-							</clip>
-						</camera>
-					</sensor>
-				</link>
-			</model>
-			<pose>0 0 0.5 0 0 0</pose>
-			<box>
-				<size>2 1 1</size>
-			</box>
-			<!-- <cylinder>
-				<radius>1</radius>
-				<length>2</length>
-			</cylinder> -->
-			<model_count>300</model_count>
-			<distribution>
-				<type>random</type> <!-- random / uniform / grid -->
-				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
-			</distribution>
-		</population>
-		
-		
-		<population name="sensors_population_3">
-			<model name="depth_sensor_3">
-				<static>1</static>
-				<pose>0 0 0 0 0 0</pose>
-				<link name="link">
-					<inertial>
-						<mass>0.2</mass>
-					</inertial>
-					<!-- <collision name="collision">
-						<geometry>
-							<box>
-								<size>0.073000 0.276000 0.072000</size>
-							</box>
-						</geometry>
-					</collision> -->
-					<!-- <visual name="visual">
-						<transparency>0</transparency>
-						<geometry>
-							<mesh>
-								<uri>model://kinect1/meshes/asus_xtion_pro_live.dae</uri>
-							</mesh>
-						</geometry>
-					</visual> -->
-					<sensor name="active_perception_depth_3_sensor" type="depth">
-						<update_rate>0.1</update_rate>
-						<camera>
-							<!-- <depth_camera>
-								<output>points</output>
-							</depth_camera> -->
-							<horizontal_fov>1.047198</horizontal_fov>
-							<image>
-								<width>720</width>
-								<height>540</height>
-								<format>B8G8R8</format>
-							</image>
-							<clip>
-								<near>0.05</near>
-								<far>4</far>
-							</clip>
-						</camera>
-					</sensor>
-				</link>
-			</model>
-			<pose>0 0 0.5 0 0 0</pose>
-			<box>
-				<size>2 1 1</size>
-			</box>
-			<!-- <cylinder>
-				<radius>1</radius>
-				<length>2</length>
-			</cylinder> -->
-			<model_count>300</model_count>
-			<distribution>
-				<type>random</type> <!-- random / uniform / grid -->
-				<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
-			</distribution>
-		</population>
+		<include>
+			<static>1</static>
+			<pose>0.090696 0.054119 0 0 0 0</pose>
+			<uri>model://alternator</uri>
+		</include>
 
-		<physics type="ode">
-			<gravity>0 0 -9.81</gravity>
+		<include>
+			<static>1</static>
+			<pose>0.084253 -0.044110 0.047 0 0 -0.659767</pose>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.147778 0.098426 0.043 0 0 -0.843301</pose>
+			<uri>model://starter_motor</uri>
+		</include>
+
+
+		<!-- ============================== SENSORS ============================== -->
+		<!-- <population name="sensors_population_1"> -->
+		<!-- <model name="depth_sensor_1"> -->
+		<!-- <static>1</static> -->
+		<!-- <pose>0 0 0 0 0 0</pose> -->
+		<!-- <link name="link"> -->
+		<!-- <inertial> -->
+		<!-- <mass>0.2</mass> -->
+		<!-- </inertial> -->
+		<!-- <collision name="collision"> <geometry> <box> <size>0.073000 0.276000 0.072000</size> </box> </geometry> </collision> -->
+		<!-- <visual name="visual"> <transparency>0</transparency> <geometry> <mesh> <uri>model://kinect1/meshes/kinect.dae</uri> </mesh> </geometry> </visual> -->
+		<!-- <sensor name="active_perception_depth_1_sensor" type="depth"> -->
+		<!-- <update_rate>0.1</update_rate> -->
+		<!-- <camera> -->
+		<!-- <depth_camera> <output>points</output> </depth_camera> -->
+		<!-- <horizontal_fov>1.047198</horizontal_fov> -->
+		<!-- <image> -->
+		<!-- <width>320</width> -->
+		<!-- <height>240</height> -->
+		<!-- <format>B8G8R8</format> -->
+		<!-- </image> -->
+		<!-- <clip> -->
+		<!-- <near>0.05</near> -->
+		<!-- <far>4</far> -->
+		<!-- </clip> -->
+		<!-- </camera> -->
+		<!-- </sensor> -->
+		<!-- </link> -->
+		<!-- </model> -->
+		<!-- <pose>0 0 0.5 0 0 0</pose> -->
+		<!-- <box> -->
+		<!-- <size>2 1 1</size> -->
+		<!-- </box> -->
+		<!-- <!-- <cylinder> <radius>1</radius> <length>2</length> </cylinder> -->
+		<!-- <model_count>300</model_count> -->
+		<!-- <distribution> -->
+		<!-- <type>random</type> random / uniform / grid -->
+		<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
+		<!-- </distribution> -->
+		<!-- </population> -->
+
+
+		<!-- <population name="sensors_population_2"> -->
+		<!-- <model name="depth_sensor_2"> -->
+		<!-- <static>1</static> -->
+		<!-- <pose>0 0 0 0 0 0</pose> -->
+		<!-- <link name="link"> -->
+		<!-- <inertial> -->
+		<!-- <mass>0.2</mass> -->
+		<!-- </inertial> -->
+		<!-- <collision name="collision"> <geometry> <box> <size>0.073000 0.276000 0.072000</size> </box> </geometry> </collision> -->
+		<!-- <visual name="visual"> <transparency>0</transparency> <geometry> <mesh> <uri>model://kinect1/meshes/asus_xtion_pro_live.dae</uri> </mesh> </geometry> </visual> -->
+		<!-- <sensor name="active_perception_depth_2_sensor" type="depth"> -->
+		<!-- <update_rate>0.1</update_rate> -->
+		<!-- <camera> -->
+		<!-- <depth_camera> <output>points</output> </depth_camera> -->
+		<!-- <horizontal_fov>1.047198</horizontal_fov> -->
+		<!-- <image> -->
+		<!-- <width>640</width> -->
+		<!-- <height>480</height> -->
+		<!-- <format>B8G8R8</format> -->
+		<!-- </image> -->
+		<!-- <clip> -->
+		<!-- <near>0.05</near> -->
+		<!-- <far>4</far> -->
+		<!-- </clip> -->
+		<!-- </camera> -->
+		<!-- </sensor> -->
+		<!-- </link> -->
+		<!-- </model> -->
+		<!-- <pose>0 0 0.5 0 0 0</pose> -->
+		<!-- <box> -->
+		<!-- <size>2 1 1</size> -->
+		<!-- </box> -->
+		<!-- <!-- <cylinder> <radius>1</radius> <length>2</length> </cylinder> -->
+		<!-- <model_count>300</model_count> -->
+		<!-- <distribution> -->
+		<!-- <type>random</type> random / uniform / grid -->
+		<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
+		<!-- </distribution> -->
+		<!-- </population> -->
+
+		<!-- <population name="sensors_population_3"> -->
+		<!-- <model name="depth_sensor_3"> -->
+		<!-- <static>1</static> -->
+		<!-- <pose>0 0 0 0 0 0</pose> -->
+		<!-- <link name="link"> -->
+		<!-- <inertial> -->
+		<!-- <mass>0.2</mass> -->
+		<!-- </inertial> -->
+		<!-- <collision name="collision"> <geometry> <box> <size>0.073000 0.276000 0.072000</size> </box> </geometry> </collision> -->
+		<!-- <visual name="visual"> <transparency>0</transparency> <geometry> <mesh> <uri>model://kinect1/meshes/asus_xtion_pro_live.dae</uri> </mesh> </geometry> </visual> -->
+		<!-- <sensor name="active_perception_depth_3_sensor" type="depth"> -->
+		<!-- <update_rate>0.1</update_rate> -->
+		<!-- <camera> -->
+		<!-- <depth_camera> <output>points</output> </depth_camera> -->
+		<!-- <horizontal_fov>1.047198</horizontal_fov> -->
+		<!-- <image> -->
+		<!-- <width>720</width> -->
+		<!-- <height>540</height> -->
+		<!-- <format>B8G8R8</format> -->
+		<!-- </image> -->
+		<!-- <clip> -->
+		<!-- <near>0.05</near> -->
+		<!-- <far>4</far> -->
+		<!-- </clip> -->
+		<!-- </camera> -->
+		<!-- </sensor> -->
+		<!-- </link> -->
+		<!-- </model> -->
+		<!-- <pose>0 0 0.5 0 0 0</pose> -->
+		<!-- <box> -->
+		<!-- <size>2 1 1</size> -->
+		<!-- </box> -->
+		<!-- <!-- <cylinder> <radius>1</radius> <length>2</length> </cylinder> -->
+		<!-- <model_count>300</model_count> -->
+		<!-- <distribution> -->
+		<!-- <type>random</type> random / uniform / grid -->
+		<!-- <rows>5</rows> <cols>5</cols> <step>1 1 1</step> -->
+		<!-- </distribution> -->
+		<!-- </population> -->
+
+
+		<!-- ============================== PHYSICS ============================== -->
+		<gravity>0 0 -9.81</gravity>
+		<physics name='default_physics' default='0' type='ode'>
 			<max_step_size>0.01</max_step_size>
 			<real_time_factor>1</real_time_factor>
 			<real_time_update_rate>100</real_time_update_rate>
@@ -239,32 +184,29 @@
 		</physics>
 
 		<scene>
-			<ambient>0 0 0 0</ambient>
-			<background>0 0 0 0</background>
-			<shadows>0</shadows>
+			<ambient>0.4 0.4 0.4 1</ambient>
+			<background>0.7 0.7 0.7 1</background>
+			<shadows>1</shadows>
 		</scene>
 
-		<plugin name="active_perception" filename="libactive_perception.so">
-			<numberOfSamplingSensors>900</numberOfSamplingSensors>
-			<numberOfIntendedSensors>10</numberOfIntendedSensors>
-			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
-			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
-			<sensorsSequentialSceneRendering>false</sensorsSequentialSceneRendering>
-			<elapsedSimulationTimeInSecondsBetweenSensorAnalysis>3.0</elapsedSimulationTimeInSecondsBetweenSensorAnalysis>
-			<pollingSleepTime>0.2</pollingSleepTime>
-			<sensorOrientationRandomRoll>true</sensorOrientationRandomRoll>
-			<sensorDataSegmentationColorRGB>0 255 0</sensorDataSegmentationColorRGB>
-			<voxelGridFilterLeafSize>0.005</voxelGridFilterLeafSize>
-			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/active_perception/media/models/starter_motor/meshes/starter_motor.ply</sceneModelPath>
-			<observationPoint>0 0 0</observationPoint>
-			<sdfSensorsNamePrefix>active_perception</sdfSensorsNamePrefix>
-			<topicsSamplingSensorsPointcloudPrefix>sampling_point_cloud_</topicsSamplingSensorsPointcloudPrefix>
-			<publishedMsgsWorldFrameId>world</publishedMsgsWorldFrameId>
-			<publishedMsgsFrameIdSuffix>_frame</publishedMsgsFrameIdSuffix>
-			<publishMessagesOnlyWhenThereIsSubscribers>true</publishMessagesOnlyWhenThereIsSubscribers>
-			<topicObservationPoint>set_observation_point</topicObservationPoint>
-			<topicModelNames>set_model_names</topicModelNames>
-			<robotNamespace>active_perception</robotNamespace>
-		</plugin>
+
+		<!-- ============================== GUI ============================== -->
+		<gui fullscreen='0'>
+			<camera name='user_camera'>
+				<pose frame=''>1.01905 0.015342 0.895374 0 0.8147 3.13519</pose>
+				<view_controller>orbit</view_controller>
+				<projection_type>perspective</projection_type>
+			</camera>
+		</gui>
+
+
+		<!-- ============================== PLUGINS ============================== -->
+		<!-- <plugin name="active_perception" filename="libactive_perception.so"> <numberOfSamplingSensors>900</numberOfSamplingSensors> <numberOfIntendedSensors>10</numberOfIntendedSensors> <ransacNumberOfIterations>1000</ransacNumberOfIterations> 
+			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold> <sensorsSequentialSceneRendering>false</sensorsSequentialSceneRendering> <elapsedSimulationTimeInSecondsBetweenSensorAnalysis>3.0</elapsedSimulationTimeInSecondsBetweenSensorAnalysis> 
+			<pollingSleepTime>0.2</pollingSleepTime> <sensorOrientationRandomRoll>true</sensorOrientationRandomRoll> <sensorDataSegmentationColorRGB>0 255 0</sensorDataSegmentationColorRGB> <voxelGridFilterLeafSize>0.005</voxelGridFilterLeafSize> 
+			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/active_perception/media/models/starter_motor/meshes/starter_motor.ply</sceneModelPath> <observationPoint>0 0 0</observationPoint> <sdfSensorsNamePrefix>active_perception</sdfSensorsNamePrefix> 
+			<topicsSamplingSensorsPointcloudPrefix>sampling_point_cloud_</topicsSamplingSensorsPointcloudPrefix> <publishedMsgsWorldFrameId>world</publishedMsgsWorldFrameId> <publishedMsgsFrameIdSuffix>_frame</publishedMsgsFrameIdSuffix> 
+			<publishMessagesOnlyWhenThereIsSubscribers>true</publishMessagesOnlyWhenThereIsSubscribers> <topicObservationPoint>set_observation_point</topicObservationPoint> <topicModelNames>set_model_names</topicModelNames> 
+			<robotNamespace>active_perception</robotNamespace> </plugin> -->
 	</world>
 </sdf>
