@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+	<world name="default">
+		<!-- ============================== MODELS ============================== -->
+		<include>
+			<uri>model://sun</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0 0 -0.81 0 0 1.5707</pose>
+			<uri>model://tool_trolley</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0 0 -0.01 0 0 0</pose>
+			<uri>model://stacking_box</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0.090696 0.054119 0 0 0 0</pose>
+			<uri>model://alternator</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0.084253 -0.044110 0.047 0 0 -0.659767</pose>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.147778 0.098426 0.043 0 0 -0.843301</pose>
+			<uri>model://starter_motor</uri>
+		</include>
+
+
+		<!-- ============================== SENSORS ============================== -->
+		<population name="sensors_population_1">
+			<include>
+				<uri>model://intel_realsense_sr300_sensor</uri>
+			</include>
+			<pose>0 0 0.4 0 0 0</pose>
+			<box>
+				<size>0.55 0.45 0.2</size>
+			</box>
+			<model_count>60</model_count>
+			<distribution>
+				<type>random</type>
+			</distribution>
+		</population>
+
+		<population name="sensors_population_2">
+			<include>
+				<uri>model://multisense_s7_sensor</uri>
+			</include>
+			<pose>0 0 0.55 0 0 0</pose>
+			<cylinder>
+				<radius>0.35</radius>
+				<length>0.1</length>
+			</cylinder>
+			<model_count>20</model_count>
+			<distribution>
+				<type>uniform</type>
+			</distribution>
+		</population>
+		
+		<population name="sensors_population_3">
+			<include>
+				<uri>model://kinect_xbox_360_sensor</uri>
+			</include>
+			<pose>0 0 0.55 0 0 0</pose>
+			<cylinder>
+				<radius>0.35</radius>
+				<length>0.1</length>
+			</cylinder>
+			<model_count>20</model_count>
+			<distribution>
+				<type>random</type>
+			</distribution>
+		</population>
+
+
+		<!-- ============================== PHYSICS ============================== -->
+		<gravity>0 0 -9.81</gravity>
+		<physics name='default_physics' default='0' type='ode'>
+			<max_step_size>0.1</max_step_size>
+			<real_time_factor>1</real_time_factor>
+			<real_time_update_rate>10</real_time_update_rate>
+			<ode>
+				<solver>
+					<type>quick</type>
+					<iters>1</iters>
+					<sor>1.4</sor>
+				</solver>
+				<constraints>
+					<cfm>0</cfm>
+					<erp>1</erp>
+					<contact_max_correcting_vel>0</contact_max_correcting_vel>
+					<contact_surface_layer>0</contact_surface_layer>
+				</constraints>
+			</ode>
+		</physics>
+
+		<scene>
+			<ambient>1 1 1 1</ambient>
+			<background>1 1 1 1</background>
+			<shadows>1</shadows>
+		</scene>
+
+
+		<!-- ============================== GUI ============================== -->
+		<gui fullscreen='0'>
+			<camera name='user_camera'>
+				<pose frame=''>1.777550 -0.530751 1.258541 0.0 0.594702 2.847192</pose>
+				<view_controller>orbit</view_controller>
+				<projection_type>perspective</projection_type>
+			</camera>
+		</gui>
+
+
+		<!-- ============================== PLUGINS ============================== -->
+		<plugin name="active_perception" filename="libactive_perception.so">
+			<numberOfSamplingSensors>100</numberOfSamplingSensors>
+			<numberOfIntendedSensors>1</numberOfIntendedSensors>
+			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
+			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
+			<sensorsSequentialSceneRendering>false</sensorsSequentialSceneRendering>
+			<pollingSleepTime>0.2</pollingSleepTime>
+			<sensorOrientationRandomRoll>true</sensorOrientationRandomRoll>
+			<sensorDataSegmentationColorRGB>0 255 0</sensorDataSegmentationColorRGB>
+			<voxelGridFilterLeafSize>0.005</voxelGridFilterLeafSize>
+			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/active_perception/media/models/starter_motor/meshes/starter_motor.ply|starter_motor</sceneModelPath>
+			<observationPoint>0 0 0</observationPoint>
+			<sdfSensorsNamePrefix>sensor</sdfSensorsNamePrefix>
+			<topicsSamplingSensorsPointcloudPrefix>sampling_point_cloud_</topicsSamplingSensorsPointcloudPrefix>
+			<publishedMsgsWorldFrameId>world</publishedMsgsWorldFrameId>
+			<publishedMsgsFrameIdSuffix></publishedMsgsFrameIdSuffix>
+			<publishMessagesOnlyWhenThereIsSubscribers>false</publishMessagesOnlyWhenThereIsSubscribers>
+			<topicObservationPoint>set_observation_point</topicObservationPoint>
+			<topicModelNames>set_model_names</topicModelNames>
+			<robotNamespace>active_perception</robotNamespace>
+		</plugin>
+	</world>
+</sdf>
