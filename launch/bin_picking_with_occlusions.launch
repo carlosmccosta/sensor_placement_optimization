@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
 	<arg name="paused" default="false" />
+	<arg name="use_gazebo_gui" default="true" />
 	<arg name="use_gazebo2rviz" default="true" />
 	<include file="$(find active_perception)/launch/active_perception.launch">
 		<arg name="world_name" default="bin_picking_with_occlusions.world" />
 		<arg name="paused" default="$(arg paused)" />
+		<arg name="use_gazebo_gui" default="$(arg use_gazebo_gui)" />
 		<arg name="use_gazebo2rviz" default="$(arg use_gazebo2rviz)" />
 	</include>
 </launch>

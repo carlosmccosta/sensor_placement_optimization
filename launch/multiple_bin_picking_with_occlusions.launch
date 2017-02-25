@@ -4,7 +4,7 @@
 	<arg name="use_gazebo_gui" default="true" />
 	<arg name="use_gazebo2rviz" default="true" />
 	<include file="$(find active_perception)/launch/active_perception.launch">
-		<arg name="world_name" default="bin_picking.world" />
+		<arg name="world_name" default="multiple_bin_picking_with_occlusions.world" />
 		<arg name="paused" default="$(arg paused)" />
 		<arg name="use_gazebo_gui" default="$(arg use_gazebo_gui)" />
 		<arg name="use_gazebo2rviz" default="$(arg use_gazebo2rviz)" />

@@ -40,7 +40,7 @@
 					</image>
 					<clip>
 						<near>0.4</near>
-						<far>3.0</far>
+						<far>4.0</far>
 					</clip>
 				</camera>
 			</sensor>

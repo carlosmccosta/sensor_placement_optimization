@@ -1,6 +1,9 @@
-roslaunch active_perception bin_picking.launch paused:=true use_gazebo2rviz:=false
-roslaunch active_perception bin_picking_with_occlusions.launch paused:=true use_gazebo2rviz:=false
+roslaunch active_perception bin_picking.launch paused:=true use_gazebo2rviz:=false use_gazebo_gui:=false
+roslaunch active_perception bin_picking_with_occlusions.launch paused:=true use_gazebo2rviz:=false use_gazebo_gui:=false
+roslaunch active_perception multiple_bin_picking_with_occlusions.launch paused:=true use_gazebo2rviz:=false use_gazebo_gui:=false
 
+gzclient
+rosservice call /gazebo/unpause_physics "{}"
 roslaunch gazebo2rviz gazebo2rviz.launch
 rosrun rviz rviz -d /home/carloscosta/catkin_ws_simulation/src/active_perception/rviz/active_perception.rviz
 

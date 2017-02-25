@@ -1,0 +1,305 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+	<world name="default">
+		<!-- ============================== MODELS ============================== -->
+		<include>
+			<uri>model://sun</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0 0 -0.81 0 0 1.5707</pose>
+			<uri>model://tool_trolley</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0 0 -0.01 0 0 0</pose>
+			<uri>model://stacking_box</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0.090696 0.054119 0 0 0 0</pose>
+			<name>alternator_1</name>
+			<uri>model://alternator</uri>
+		</include>
+		
+		<include>
+			<static>1</static>
+			<pose>0.137213 0.019716 -0.324969 0 0 0</pose>
+			<name>alternator_2</name>
+			<uri>model://alternator</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.122101 0.323398 -0.324957 0 0 0</pose>
+			<name>alternator_3</name>
+			<uri>model://alternator</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.123266 0.173233 -0.324960 0 0 0</pose>
+			<name>alternator_4</name>
+			<uri>model://alternator</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0.084253 -0.044110 0.047 0 0 -0.659767</pose>
+			<name>differential_gearbox_1</name>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0.010238 -0.046692 0.104874 2.252756 0.128312 -0.609241</pose>
+			<name>differential_gearbox_2</name>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.015834 0.043449 0.103268 -1.152353 0.293343 2.525742</pose>
+			<name>differential_gearbox_3</name>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.117048 -0.006667 0.113098 0.923027 -0.056416 -1.586861</pose>
+			<name>differential_gearbox_4</name>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0.145346 0.327873 -0.277962 0.017368 0.000434 -3.080293</pose>
+			<name>differential_gearbox_5</name>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.141671 -0.129747 -0.277976 0 0 0</pose>
+			<name>differential_gearbox_7</name>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.139172 0.020453 -0.277957 0 0 0</pose>
+			<name>differential_gearbox_6</name>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.147778 0.098426 0.043 0 0 -0.843301</pose>
+			<uri>model://starter_motor</uri>
+			<name>starter_motor_1</name>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0.123061 -0.077881 -0.318936 -0.572513 -1.042285 -1.672380</pose>
+			<uri>model://starter_motor</uri>
+			<name>starter_motor_2</name>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.121221 -0.272740 0.030711 0.507151 0.113135 -0.027497</pose>
+			<uri>model://starter_motor</uri>
+			<name>starter_motor_3</name>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0.036143 0.169299 -0.261078 -0.532356 0.096978 0.178897</pose>
+			<uri>model://starter_motor</uri>
+			<name>starter_motor_4</name>
+		</include>
+
+
+		<!-- ============================== SENSORS ============================== -->
+		<population name="sensors_population_1">
+			<include>
+				<uri>model://intel_realsense_sr300_sensor</uri>
+			</include>
+			<pose>0 0 0.5 0 0 0</pose>
+			<box>
+				<size>0.55 0.45 0.2</size>
+			</box>
+			<model_count>50</model_count>
+			<distribution>
+				<type>random</type>
+			</distribution>
+		</population>
+
+		<population name="sensors_population_2">
+			<include>
+				<uri>model://multisense_s7_sensor</uri>
+			</include>
+			<pose>0 0 0.95 0 0 0</pose>
+			<cylinder>
+				<radius>1.0</radius>
+				<length>0.1</length>
+			</cylinder>
+			<model_count>30</model_count>
+			<distribution>
+				<type>uniform</type>
+			</distribution>
+		</population>
+
+		<population name="sensors_population_3">
+			<include>
+				<uri>model://kinect_xbox_360_sensor</uri>
+			</include>
+			<pose>0 0 0.65 0 0 0</pose>
+			<cylinder>
+				<radius>0.5</radius>
+				<length>0.1</length>
+			</cylinder>
+			<model_count>30</model_count>
+			<distribution>
+				<type>uniform</type>
+			</distribution>
+		</population>
+
+		<population name="sensors_population_4">
+			<include>
+				<uri>model://zed_sensor</uri>
+			</include>
+			<pose>0 0 2.5 0 0 0</pose>
+			<cylinder>
+				<radius>2.0</radius>
+				<length>0.01</length>
+			</cylinder>
+			<model_count>30</model_count>
+			<distribution>
+				<type>uniform</type>
+			</distribution>
+		</population>
+
+		<population name="sensors_population_5">
+			<include>
+				<uri>model://asus_xtion_pro_live_sensor</uri>
+			</include>
+			<pose>3.25 0 -0.81 0 -1.5707 0</pose>
+			<box>
+				<size>2.5 4 0.01</size>
+			</box>
+			<model_count>40</model_count>
+			<distribution>
+				<type>uniform</type>
+			</distribution>
+		</population>
+		
+		<population name="sensors_population_6">
+			<include>
+				<uri>model://orbbec_astra_sensor</uri>
+			</include>
+			<pose>-0.75 0 -0.81 0 -1.5707 0</pose>
+			<box>
+				<size>2.5 4 0.01</size>
+			</box>
+			<model_count>40</model_count>
+			<distribution>
+				<type>uniform</type>
+			</distribution>
+		</population>
+		
+		<population name="sensors_population_7">
+			<include>
+				<uri>model://kinect_xbox_one_sensor</uri>
+			</include>
+			<pose>-0.75 0 -0.81 0 -1.5707 -1.5707</pose>
+			<box>
+				<size>2.5 4 0.01</size>
+			</box>
+			<model_count>40</model_count>
+			<distribution>
+				<type>uniform</type>
+			</distribution>
+		</population>
+		
+		<population name="sensors_population_8">
+			<include>
+				<uri>model://ensenso_n35_sensor</uri>
+			</include>
+			<pose>-0.75 4 -0.81 0 -1.5707 -1.5707</pose>
+			<box>
+				<size>2.5 4 0.01</size>
+			</box>
+			<model_count>40</model_count>
+			<distribution>
+				<type>uniform</type>
+			</distribution>
+		</population>
+
+
+		<!-- ============================== PHYSICS ============================== -->
+		<gravity>0 0 -9.81</gravity>
+		<physics name='default_physics' default='0' type='ode'>
+			<max_step_size>0.001</max_step_size>
+			<real_time_factor>1</real_time_factor>
+			<real_time_update_rate>1000</real_time_update_rate>
+			<ode>
+				<solver>
+					<type>quick</type>
+					<iters>50</iters>
+					<sor>1.4</sor>
+				</solver>
+				<constraints>
+					<cfm>0</cfm>
+					<erp>1</erp>
+					<contact_max_correcting_vel>0</contact_max_correcting_vel>
+					<contact_surface_layer>0</contact_surface_layer>
+				</constraints>
+			</ode>
+		</physics>
+
+		<scene>
+			<ambient>1 1 1 1</ambient>
+			<background>1 1 1 1</background>
+			<shadows>1</shadows>
+		</scene>
+
+
+		<!-- ============================== GUI ============================== -->
+		<gui fullscreen='0'>
+			<camera name='user_camera'>
+				<pose frame=''>2.422673 -0.310606 1.286927 0 0.470190 2.998850</pose>
+				<view_controller>orbit</view_controller>
+				<projection_type>perspective</projection_type>
+			</camera>
+		</gui>
+
+
+		<!-- ============================== PLUGINS ============================== -->
+		<plugin name="active_perception" filename="libactive_perception.so">
+			<numberOfSamplingSensors>300</numberOfSamplingSensors>
+			<numberOfIntendedSensors>7</numberOfIntendedSensors>
+			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
+			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
+			<sensorsSequentialSceneRendering>true</sensorsSequentialSceneRendering>
+			<pollingSleepTime>0.2</pollingSleepTime>
+			<sensorOrientationRandomRoll>true</sensorOrientationRandomRoll>
+			<sensorDataSegmentationColorRGB>0 255 0</sensorDataSegmentationColorRGB>
+			<voxelGridFilterLeafSize>0.005</voxelGridFilterLeafSize>
+			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/active_perception/media/models/starter_motor/meshes/starter_motor.ply|starter_motor_1+starter_motor_2+starter_motor_3+starter_motor_4</sceneModelPath>
+			<observationPoint>0 0 0</observationPoint>
+			<sdfSensorsNamePrefix>sensor</sdfSensorsNamePrefix>
+			<topicsSamplingSensorsPointcloudPrefix>sampling_point_cloud_</topicsSamplingSensorsPointcloudPrefix>
+			<publishedMsgsWorldFrameId>world</publishedMsgsWorldFrameId>
+			<publishedMsgsFrameIdSuffix></publishedMsgsFrameIdSuffix>
+			<publishMessagesOnlyWhenThereIsSubscribers>false</publishMessagesOnlyWhenThereIsSubscribers>
+			<topicObservationPoint>set_observation_point</topicObservationPoint>
+			<topicModelNames>set_model_names</topicModelNames>
+			<robotNamespace>active_perception</robotNamespace>
+		</plugin>
+	</world>
+</sdf>

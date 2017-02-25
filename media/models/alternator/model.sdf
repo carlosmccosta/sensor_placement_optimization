@@ -5,6 +5,7 @@
 		<pose>0 0 0 0 0 0</pose>
 		<link name="link">
 			<inertial>
+				<pose>0 0 0.086903 0 0 0</pose>
 				<mass>2.0</mass>
 			</inertial>
 			<collision name="collision">

@@ -146,7 +146,7 @@ Visualization Manager:
           Color: 0; 255; 0
           Color Transformer: RGB8
           Decay Time: 0
-          Enabled: true
+          Enabled: false
           Invert Rainbow: false
           Max Color: 255; 255; 255
           Max Intensity: 4096
@@ -163,7 +163,7 @@ Visualization Manager:
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
-          Value: true
+          Value: false
         - Class: rviz/Image
           Enabled: true
           Image Topic: /active_perception/sampling_point_cloud_intel_realsense_sr300_sensor_clone_0_color_image
@@ -211,13 +211,29 @@ Visualization Manager:
       Unreliable: false
       Value: false
     - Class: rviz/Marker
-      Enabled: false
+      Enabled: true
       Marker Topic: /visualization_marker
       Name: Marker
       Namespaces:
-        {}
+        alternator_1__link__visual: true
+        alternator_2__link__visual: true
+        alternator_3__link__visual: true
+        alternator_4__link__visual: true
+        differential_gearbox_1__link__visual: true
+        differential_gearbox_2__link__visual: true
+        differential_gearbox_3__link__visual: true
+        differential_gearbox_4__link__visual: true
+        differential_gearbox_5__link__visual: true
+        differential_gearbox_6__link__visual: true
+        differential_gearbox_7__link__visual: true
+        stacking_box__link__visual: true
+        starter_motor_1__link__visual: true
+        starter_motor_2__link__visual: true
+        starter_motor_3__link__visual: true
+        starter_motor_4__link__visual: true
+        tool_trolley__link__visual: true
       Queue Size: 100
-      Value: false
+      Value: true
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -266,24 +282,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.299049318
+      Distance: 0.920793235
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.0839120597
-        Y: 0.0366556346
-        Z: 0.303850144
+        X: 0.151785567
+        Y: 0.0465395898
+        Z: 0.00136722345
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 1.42479646
+      Pitch: 0.304796487
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.38224387
+      Yaw: 6.04538822
     Saved: ~
 Window Geometry:
   Displays:

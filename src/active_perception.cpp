@@ -167,6 +167,8 @@ void ActivePerception::ProcessingThread() {
 		common::Time::Sleep(polling_sleep_time_);
 	}
 
+	common::Time::Sleep(common::Time(polling_sleep_time_.Double() * 5.0));
+
 	ROS_INFO_STREAM("ActivePerception has started with " << sensors_.size() << " sampling sensors for finding the optimal placement for " << number_of_intended_sensors_ << (number_of_intended_sensors_ == 1 ? " sensor" : " sensors"));
 	bool sensor_analysis_required = true;
 
@@ -311,20 +313,46 @@ void ActivePerception::LoadSceneModel() {
 	scene_model_path_mutex_.lock();
 	if (new_scene_model_path_available_ && !scene_model_path_.empty()) {
 		scene_model_ = typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr(new pcl::PointCloud<pcl::PointXYZRGB>());
-		if (!LoadPointCloudfromFile(scene_model_path_, *scene_model_) || !FilterPointCloud(scene_model_)) {
-			scene_model_ = typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr();
-		} else {
-			scene_model_->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
-			scene_model_->header.frame_id = published_msgs_world_frame_id_;
+		if (LoadPointCloudfromFile(scene_model_path_, *scene_model_)) {
+			if (!scene_model_name_.empty()) {
+				std::vector<std::string> model_names;
+				if (scene_model_name_.find('+') != std::string::npos) {
+					std::replace(scene_model_name_.begin(), scene_model_name_.end(), '+', ' ');
+					std::stringstream scene_model_ss(scene_model_name_);
+					std::string model_name;
+					while (scene_model_ss >> model_name) {
+						model_names.push_back(model_name);
+					}
 
-			Eigen::Affine3f transform_to_world;
-			if (!scene_model_name_.empty() && GetModelTransformToWorld(scene_model_name_, transform_to_world)) {
-				pcl::transformPointCloud(*scene_model_, *scene_model_, transform_to_world);
+					typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr merged_pointcloud(new pcl::PointCloud<pcl::PointXYZRGB>());
+					for (size_t i = 0; i < model_names.size(); ++i) {
+						Eigen::Affine3f transform_to_world;
+						if (!model_names[i].empty() && GetModelTransformToWorld(model_names[i], transform_to_world)) {
+							pcl::PointCloud<pcl::PointXYZRGB> transformed_pointcloud;
+							pcl::transformPointCloud(*scene_model_, transformed_pointcloud, transform_to_world);
+							*merged_pointcloud += transformed_pointcloud;
+						}
+					}
+					scene_model_ = merged_pointcloud;
+				} else {
+					Eigen::Affine3f transform_to_world;
+					if (GetModelTransformToWorld(scene_model_name_, transform_to_world)) {
+						pcl::transformPointCloud(*scene_model_, *scene_model_, transform_to_world);
+					}
+				}
 			}
 
-			sensor_msgs::PointCloud2Ptr cloud_msg(new sensor_msgs::PointCloud2());
-			pcl::toROSMsg(*scene_model_, *cloud_msg);
-			scene_model_publisher_.publish(cloud_msg);
+			if (FilterPointCloud(scene_model_)) {
+				scene_model_->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
+				scene_model_->header.frame_id = published_msgs_world_frame_id_;
+				sensor_msgs::PointCloud2Ptr cloud_msg(new sensor_msgs::PointCloud2());
+				pcl::toROSMsg(*scene_model_, *cloud_msg);
+				scene_model_publisher_.publish(cloud_msg);
+			} else {
+				scene_model_ = typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr();
+			}
+		} else {
+			scene_model_ = typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr();
 		}
 		new_scene_model_path_available_ = false;
 	}
@@ -338,6 +366,11 @@ void ActivePerception::SetSensorsState(bool _active) {
 }
 
 void ActivePerception::OnNewImageFrame(const unsigned char* _image, unsigned int _width, unsigned int _height, unsigned int _depth, const std::string& _format, size_t _sensor_index) {
+	if (_image == NULL) {
+		ROS_WARN_STREAM("Received NULL image from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
+		return;
+	}
+
 	if (_sensor_index < sampling_sensors_color_image_publishers_.size() && !sampling_sensors_images_[_sensor_index] && !sampling_sensors_pointclouds_[_sensor_index]) {
 		sensor_msgs::Image::Ptr image_msg(new sensor_msgs::Image());
 		image_msg->header.stamp.fromSec(world_->SimTime().Double());
@@ -361,6 +394,11 @@ void ActivePerception::OnNewImageFrame(const unsigned char* _image, unsigned int
 void ActivePerception::OnNewPointCloud(const float *_pcd,
 				unsigned int _width, unsigned int _height,
 				unsigned int _depth, const std::string &_format, size_t _sensor_index) {
+	if (_pcd == NULL) {
+		ROS_WARN_STREAM("Received NULL pointcloud from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
+		return;
+	}
+
 	if (_sensor_index < sensors_.size() && _sensor_index < sampling_sensors_pointclouds_.size() && !sampling_sensors_pointclouds_[_sensor_index]) {
 		if (!sampling_sensors_images_[_sensor_index]) return;
 		Eigen::Affine3f transform_sensor_to_world;
