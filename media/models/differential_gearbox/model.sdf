@@ -1,18 +1,21 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
 	<model name="differential_gearbox">
-		<static>1</static>
+		<static>0</static>
 		<pose>0 0 0.047 0 0 0</pose>
 		<link name="link">
 			<inertial>
 				<mass>1.5</mass>
 			</inertial>
 			<collision name="collision">
-				<pose>0 0 0 0 0 0</pose>
+				<!-- <pose>0 0 0 0 0 0</pose> -->
 				<geometry>
-					<box>
+					<!-- <box>
 						<size>0.1932 0.0946 0.094</size>
-					</box>
+					</box> -->
+					<mesh>
+						<uri>model://differential_gearbox/meshes/differential_gearbox.stl</uri>
+					</mesh>
 				</geometry>
 			</collision>
 			<visual name="visual">

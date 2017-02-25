@@ -2,17 +2,20 @@
 <sdf version="1.5">
 	<model name="tool_trolley">
 		<static>1</static>
+		<pose>0 0 0 0 0 0</pose>
 		<link name="link">
-			<pose>0 0 0 0 0 0</pose>
 			<inertial>
-				<mass>10.0</mass>
+				<mass>20.0</mass>
 			</inertial>
 			<collision name="collision">
-				<pose>0 0 0.4 0 0 0</pose>
+				<!-- <pose>0 0 0.4 0 0 0</pose> -->
 				<geometry>
-					<box>
+					<!-- <box>
 						<size>0.8794 0.5004 0.8</size>
-					</box>
+					</box> -->
+					<mesh>
+						<uri>model://tool_trolley/meshes/tool_trolley.stl</uri>
+					</mesh>
 				</geometry>
 			</collision>
 			<visual name="visual">

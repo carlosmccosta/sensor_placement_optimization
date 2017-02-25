@@ -1,18 +1,21 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
 	<model name="starter_motor">
-		<static>1</static>
+		<static>0</static>
 		<pose>0 0 0.043 0 0 0</pose>
 		<link name="link">
 			<inertial>
-				<mass>0.5</mass>
+				<mass>1.0</mass>
 			</inertial>
 			<collision name="collision">
-				<pose>0.1122 -0.0244 0 0 0 0</pose>
+				<!-- <pose>0.1122 -0.0244 0 0 0 0</pose> -->
 				<geometry>
-					<box>
+					<!-- <box>
 						<size>0.2244 0.1442 0.086</size>
-					</box>
+					</box> -->
+					<mesh>
+						<uri>model://starter_motor/meshes/starter_motor.stl</uri>
+					</mesh>
 				</geometry>
 			</collision>
 			<visual name="visual">

@@ -5,14 +5,17 @@
 		<pose>0 0 0 0 0 0</pose>
 		<link name="link">
 			<inertial>
-				<mass>0.1</mass>
+				<mass>0.5</mass>
 			</inertial>
 			<collision name="collision">
-				<pose>0 0 0.1125 0 0 0</pose>
+				<!-- <pose>0 0 0.1125 0 0 0</pose> -->
 				<geometry>
-					<box>
+					<!-- <box>
 						<size>0.4048 0.27 0.225</size>
-					</box>
+					</box> -->
+					<mesh>
+						<uri>model://stacking_box/meshes/stacking_box.stl</uri>
+					</mesh>
 				</geometry>
 			</collision>
 			<visual name="visual">

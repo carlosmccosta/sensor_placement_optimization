@@ -27,6 +27,28 @@
 		<include>
 			<static>1</static>
 			<pose>0.084253 -0.044110 0.047 0 0 -0.659767</pose>
+			<name>differential_gearbox_1</name>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>0.010238 -0.046692 0.104874 2.252756 0.128312 -0.609241</pose>
+			<name>differential_gearbox_2</name>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.015834 0.043449 0.103268 -1.152353 0.293343 2.525742</pose>
+			<name>differential_gearbox_3</name>
+			<uri>model://differential_gearbox</uri>
+		</include>
+
+		<include>
+			<static>1</static>
+			<pose>-0.117048 -0.006667 0.113098 0.923027 -0.056416 -1.586861</pose>
+			<name>differential_gearbox_4</name>
 			<uri>model://differential_gearbox</uri>
 		</include>
 
@@ -42,11 +64,11 @@
 			<include>
 				<uri>model://intel_realsense_sr300_sensor</uri>
 			</include>
-			<pose>0 0 0.4 0 0 0</pose>
+			<pose>0 0 0.5 0 0 0</pose>
 			<box>
 				<size>0.55 0.45 0.2</size>
 			</box>
-			<model_count>60</model_count>
+			<model_count>200</model_count>
 			<distribution>
 				<type>random</type>
 			</distribution>
@@ -56,14 +78,14 @@
 			<include>
 				<uri>model://multisense_s7_sensor</uri>
 			</include>
-			<pose>0 0 0.55 0 0 0</pose>
+			<pose>0 0 0.65 0 0 0</pose>
 			<cylinder>
 				<radius>0.35</radius>
 				<length>0.1</length>
 			</cylinder>
 			<model_count>20</model_count>
 			<distribution>
-				<type>uniform</type>
+				<type>random</type>
 			</distribution>
 		</population>
 		
@@ -71,12 +93,12 @@
 			<include>
 				<uri>model://kinect_xbox_360_sensor</uri>
 			</include>
-			<pose>0 0 0.55 0 0 0</pose>
+			<pose>0 0 0.65 0 0 0</pose>
 			<cylinder>
 				<radius>0.35</radius>
 				<length>0.1</length>
 			</cylinder>
-			<model_count>20</model_count>
+			<model_count>80</model_count>
 			<distribution>
 				<type>random</type>
 			</distribution>
@@ -114,7 +136,7 @@
 		<!-- ============================== GUI ============================== -->
 		<gui fullscreen='0'>
 			<camera name='user_camera'>
-				<pose frame=''>1.933471 -0.570123 1.387127 0 0.594702 0.594702</pose>
+				<pose frame=''>2.422673 -0.310606 1.286927 0 0.470190 2.998850</pose>
 				<view_controller>orbit</view_controller>
 				<projection_type>perspective</projection_type>
 			</camera>
@@ -123,8 +145,8 @@
 
 		<!-- ============================== PLUGINS ============================== -->
 		<plugin name="active_perception" filename="libactive_perception.so">
-			<numberOfSamplingSensors>100</numberOfSamplingSensors>
-			<numberOfIntendedSensors>1</numberOfIntendedSensors>
+			<numberOfSamplingSensors>300</numberOfSamplingSensors>
+			<numberOfIntendedSensors>3</numberOfIntendedSensors>
 			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
 			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
 			<sensorsSequentialSceneRendering>false</sensorsSequentialSceneRendering>

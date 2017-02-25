@@ -13,14 +13,14 @@
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
 		<arg name="world_name" default="$(arg world_folder)$(arg world_name)" />
 		<arg name="paused" default="$(arg paused)" />
-		<arg name="use_sim_time" default="false" />
-		<arg name="remap_clock" default="true" />
+		<arg name="use_sim_time" default="true" />
+		<arg name="remap_clock" default="false" />
 		<arg name="gui" default="$(arg use_gazebo_gui)" />
 		<arg name="headless" default="false" />
 		<arg name="debug" default="false" />
 	</include>
 
-	<include file="$(find gazebo2rviz)/launch/gazebo2rviz.launch" />
+	<include file="$(find gazebo2rviz)/launch/gazebo2rviz.launch" if="$(arg use_gazebo2rviz)" />
 
 	<node name="rviz" pkg="rviz" type="rviz" args="$(arg rviz_config)" if="$(arg show_rviz)" output="screen" />
 </launch>

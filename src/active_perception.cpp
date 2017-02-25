@@ -518,10 +518,10 @@ void ActivePerception::ProcessSensorData() {
 		sensors_best_voxel_grid_surface_coverages_msg.data.push_back(best_coverage);
 		best_sensor_names << sensors_models_[best_sensor_coverage_index]->GetName();
 		ShowSensor(best_sensor_coverage_index);
-		sampling_sensors_pointclouds_[0]->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
-		sampling_sensors_pointclouds_[0]->header.frame_id = published_msgs_world_frame_id_;
+		sampling_sensors_pointclouds_[best_sensor_coverage_index]->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
+		sampling_sensors_pointclouds_[best_sensor_coverage_index]->header.frame_id = published_msgs_world_frame_id_;
 		sensor_msgs::PointCloud2Ptr pointcloud_msg(new sensor_msgs::PointCloud2());
-		pcl::toROSMsg(*sampling_sensors_pointclouds_[0], *pointcloud_msg);
+		pcl::toROSMsg(*sampling_sensors_pointclouds_[best_sensor_coverage_index], *pointcloud_msg);
 		sensors_best_merged_pointcloud_publisher_.publish(pointcloud_msg);
 		ROS_INFO_STREAM("Finished analyzing the sensor data with the best view achieving " << best_coverage << " surface coverage percentage");
 	} else {
