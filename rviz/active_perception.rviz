@@ -6,9 +6,12 @@ Panels:
       Expanded:
         - /Global Options1
         - /TF1/Frames1
+        - /PointCloud2 best merged1
         - /Kinect 11
         - /Kinect 11/Image1
+        - /PoseArray best poses1
         - /PoseArray sensor poses1
+        - /Marker1/Namespaces1
       Splitter Ratio: 0.620947659
     Tree Height: 539
   - Class: rviz/Selection
@@ -125,7 +128,7 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 20
-      Size (m): 0.00499999989
+      Size (m): 0.00700000022
       Style: Spheres
       Topic: /active_perception/best_merged_pointcloud
       Unreliable: false
@@ -185,22 +188,22 @@ Visualization Manager:
       Class: rviz/PoseArray
       Color: 255; 85; 0
       Enabled: true
-      Head Length: 0.0500000007
-      Head Radius: 0.0219999999
+      Head Length: 0.0700000003
+      Head Radius: 0.0599999987
       Name: PoseArray best poses
-      Shaft Length: 0.100000001
-      Shaft Radius: 0.00999999978
+      Shaft Length: 0.150000006
+      Shaft Radius: 0.0299999993
       Shape: Arrow (3D)
       Topic: /active_perception/best_sensor_poses
       Unreliable: false
       Value: true
     - Alpha: 1
       Arrow Length: 0.300000012
-      Axes Length: 0.0149999997
-      Axes Radius: 0.00249999994
+      Axes Length: 0.0500000007
+      Axes Radius: 0.00999999978
       Class: rviz/PoseArray
       Color: 255; 25; 0
-      Enabled: false
+      Enabled: true
       Head Length: 0.0700000003
       Head Radius: 0.0299999993
       Name: PoseArray sensor poses
@@ -209,7 +212,7 @@ Visualization Manager:
       Shape: Axes
       Topic: /active_perception/sensor_poses
       Unreliable: false
-      Value: false
+      Value: true
     - Class: rviz/Marker
       Enabled: true
       Marker Topic: /visualization_marker
@@ -282,7 +285,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 0.920793235
+      Distance: 8.29091454
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -296,10 +299,10 @@ Visualization Manager:
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.304796487
+      Pitch: 0.649796903
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.04538822
+      Yaw: 6.25031662
     Saved: ~
 Window Geometry:
   Displays:
@@ -319,5 +322,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1920
-  X: 1920
+  X: 0
   Y: 24

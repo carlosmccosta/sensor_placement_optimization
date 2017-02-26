@@ -159,7 +159,7 @@ void ActivePerception::SetNewSceneModelPath(std::string _path_and_model) {
 
 void ActivePerception::ProcessingThread() {
 	LoadSensors();
-	OrientSensorsToObservationPoint();
+	OrientSensorsToObservationPoint(sensor_orientation_random_roll_);
 	PublishSensorsPoses();
 	LoadSceneModel();
 
@@ -167,7 +167,12 @@ void ActivePerception::ProcessingThread() {
 		common::Time::Sleep(polling_sleep_time_);
 	}
 
-	common::Time::Sleep(common::Time(polling_sleep_time_.Double() * 5.0));
+	//OrientSensorsToObservationPoint(false);
+	HideSensors();
+	/*SetSensorsState(true);
+	common::Time::Sleep(common::Time(polling_sleep_time_.Double() * 10.0));
+	SetSensorsState(false);*/
+	ConnectDataCallBacks();
 
 	ROS_INFO_STREAM("ActivePerception has started with " << sensors_.size() << " sampling sensors for finding the optimal placement for " << number_of_intended_sensors_ << (number_of_intended_sensors_ == 1 ? " sensor" : " sensors"));
 	bool sensor_analysis_required = true;
@@ -175,7 +180,7 @@ void ActivePerception::ProcessingThread() {
 	while (rosnode_->ok()) {
 		observation_point_mutex_.lock();
 		if (new_observation_point_available_) {
-			OrientSensorsToObservationPoint();
+			OrientSensorsToObservationPoint(sensor_orientation_random_roll_);
 			PublishSensorsPoses();
 			new_observation_point_available_ = false;
 			sensor_analysis_required = true;
@@ -233,17 +238,7 @@ void ActivePerception::LoadSensors() {
 						if (!sensors_.empty()) sensor_names << "|";
 						sensor_names << sensor_parent_name;
 						sensors_.push_back(sensor_depth);
-						sensor_depth->SetActive(false);
 						sensors_models_.push_back(sensor_model);
-						color_image_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewImageFrame(std::bind(&ActivePerception::OnNewImageFrame,
-														this, std::placeholders::_1, std::placeholders::_2,
-														std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
-						depth_image_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewDepthFrame(std::bind(&ActivePerception::OnNewPointCloud,
-														this, std::placeholders::_1, std::placeholders::_2,
-														std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
-						color_pointcloud_connections_.push_back(sensor_depth->DepthCamera()->ConnectNewRGBPointCloud(std::bind(&ActivePerception::OnNewPointCloud,
-								this, std::placeholders::_1, std::placeholders::_2,
-								std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
 						sampling_sensors_color_image_publishers_.push_back(rosnode_->advertise<sensor_msgs::Image>(topics_sampling_sensors_prefix_ + sensor_parent_name + "_color_image", 1, true));
 						sampling_sensors_pointcloud_publishers_.push_back(rosnode_->advertise<sensor_msgs::PointCloud2>(topics_sampling_sensors_prefix_ + sensor_parent_name + "_pointcloud", 1, true));
 					}
@@ -257,6 +252,20 @@ void ActivePerception::LoadSensors() {
 	sensors_names_publisher_.publish(sensor_names_msg);
 }
 
+void ActivePerception::ConnectDataCallBacks() {
+	for (size_t i = 0; i < sensors_.size(); ++i) {
+		color_image_connections_.push_back(sensors_[i]->DepthCamera()->ConnectNewImageFrame(std::bind(&ActivePerception::OnNewImageFrame,
+				this, std::placeholders::_1, std::placeholders::_2,
+				std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
+		depth_image_connections_.push_back(sensors_[i]->DepthCamera()->ConnectNewDepthFrame(std::bind(&ActivePerception::OnNewPointCloud,
+				this, std::placeholders::_1, std::placeholders::_2,
+				std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
+		color_pointcloud_connections_.push_back(sensors_[i]->DepthCamera()->ConnectNewRGBPointCloud(std::bind(&ActivePerception::OnNewPointCloud,
+				this, std::placeholders::_1, std::placeholders::_2,
+				std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
+	}
+}
+
 size_t ActivePerception::CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix) {
 	size_t sensor_count = 0;
 	for (size_t i = 0; i < _sensors.size(); ++i) {
@@ -268,22 +277,29 @@ size_t ActivePerception::CountNumberOfSamplingSensors(sensors::Sensor_V& _sensor
 	return sensor_count;
 }
 
-void ActivePerception::OrientSensorsToObservationPoint() {
+void ActivePerception::OrientSensorsToObservationPoint(bool _sensor_orientation_random_roll) {
 	ignition::math::Vector3d observation_point(observation_point_.point.x, observation_point_.point.y, observation_point_.point.z);
 	for (size_t i = 0; i < sensors_models_.size(); ++i) {
 		math::Pose model_pose = sensors_models_[i]->GetWorldPose();
-		ignition::math::Matrix4d matrix = ignition::math::Matrix4d::LookAt(ignition::math::Vector3d(model_pose.pos.x, model_pose.pos.y, model_pose.pos.z), observation_point);
+		ignition::math::Vector3d model_position(model_pose.pos.x, model_pose.pos.y, model_pose.pos.z);
+		ignition::math::Matrix4d matrix = ignition::math::Matrix4d::LookAt(model_position, observation_point);
 		ignition::math::Quaterniond new_rotation = matrix.Rotation();
 		model_pose.rot.x = new_rotation.X();
 		model_pose.rot.y = new_rotation.Y();
 		model_pose.rot.z = new_rotation.Z();
 		model_pose.rot.w = new_rotation.W();
 
-		if (sensor_orientation_random_roll_) {
+		if (_sensor_orientation_random_roll) {
 			model_pose.rot.SetFromEuler(math::Rand::GetDblUniform(0, 2.0 * math::Angle::TwoPi.Radian()), model_pose.rot.GetPitch(), model_pose.rot.GetYaw());
 		}
 
 		sensors_models_[i]->SetWorldPose(model_pose);
+		/*sensors_[i]->DepthCamera()->SetWorldPosition(model_position);
+		sensors_[i]->DepthCamera()->SetWorldRotation(ignition::math::Quaterniond(model_pose.rot.w, model_pose.rot.x, model_pose.rot.y, model_pose.rot.z));
+		sensors_[i]->DepthCamera()->OgreCamera()->setPosition(model_pose.pos.x, model_pose.pos.y, model_pose.pos.z);
+		sensors_[i]->DepthCamera()->OgreCamera()->setOrientation(Ogre::Quaternion(model_pose.rot.w, model_pose.rot.x, model_pose.rot.y, model_pose.rot.z));
+		sensors_[i]->DepthCamera()->Update();
+		sensors_[i]->DepthCamera()->SceneNode()->needUpdate(true);*/
 	}
 }
 
@@ -367,7 +383,7 @@ void ActivePerception::SetSensorsState(bool _active) {
 
 void ActivePerception::OnNewImageFrame(const unsigned char* _image, unsigned int _width, unsigned int _height, unsigned int _depth, const std::string& _format, size_t _sensor_index) {
 	if (_image == NULL) {
-		ROS_WARN_STREAM("Received NULL image from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
+		ROS_WARN_STREAM("Received NULL color image from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
 		return;
 	}
 
@@ -395,7 +411,7 @@ void ActivePerception::OnNewPointCloud(const float *_pcd,
 				unsigned int _width, unsigned int _height,
 				unsigned int _depth, const std::string &_format, size_t _sensor_index) {
 	if (_pcd == NULL) {
-		ROS_WARN_STREAM("Received NULL pointcloud from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
+		ROS_WARN_STREAM("Received NULL point cloud from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
 		return;
 	}
 
@@ -413,7 +429,7 @@ void ActivePerception::OnNewPointCloud(const float *_pcd,
 			}
 			sampling_sensors_pointclouds_[_sensor_index] = pointcloud;
 			sampling_sensors_images_[_sensor_index].reset();
-			ROS_DEBUG_STREAM("Received PCD from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << " | segmented & filtered points: " << pointcloud->size() << "]");
+			ROS_DEBUG_STREAM("Received point cloud from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << " | segmented & filtered points: " << pointcloud->size() << "]");
 		}
 
 		if (sensors_sequential_scene_rendering_) {
@@ -471,8 +487,8 @@ typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr ActivePerception::SegmentSensorD
 }
 
 bool ActivePerception::GetSensorTransformToWorld(size_t _sensor_index, Eigen::Affine3f &_transform_sensor_to_world) {
-	if (_sensor_index < sensors_models_.size()) {
-		math::Pose pose = sensors_models_[_sensor_index]->GetWorldPose();
+	if (_sensor_index < sensors_.size()) {
+		ignition::math::Pose3d pose = sensors_[_sensor_index]->DepthCamera()->WorldPose();
 		_transform_sensor_to_world = PoseToTransform<float>(pose);
 		return true;
 	}

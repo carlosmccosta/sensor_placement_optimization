@@ -133,37 +133,37 @@
 			<box>
 				<size>0.55 0.45 0.2</size>
 			</box>
-			<model_count>50</model_count>
-			<distribution>
-				<type>random</type>
-			</distribution>
-		</population>
-
-		<population name="sensors_population_2">
-			<include>
-				<uri>model://multisense_s7_sensor</uri>
-			</include>
-			<pose>0 0 0.95 0 0 0</pose>
-			<cylinder>
-				<radius>1.0</radius>
-				<length>0.1</length>
-			</cylinder>
-			<model_count>30</model_count>
+			<model_count>20</model_count>
 			<distribution>
 				<type>uniform</type>
 			</distribution>
 		</population>
 
-		<population name="sensors_population_3">
+		<population name="sensors_population_2">
 			<include>
 				<uri>model://kinect_xbox_360_sensor</uri>
 			</include>
-			<pose>0 0 0.65 0 0 0</pose>
+			<pose>0 0 1 0 0 0</pose>
 			<cylinder>
 				<radius>0.5</radius>
 				<length>0.1</length>
 			</cylinder>
-			<model_count>30</model_count>
+			<model_count>25</model_count>
+			<distribution>
+				<type>uniform</type>
+			</distribution>
+		</population>
+		
+		<population name="sensors_population_3">
+			<include>
+				<uri>model://multisense_s7_sensor</uri>
+			</include>
+			<pose>0 0 1.69 0 0 0</pose>
+			<cylinder>
+				<radius>2.0</radius>
+				<length>0.01</length>
+			</cylinder>
+			<model_count>35</model_count>
 			<distribution>
 				<type>uniform</type>
 			</distribution>
@@ -171,28 +171,27 @@
 
 		<population name="sensors_population_4">
 			<include>
-				<uri>model://zed_sensor</uri>
-			</include>
-			<pose>0 0 2.5 0 0 0</pose>
-			<cylinder>
-				<radius>2.0</radius>
-				<length>0.01</length>
-			</cylinder>
-			<model_count>30</model_count>
-			<distribution>
-				<type>uniform</type>
-			</distribution>
-		</population>
-
-		<population name="sensors_population_5">
-			<include>
 				<uri>model://asus_xtion_pro_live_sensor</uri>
 			</include>
 			<pose>3.25 0 -0.81 0 -1.5707 0</pose>
 			<box>
-				<size>2.5 4 0.01</size>
+				<size>2.25 4 0.01</size>
 			</box>
-			<model_count>40</model_count>
+			<model_count>80</model_count>
+			<distribution>
+				<type>uniform</type>
+			</distribution>
+		</population>
+		
+		<population name="sensors_population_5">
+			<include>
+				<uri>model://orbbec_astra_sensor</uri>
+			</include>
+			<pose>-0.75 0 -0.81 0 -1.5707 0</pose>
+			<box>
+				<size>2.25 4 0.01</size>
+			</box>
+			<model_count>80</model_count>
 			<distribution>
 				<type>uniform</type>
 			</distribution>
@@ -200,13 +199,13 @@
 		
 		<population name="sensors_population_6">
 			<include>
-				<uri>model://orbbec_astra_sensor</uri>
+				<uri>model://kinect_xbox_one_sensor</uri>
 			</include>
-			<pose>-0.75 0 -0.81 0 -1.5707 0</pose>
+			<pose>-0.75 0 -0.81 0 -1.5707 -1.5707</pose>
 			<box>
-				<size>2.5 4 0.01</size>
+				<size>2.25 4 0.01</size>
 			</box>
-			<model_count>40</model_count>
+			<model_count>80</model_count>
 			<distribution>
 				<type>uniform</type>
 			</distribution>
@@ -214,43 +213,44 @@
 		
 		<population name="sensors_population_7">
 			<include>
-				<uri>model://kinect_xbox_one_sensor</uri>
+				<uri>model://ensenso_n35_sensor</uri>
 			</include>
-			<pose>-0.75 0 -0.81 0 -1.5707 -1.5707</pose>
+			<pose>-0.75 4 -0.81 0 -1.5707 -1.5707</pose>
 			<box>
-				<size>2.5 4 0.01</size>
+				<size>2.25 4 0.01</size>
 			</box>
-			<model_count>40</model_count>
+			<model_count>80</model_count>
 			<distribution>
 				<type>uniform</type>
 			</distribution>
 		</population>
 		
-		<population name="sensors_population_8">
+		<!-- <population name="sensors_population_8">
 			<include>
-				<uri>model://ensenso_n35_sensor</uri>
+				<uri>model://zed_sensor</uri>
 			</include>
-			<pose>-0.75 4 -0.81 0 -1.5707 -1.5707</pose>
-			<box>
-				<size>2.5 4 0.01</size>
-			</box>
+			<pose>0 0 1.69 0 0 0</pose>
+			<cylinder>
+				<radius>2.0</radius>
+				<length>0.01</length>
+			</cylinder>
 			<model_count>40</model_count>
 			<distribution>
 				<type>uniform</type>
 			</distribution>
-		</population>
+		</population> -->
 
 
 		<!-- ============================== PHYSICS ============================== -->
 		<gravity>0 0 -9.81</gravity>
 		<physics name='default_physics' default='0' type='ode'>
-			<max_step_size>0.001</max_step_size>
+			<max_step_size>0.01</max_step_size>
 			<real_time_factor>1</real_time_factor>
-			<real_time_update_rate>1000</real_time_update_rate>
+			<real_time_update_rate>100</real_time_update_rate>
 			<ode>
 				<solver>
 					<type>quick</type>
-					<iters>50</iters>
+					<iters>1</iters>
 					<sor>1.4</sor>
 				</solver>
 				<constraints>
@@ -272,7 +272,8 @@
 		<!-- ============================== GUI ============================== -->
 		<gui fullscreen='0'>
 			<camera name='user_camera'>
-				<pose frame=''>2.422673 -0.310606 1.286927 0 0.470190 2.998850</pose>
+				<pose frame=''>5.790343 0 1.787479 0 0.294190 3.1415</pose>
+				<!-- <pose frame=''>0 0 8 0 1.5707 3.1415</pose> -->
 				<view_controller>orbit</view_controller>
 				<projection_type>perspective</projection_type>
 			</camera>
@@ -281,9 +282,9 @@
 
 		<!-- ============================== PLUGINS ============================== -->
 		<plugin name="active_perception" filename="libactive_perception.so">
-			<numberOfSamplingSensors>300</numberOfSamplingSensors>
+			<numberOfSamplingSensors>400</numberOfSamplingSensors>
 			<numberOfIntendedSensors>7</numberOfIntendedSensors>
-			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
+			<ransacNumberOfIterations>10000</ransacNumberOfIterations>
 			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
 			<sensorsSequentialSceneRendering>true</sensorsSequentialSceneRendering>
 			<pollingSleepTime>0.2</pollingSleepTime>

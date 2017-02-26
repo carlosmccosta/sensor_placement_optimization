@@ -82,8 +82,9 @@ class ActivePerception : public WorldPlugin {
 		void SetNewSceneModelPath(std::string _path_and_model);
 		void ProcessingThread();
 		void LoadSensors();
+		void ConnectDataCallBacks();
 		size_t CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix);
-		void OrientSensorsToObservationPoint();
+		void OrientSensorsToObservationPoint(bool _sensor_orientation_random_roll);
 		void HideSensors();
 		void ShowSensor(size_t _sensor_index);
 		void PublishSensorsPoses();
@@ -116,6 +117,13 @@ class ActivePerception : public WorldPlugin {
 		Eigen::Transform<Scalar, 3, Eigen::Affine> PoseToTransform(const math::Pose &_pose) {
 			Eigen::Translation<Scalar, 3> translation(_pose.pos.x, _pose.pos.y, _pose.pos.z);
 			Eigen::Quaternion<Scalar> rotation(_pose.rot.w, _pose.rot.x, _pose.rot.y, _pose.rot.z);
+			return Eigen::Transform<Scalar, 3, Eigen::Affine>(translation * rotation);
+		}
+
+		template <typename Scalar>
+		Eigen::Transform<Scalar, 3, Eigen::Affine> PoseToTransform(const ignition::math::Pose3d &_pose) {
+			Eigen::Translation<Scalar, 3> translation(_pose.Pos().X(), _pose.Pos().Y(), _pose.Pos().Z());
+			Eigen::Quaternion<Scalar> rotation(_pose.Rot().W(), _pose.Rot().X(), _pose.Rot().Y(), _pose.Rot().Z());
 			return Eigen::Transform<Scalar, 3, Eigen::Affine>(translation * rotation);
 		}
 
