@@ -33,8 +33,7 @@ ActivePerception::ActivePerception() :
 		voxel_grid_filter_leaf_size_(0.007) {
 }
 
-ActivePerception::~ActivePerception() {
-}
+ActivePerception::~ActivePerception() {}
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </constructors-destructor>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <member-functions>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -167,11 +166,7 @@ void ActivePerception::ProcessingThread() {
 		common::Time::Sleep(polling_sleep_time_);
 	}
 
-	//OrientSensorsToObservationPoint(false);
 	HideSensors();
-	/*SetSensorsState(true);
-	common::Time::Sleep(common::Time(polling_sleep_time_.Double() * 10.0));
-	SetSensorsState(false);*/
 	ConnectDataCallBacks();
 
 	ROS_INFO_STREAM("ActivePerception has started with " << sensors_.size() << " sampling sensors for finding the optimal placement for " << number_of_intended_sensors_ << (number_of_intended_sensors_ == 1 ? " sensor" : " sensors"));
@@ -294,12 +289,6 @@ void ActivePerception::OrientSensorsToObservationPoint(bool _sensor_orientation_
 		}
 
 		sensors_models_[i]->SetWorldPose(model_pose);
-		/*sensors_[i]->DepthCamera()->SetWorldPosition(model_position);
-		sensors_[i]->DepthCamera()->SetWorldRotation(ignition::math::Quaterniond(model_pose.rot.w, model_pose.rot.x, model_pose.rot.y, model_pose.rot.z));
-		sensors_[i]->DepthCamera()->OgreCamera()->setPosition(model_pose.pos.x, model_pose.pos.y, model_pose.pos.z);
-		sensors_[i]->DepthCamera()->OgreCamera()->setOrientation(Ogre::Quaternion(model_pose.rot.w, model_pose.rot.x, model_pose.rot.y, model_pose.rot.z));
-		sensors_[i]->DepthCamera()->Update();
-		sensors_[i]->DepthCamera()->SceneNode()->needUpdate(true);*/
 	}
 }
 
@@ -421,20 +410,24 @@ void ActivePerception::OnNewPointCloud(const float *_pcd,
 		if (GetSensorTransformToWorld(_sensor_index, transform_sensor_to_world)) {
 			typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud = SegmentSensorDataFromDepthSensor(_pcd, _format, _width, _height, transform_sensor_to_world, _sensor_index);
 			FilterPointCloud(pointcloud);
+
 			pointcloud->header.stamp = (pcl::uint64_t)(world_->SimTime().Double() * 1e6);
 			pointcloud->header.frame_id = published_msgs_world_frame_id_;
 			PublishPointCloud(pointcloud, _sensor_index);
+
 			if (!sampling_sensors_pointclouds_[_sensor_index]) {
 				IncrementNumberOfSamplingSensorsPointcloudsReceived();
 			}
+
 			sampling_sensors_pointclouds_[_sensor_index] = pointcloud;
 			sampling_sensors_images_[_sensor_index].reset();
-			ROS_DEBUG_STREAM("Received point cloud from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << " | segmented & filtered points: " << pointcloud->size() << "]");
-		}
 
-		if (sensors_sequential_scene_rendering_) {
-			sensors_[_sensor_index]->SetActive(false);
-			if (_sensor_index + 1 < sensors_.size()) sensors_[_sensor_index + 1]->SetActive(true);
+			if (sensors_sequential_scene_rendering_) {
+				sensors_[_sensor_index]->SetActive(false);
+				if (_sensor_index + 1 < sensors_.size()) sensors_[_sensor_index + 1]->SetActive(true);
+			}
+
+			ROS_DEBUG_STREAM("Received point cloud from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << " | segmented & filtered points: " << pointcloud->size() << "]");
 		}
 	}
 }
@@ -696,8 +689,5 @@ size_t ActivePerception::GetNumberOfSamplingSensorsPointcloudsReceived() {
 }
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </member-functions>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 // =============================================================================  </public-section>  ===========================================================================
-
-// =============================================================================   <protected-section>   =======================================================================
-// =============================================================================   </protected-section>  =======================================================================
 
 } /* namespace gazebo */

@@ -32,17 +32,17 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Image
+    SyncSource: PointCloud2 model
 Visualization Manager:
   Class: ""
   Displays:
     - Class: rviz/Axes
-      Enabled: false
+      Enabled: true
       Length: 0.100000001
       Name: Axes
       Radius: 0.00999999978
       Reference Frame: <Fixed Frame>
-      Value: false
+      Value: true
     - Class: rviz/TF
       Enabled: false
       Frame Timeout: 15
@@ -218,23 +218,7 @@ Visualization Manager:
       Marker Topic: /visualization_marker
       Name: Marker
       Namespaces:
-        alternator_1__link__visual: true
-        alternator_2__link__visual: true
-        alternator_3__link__visual: true
-        alternator_4__link__visual: true
-        differential_gearbox_1__link__visual: true
-        differential_gearbox_2__link__visual: true
-        differential_gearbox_3__link__visual: true
-        differential_gearbox_4__link__visual: true
-        differential_gearbox_5__link__visual: true
-        differential_gearbox_6__link__visual: true
-        differential_gearbox_7__link__visual: true
-        stacking_box__link__visual: true
-        starter_motor_1__link__visual: true
-        starter_motor_2__link__visual: true
-        starter_motor_3__link__visual: true
-        starter_motor_4__link__visual: true
-        tool_trolley__link__visual: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -285,24 +269,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 8.29091454
+      Distance: 6.33105755
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.151785567
-        Y: 0.0465395898
-        Z: 0.00136722345
+        X: 0.0577492379
+        Y: 0.065797478
+        Z: 0.465237588
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.649796903
+      Pitch: 0.199796289
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.25031662
+      Yaw: 0.0053065978
     Saved: ~
 Window Geometry:
   Displays:
