@@ -1,3 +1,4 @@
+roslaunch active_perception active_perception.launch paused:=true use_gazebo2rviz:=false use_gazebo_gui:=true show_rviz:=false
 roslaunch active_perception bin_picking.launch paused:=true use_gazebo2rviz:=false use_gazebo_gui:=false
 roslaunch active_perception bin_picking_with_occlusions.launch paused:=true use_gazebo2rviz:=false use_gazebo_gui:=false
 roslaunch active_perception multiple_bin_picking_with_occlusions.launch paused:=true use_gazebo2rviz:=false use_gazebo_gui:=false
@@ -11,3 +12,6 @@ rostopic echo /active_perception/sensor_names
 rostopic echo /active_perception/sensors_surface_coverage_percentage
 rostopic echo /active_perception/best_sensor_names
 rostopic echo /active_perception/best_sensors_surface_coverage_percentage
+
+record topics:
+/active_perception/best_merged_pointcloud /active_perception/best_sensor_names /active_perception/best_sensor_poses /active_perception/best_sensors_surface_coverage_percentage /active_perception/scene_model /active_perception/sensor_names /active_perception/sensor_poses /active_perception/sensors_surface_coverage_percentage /clicked_point /clock_gazebo /gazebo/link_states /gazebo/model_states /gazebo/parameter_descriptions /gazebo/parameter_updates /initialpose /move_base_simple/goal /rosout /rosout_agg /tf /tf_static /visualization_marker

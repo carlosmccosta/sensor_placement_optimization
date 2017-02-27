@@ -1,0 +1,3312 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+	<model name='mpl_right_arm_grasping'>
+		<link name='shoulder'>
+			<pose>0.584765 0.007244 0.057603 -0.012801 0.145459 -1.58337</pose>
+			<inertial>
+				<pose>0.000536 0.002002 0.03328 0 -0 0</pose>
+				<mass>0.0363799</mass>
+				<inertia>
+					<ixx>3.73005e-05</ixx>
+					<ixy>5.68571e-07</ixy>
+					<ixz>-7.59543e-07</ixz>
+					<iyy>2.60558e-05</iyy>
+					<iyz>-9.15512e-07</iyz>
+					<izz>3.86186e-05</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 0 0.0345 0 -0 0</pose>
+				<geometry>
+					<sphere>
+						<radius>0.03495</radius>
+					</sphere>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0 0 0.01892 0 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.038</radius>
+						<length>0.03784</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/shoulder.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='humerus'>
+			<pose>0.585044 0.001658 0.08437 -0.012367 0.14546 -1.58337</pose>
+			<inertial>
+				<pose>-0.00523 -0.083481 0.010842 0 -0 0</pose>
+				<mass>0.0857896</mass>
+				<inertia>
+					<ixx>0.000259543</ixx>
+					<ixy>-4.20463e-06</ixy>
+					<ixz>9.18286e-07</ixz>
+					<iyy>0.000134353</iyy>
+					<iyz>-1.37928e-05</iyz>
+					<izz>0.000284981</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>-0.00164 -0.07024 0.01366 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.037035</radius>
+						<length>0.15849</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/humerus.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='elbow'>
+			<pose>0.435163 0.002889 0.100189 -0.012198 -0.030725 -1.58114</pose>
+			<inertial>
+				<pose>0.001164 -0.074089 -0.007315 0 -0 0</pose>
+				<mass>0.0351897</mass>
+				<inertia>
+					<ixx>0.000106583</ixx>
+					<ixy>-5.90862e-06</ixy>
+					<ixz>-2.34382e-06</ixz>
+					<iyy>3.29639e-05</iyy>
+					<iyz>1.56515e-05</iyz>
+					<izz>0.000106705</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.05957 0.00147 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.03447</radius>
+						<length>0.11914</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0.00997 -0.1445 -0.0245 0 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.036</radius>
+						<length>0.018</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/elbow.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.2 0.2 0.2 1</ambient>
+					<diffuse>0.8 0.8 0.8 1</diffuse>
+					<specular>0.9 0.9 0.9 1</specular>
+				</material>
+			</visual>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='forearm'>
+			<pose>0.290477 -0.006024 0.086921 -0.01218 -0.030743 -1.58347</pose>
+			<inertial>
+				<pose>-0.000589 -0.073314 0.021553 0 -0 0</pose>
+				<mass>0.0997005</mass>
+				<inertia>
+					<ixx>0.0004998</ixx>
+					<ixy>-5.83136e-06</ixy>
+					<ixz>3.56083e-07</ixz>
+					<iyy>0.00010215</iyy>
+					<iyz>3.76069e-05</iyz>
+					<izz>0.000498862</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 0 0.02855 0 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.03567</radius>
+						<length>0.0571</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0 -0.10745 0.016 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.035</radius>
+						<length>0.148</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/forearm.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='forearm_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<topic>~/forearm/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='wristy'>
+			<pose>0.105273 -0.003149 0.105172 -0.012174 -0.005504 -1.58379</pose>
+			<inertial>
+				<pose>-7.1e-05 -0.021779 -0.000286 0 -0 0</pose>
+				<mass>0.0272932</mass>
+				<inertia>
+					<ixx>1.77029e-05</ixx>
+					<ixy>7.89061e-09</ixy>
+					<ixz>4.33867e-09</ixz>
+					<iyy>2.46772e-05</iyy>
+					<iyz>1.77331e-07</iyz>
+					<izz>1.7112e-05</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.025 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.03447</radius>
+						<length>0.05</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/wristy.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.2 0.2 0.2 1</ambient>
+					<diffuse>0.8 0.8 0.8 1</diffuse>
+					<specular>0.9 0.9 0.9 1</specular>
+				</material>
+			</visual>
+			<sensor name='wristy_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/wristy/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='wristx'>
+			<pose>0.057662 -0.002484 0.107789 -0.012335 -0.005259 -1.55806</pose>
+			<inertial>
+				<pose>0.001392 -0.009752 -0.002527 0 -0 0</pose>
+				<mass>0.010691</mass>
+				<inertia>
+					<ixx>3.27995e-06</ixx>
+					<ixy>-1.50151e-07</ixy>
+					<ixz>5.11904e-09</ixz>
+					<iyy>4.22942e-06</iyy>
+					<iyz>-4.20007e-08</iyz>
+					<izz>5.04229e-06</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 0 -0.00314 0 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.01473</radius>
+						<length>0.04478</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0.0236 -0.02969 -0.0024 0 1.5707 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.013175</radius>
+						<length>0.005</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_2'>
+				<pose>-0.0236 -0.02969 -0.0024 0 1.5707 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.013175</radius>
+						<length>0.005</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/wristx.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.2 0.2 0.2 1</ambient>
+					<diffuse>0.8 0.8 0.8 1</diffuse>
+					<specular>0.9 0.9 0.9 1</specular>
+				</material>
+			</visual>
+			<sensor name='wristx_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<collision>collision_2</collision>
+					<topic>~/wristx/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='wristz'>
+			<pose>0.027641 -0.003061 0.106066 0.127694 -0.00499 -1.5579</pose>
+			<inertial>
+				<pose>0.003682 -0.035876 0.002659 0 -0 0</pose>
+				<mass>0.125889</mass>
+				<inertia>
+					<ixx>8.18077e-05</ixx>
+					<ixy>-9.44149e-06</ixy>
+					<ixz>3.88366e-06</ixz>
+					<iyy>9.81482e-05</iyy>
+					<iyz>-4.84151e-08</iyz>
+					<izz>0.000131783</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0.00207 -0.00047 0.00046 1.5707 0 1.5707</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.01411</radius>
+						<length>0.04482</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_palm'>
+				<pose>0.002 -0.03739 0 0 -0 0</pose>
+				<geometry>
+					<box>
+						<size>0.07928 0.08316 0.04402</size>
+					</box>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>100</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/wristz.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<ambient>0.2 0.2 0.2 1</ambient>
+					<diffuse>0.8 0.8 0.8 1</diffuse>
+					<specular>0.9 0.9 0.9 1</specular>
+				</material>
+			</visual>
+			<visual name='visual_palm'>
+				<pose>0.025625 0 0 0 -0 0</pose>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/palm.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='palm_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision_palm</collision>
+					<topic>~/palm/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='index0'>
+			<pose>-0.037289 -0.039427 0.098865 0.159732 0.140878 -1.34498</pose>
+			<inertial>
+				<pose>-0.000143 -0.005485 0.000206 0 -0 0</pose>
+				<mass>0.00295579</mass>
+				<inertia>
+					<ixx>4.22375e-07</ixx>
+					<ixy>4.23313e-09</ixy>
+					<ixz>5.00708e-10</ixz>
+					<iyy>1.94048e-07</iyy>
+					<iyz>-4.58697e-09</iyz>
+					<izz>4.02188e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.01339 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.028</length>
+						<radius>0.01</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/index0.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='index0_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/index0/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='index1'>
+			<pose>-0.054685 -0.043079 0.096029 0.381898 0.140987 -1.34489</pose>
+			<inertial>
+				<pose>0.000406 -0.021313 0.000656 0 -0 0</pose>
+				<mass>0.00478235</mass>
+				<inertia>
+					<ixx>8.18593e-07</ixx>
+					<ixy>-1.2874e-09</ixy>
+					<ixz>1.78664e-10</ixz>
+					<iyy>3.06547e-07</iyy>
+					<iyz>-1.18998e-08</iyz>
+					<izz>7.95406e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.02782 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.01</radius>
+						<length>0.02781</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/index1.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='index1_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/index1/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='index2'>
+			<pose>-0.094464 -0.051056 0.080287 1.03949 0.141098 -1.34479</pose>
+			<inertial>
+				<pose>-0.000841 -0.012689 0.000573 0 -0 0</pose>
+				<mass>0.00344764</mass>
+				<inertia>
+					<ixx>3.63785e-07</ixx>
+					<ixy>-6.41791e-09</ixy>
+					<ixz>7.97765e-10</ixz>
+					<iyy>1.07105e-07</iyy>
+					<iyz>2.03273e-08</iyz>
+					<izz>3.57435e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.01152 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.029</length>
+						<radius>0.0075</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0 -0.02502 0 0 -0 0</pose>
+				<geometry>
+					<sphere>
+						<radius>0.0075</radius>
+					</sphere>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/index2.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='index2_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<topic>~/index2/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='index3'>
+			<pose>-0.107368 -0.050329 0.059465 1.4387 0.14104 -1.34478</pose>
+			<inertial>
+				<pose>4.3e-05 -0.012532 0.000903 0 -0 0</pose>
+				<mass>0.00274415</mass>
+				<inertia>
+					<ixx>1.09202e-07</ixx>
+					<ixy>-3.99165e-12</ixy>
+					<ixz>-5.84792e-12</ixz>
+					<iyy>7.79728e-08</iyy>
+					<iyz>2.77966e-09</iyz>
+					<izz>1.19449e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.00688 0.0001 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.01376</length>
+						<radius>0.0074</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0 -0.015 0.0001 0 -0 0</pose>
+				<geometry>
+					<sphere>
+						<radius>0.0072</radius>
+					</sphere>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/index3.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='index3_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<topic>~/index3/contact</topic>
+				</contact>
+			</sensor>
+			<sensor name='index3_imu_sensor' type='imu'>
+				<always_on>1</always_on>
+				<update_rate>1000</update_rate>
+				<imu>
+					<angular_velocity>
+						<x>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</x>
+						<y>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</y>
+						<z>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</z>
+					</angular_velocity>
+					<linear_acceleration>
+						<x>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</x>
+						<y>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</y>
+						<z>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</z>
+					</linear_acceleration>
+				</imu>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='middle0'>
+			<pose>-0.050148 -0.0169 0.10161 0.215164 -0.004984 -1.55943</pose>
+			<inertial>
+				<pose>-0.000143 -0.005485 0.000206 0 -0 0</pose>
+				<mass>0.00295579</mass>
+				<inertia>
+					<ixx>4.22374e-07</ixx>
+					<ixy>4.23312e-09</ixy>
+					<ixz>5.00706e-10</ixz>
+					<iyy>1.94048e-07</iyy>
+					<iyz>-4.58725e-09</iyz>
+					<izz>4.02189e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.01339 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.028</length>
+						<radius>0.01</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/middle0.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='middle0_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/middle0/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='middle1'>
+			<pose>-0.067733 -0.017179 0.097769 0.417208 -0.005092 -1.55955</pose>
+			<inertial>
+				<pose>0.000406 -0.021313 0.000656 0 -0 0</pose>
+				<mass>0.00478229</mass>
+				<inertia>
+					<ixx>8.1859e-07</ixx>
+					<ixy>-1.28827e-09</ixy>
+					<ixz>1.7867e-10</ixz>
+					<iyy>3.06545e-07</iyy>
+					<iyz>-1.19001e-08</iyz>
+					<izz>7.95403e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.025 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.01</radius>
+						<length>0.03459</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/middle1.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='middle1_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/middle1/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='middle2'>
+			<pose>-0.107688 -0.018802 0.080605 1.4876 -0.005084 -1.5596</pose>
+			<inertial>
+				<pose>-0.000841 -0.012689 0.000573 0 -0 0</pose>
+				<mass>0.00344765</mass>
+				<inertia>
+					<ixx>3.63785e-07</ixx>
+					<ixy>-6.41794e-09</ixy>
+					<ixz>7.97197e-10</ixz>
+					<iyy>1.07106e-07</iyy>
+					<iyz>2.03275e-08</iyz>
+					<izz>3.57435e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.01152 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.029</length>
+						<radius>0.0075</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0 -0.02302 0 0 -0 0</pose>
+				<geometry>
+					<sphere>
+						<radius>0.0075</radius>
+					</sphere>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/middle2.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='middle2_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<topic>~/middle2/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='middle3'>
+			<pose>-0.109729 -0.018314 0.056187 1.72008 -0.00503 -1.55959</pose>
+			<inertial>
+				<pose>4.3e-05 -0.012532 0.000903 0 -0 0</pose>
+				<mass>0.00274417</mass>
+				<inertia>
+					<ixx>1.09202e-07</ixx>
+					<ixy>-3.78001e-12</ixy>
+					<ixz>-5.35395e-12</ixz>
+					<iyy>7.79738e-08</iyy>
+					<iyz>2.77969e-09</iyz>
+					<izz>1.1945e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.00688 0.0001 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.01376</length>
+						<radius>0.0074</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0 -0.015 0.0001 0 -0 0</pose>
+				<geometry>
+					<sphere>
+						<radius>0.0072</radius>
+					</sphere>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/middle3.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='middle3_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<topic>~/middle3/contact</topic>
+				</contact>
+			</sensor>
+			<sensor name='middle3_imu_sensor' type='imu'>
+				<always_on>1</always_on>
+				<update_rate>1000</update_rate>
+				<imu>
+					<angular_velocity>
+						<x>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</x>
+						<y>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</y>
+						<z>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</z>
+					</angular_velocity>
+					<linear_acceleration>
+						<x>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</x>
+						<y>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</y>
+						<z>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</z>
+					</linear_acceleration>
+				</imu>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='pinky0'>
+			<pose>-0.026981 0.026793 0.093265 0.161844 -0.149858 -1.77637</pose>
+			<inertial>
+				<pose>-0.000143 -0.005385 0.000206 0 -0 0</pose>
+				<mass>0.00295579</mass>
+				<inertia>
+					<ixx>4.22375e-07</ixx>
+					<ixy>4.23309e-09</ixy>
+					<ixz>5.0054e-10</ixz>
+					<iyy>1.94048e-07</iyy>
+					<iyz>-4.58693e-09</iyz>
+					<izz>4.02189e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.01339 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.028</length>
+						<radius>0.01</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/pinky0.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='pinky0_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/pinky0/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='pinky1'>
+			<pose>-0.044374 0.02992 0.090422 0.411933 -0.150007 -1.7764</pose>
+			<inertial>
+				<pose>0.000459 -0.016048 0.000925 0 -0 0</pose>
+				<mass>0.0034099</mass>
+				<inertia>
+					<ixx>4.03282e-07</ixx>
+					<ixy>-1.80186e-09</ixy>
+					<ixz>-1.42049e-09</ixz>
+					<iyy>2.20449e-07</iyy>
+					<iyz>-9.60174e-09</iyz>
+					<izz>3.83588e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.02082 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.01</radius>
+						<length>0.02381</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/pinky1.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='pinky1_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/pinky0/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='pinky2'>
+			<pose>-0.074678 0.03371 0.077897 1.00604 -0.150166 -1.77645</pose>
+			<inertial>
+				<pose>-0.000271 -0.009146 0.000738 0 -0 0</pose>
+				<mass>0.00250622</mass>
+				<inertia>
+					<ixx>1.78939e-07</ixx>
+					<ixy>-3.88097e-09</ixy>
+					<ixz>3.24897e-10</ixz>
+					<iyy>7.59883e-08</iyy>
+					<iyz>1.17825e-08</iyz>
+					<izz>1.74551e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.0076 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.029</length>
+						<radius>0.0075</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/pinky2.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='pinky2_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/pinky2/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='pinky3'>
+			<pose>-0.084288 0.033504 0.063273 1.02091 -0.150144 -1.77653</pose>
+			<inertial>
+				<pose>3.9e-05 -0.012505 0.000912 0 -0 0</pose>
+				<mass>0.00273265</mass>
+				<inertia>
+					<ixx>1.08629e-07</ixx>
+					<ixy>2.84178e-11</ixy>
+					<ixz>1.88869e-11</ixz>
+					<iyy>7.78965e-08</iyy>
+					<iyz>2.64344e-09</iyz>
+					<izz>1.18971e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.00688 0.0001 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.01376</length>
+						<radius>0.0074</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0 -0.015 0.0001 0 -0 0</pose>
+				<geometry>
+					<sphere>
+						<radius>0.0072</radius>
+					</sphere>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/pinky3.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='pinky3_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<topic>~/pinky3/contact</topic>
+				</contact>
+			</sensor>
+			<sensor name='pinky3_imu_sensor' type='imu'>
+				<always_on>1</always_on>
+				<update_rate>1000</update_rate>
+				<imu>
+					<angular_velocity>
+						<x>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</x>
+						<y>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</y>
+						<z>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</z>
+					</angular_velocity>
+					<linear_acceleration>
+						<x>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</x>
+						<y>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</y>
+						<z>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</z>
+					</linear_acceleration>
+				</imu>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='ring0'>
+			<pose>-0.03883 0.005914 0.099022 0.151462 -0.160607 -1.70847</pose>
+			<inertial>
+				<pose>-0.000143 -0.005485 0.000206 0 -0 0</pose>
+				<mass>0.00295579</mass>
+				<inertia>
+					<ixx>4.22375e-07</ixx>
+					<ixy>4.23309e-09</ixy>
+					<ixz>5.00535e-10</ixz>
+					<iyy>1.94048e-07</iyy>
+					<iyz>-4.58693e-09</iyz>
+					<izz>4.02189e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.01339 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.028</length>
+						<radius>0.01</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/ring0.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='ring0_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/ring0/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='ring1'>
+			<pose>-0.056524 0.007869 0.096351 0.310356 -0.160758 -1.70862</pose>
+			<inertial>
+				<pose>0.000406 -0.021313 0.000656 0 -0 0</pose>
+				<mass>0.00478232</mass>
+				<inertia>
+					<ixx>8.18592e-07</ixx>
+					<ixy>-1.28783e-09</ixy>
+					<ixz>1.78814e-10</ixz>
+					<iyy>3.06546e-07</iyy>
+					<iyz>-1.19e-08</iyz>
+					<izz>7.95405e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.02505 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.01</radius>
+						<length>0.03095</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/ring1.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='ring1_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/ring1/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='ring2'>
+			<pose>-0.098133 0.010489 0.083881 1.30048 -0.160795 -1.70871</pose>
+			<inertial>
+				<pose>-0.000842 -0.012689 0.000573 0 -0 0</pose>
+				<mass>0.00344767</mass>
+				<inertia>
+					<ixx>3.63785e-07</ixx>
+					<ixy>-6.41744e-09</ixy>
+					<ixz>7.98585e-10</ixz>
+					<iyy>1.07107e-07</iyy>
+					<iyz>2.03271e-08</iyz>
+					<izz>3.57437e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.01152 0 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.029</length>
+						<radius>0.0075</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0 -0.02302 0 0 -0 0</pose>
+				<geometry>
+					<sphere>
+						<radius>0.0075</radius>
+					</sphere>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/ring2.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='ring2_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<topic>~/ring2/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='ring3'>
+			<pose>-0.105046 0.008264 0.060474 1.50094 -0.160723 -1.70873</pose>
+			<inertial>
+				<pose>4.3e-05 -0.012532 0.000903 0 -0 0</pose>
+				<mass>0.00274416</mass>
+				<inertia>
+					<ixx>1.09202e-07</ixx>
+					<ixy>-3.99392e-12</ixy>
+					<ixz>-5.71287e-12</ixz>
+					<iyy>7.79732e-08</iyy>
+					<iyz>2.77976e-09</iyz>
+					<izz>1.1945e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0 -0.00688 0.0001 1.5707 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.01376</length>
+						<radius>0.0074</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0 -0.015 0.0001 0 -0 0</pose>
+				<geometry>
+					<sphere>
+						<radius>0.0072</radius>
+					</sphere>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/ring3.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='ring3_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<topic>~/ring3/contact</topic>
+				</contact>
+			</sensor>
+			<sensor name='ring3_imu_sensor' type='imu'>
+				<always_on>1</always_on>
+				<update_rate>1000</update_rate>
+				<imu>
+					<angular_velocity>
+						<x>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</x>
+						<y>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</y>
+						<z>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</z>
+					</angular_velocity>
+					<linear_acceleration>
+						<x>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</x>
+						<y>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</y>
+						<z>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</z>
+					</linear_acceleration>
+				</imu>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='thumb0'>
+			<pose>0.008836 -0.037353 0.0936 0.212705 0.019993 -1.82037</pose>
+			<inertial>
+				<pose>0.008633 -0.000157 -0.000946 0 -0 0</pose>
+				<mass>0.00336696</mass>
+				<inertia>
+					<ixx>2.44266e-07</ixx>
+					<ixy>-1.56849e-08</ixy>
+					<ixz>4.05807e-08</ixz>
+					<iyy>4.49559e-07</iyy>
+					<iyz>3.27736e-09</iyz>
+					<izz>4.40718e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0.02 -0.001 0.0015 0 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.023</length>
+						<radius>0.008221</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0.01 -0.001 0.0015 0 -0 0</pose>
+				<geometry>
+					<box>
+						<size>0.0202 0.0155 0.023</size>
+					</box>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/thumb0.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='thumb0_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<topic>~/thumb0/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='thumb1'>
+			<pose>0.00257 -0.057365 0.094434 0.124389 0.172045 -2.67086</pose>
+			<inertial>
+				<pose>0.019024 0.000361 -0.000187 0 -0 0</pose>
+				<mass>0.00596213</mass>
+				<inertia>
+					<ixx>5.36423e-07</ixx>
+					<ixy>-7.9696e-09</ixy>
+					<ixz>-3.66761e-08</ixz>
+					<iyy>9.87852e-07</iyy>
+					<iyz>-1.23551e-09</iyz>
+					<izz>9.4184e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>-0.00056 0 -0.00025 0 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.0188</length>
+						<radius>0.00688</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0.03381 0 0 0 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.02176</length>
+						<radius>0.00688</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_2'>
+				<pose>0.01613 0 0 0 -0 0</pose>
+				<geometry>
+					<box>
+						<size>0.03273 0.01376 0.02176</size>
+					</box>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/thumb1.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='thumb1_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<collision>collision_2</collision>
+					<topic>~/thumb1/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='thumb2'>
+			<pose>-0.026697 -0.072368 0.08798 0.103611 0.184809 -2.78701</pose>
+			<inertial>
+				<pose>0.018897 0.000376 0.000654 0 -0 0</pose>
+				<mass>0.00599792</mass>
+				<inertia>
+					<ixx>5.17385e-07</ixx>
+					<ixy>-1.08936e-08</ixy>
+					<ixz>-3.49348e-08</ixz>
+					<iyy>9.9639e-07</iyy>
+					<iyz>5.15558e-10</iyz>
+					<izz>9.6228e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0.03415 0 0.001 0 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<radius>0.00679</radius>
+						<length>0.02236</length>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0.01493 0 0.001 0 -0 0</pose>
+				<geometry>
+					<box>
+						<size>0.03095 0.015 0.02236</size>
+					</box>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/thumb2.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='thumb2_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<topic>~/thumb2/contact</topic>
+				</contact>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<link name='thumb3'>
+			<pose>-0.057827 -0.083791 0.082886 0.123949 0.171765 -2.67222</pose>
+			<inertial>
+				<pose>0.012344 -0.001455 0 0 -0 0</pose>
+				<mass>0.00274415</mass>
+				<inertia>
+					<ixx>1.73184e-07</ixx>
+					<ixy>0</ixy>
+					<ixz>0</ixz>
+					<iyy>3.66499e-07</iyy>
+					<iyz>2.77966e-09</iyz>
+					<izz>3.59291e-07</izz>
+				</inertia>
+			</inertial>
+			<collision name='collision'>
+				<pose>0.01507 -0.00219 0.0001 0 -0 0</pose>
+				<geometry>
+					<cylinder>
+						<length>0.01476</length>
+						<radius>0.0074</radius>
+					</cylinder>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<collision name='collision_1'>
+				<pose>0.0195 0 0 0 -0 0</pose>
+				<geometry>
+					<sphere>
+						<radius>0.008</radius>
+					</sphere>
+				</geometry>
+				<surface>
+					<contact>
+						<ode>
+							<kp>100000</kp>
+							<kd>10</kd>
+							<max_vel>0.1</max_vel>
+							<min_depth>0.0015</min_depth>
+						</ode>
+					</contact>
+					<bounce />
+					<friction>
+						<torsional>
+							<ode />
+						</torsional>
+						<ode />
+					</friction>
+				</surface>
+				<max_contacts>10</max_contacts>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+					<mesh>
+						<uri>model://mpl_right_arm/meshes/thumb3.stl</uri>
+						<scale>1 1 1</scale>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>Gazebo/FlatBlack</name>
+						<uri>__default__</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name='thumb3_contact_sensor' type='contact'>
+				<contact>
+					<collision>collision</collision>
+					<collision>collision_1</collision>
+					<topic>~/thumb3/contact</topic>
+				</contact>
+			</sensor>
+			<sensor name='thumb3_distal_imu_sensor' type='imu'>
+				<always_on>1</always_on>
+				<update_rate>1000</update_rate>
+				<imu>
+					<angular_velocity>
+						<x>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</x>
+						<y>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</y>
+						<z>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.0002</stddev>
+								<bias_mean>7.5e-06</bias_mean>
+								<bias_stddev>8e-07</bias_stddev>
+							</noise>
+						</z>
+					</angular_velocity>
+					<linear_acceleration>
+						<x>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</x>
+						<y>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</y>
+						<z>
+							<noise type='gaussian'>
+								<mean>0</mean>
+								<stddev>0.017</stddev>
+								<bias_mean>0.1</bias_mean>
+								<bias_stddev>0.001</bias_stddev>
+							</noise>
+						</z>
+					</linear_acceleration>
+				</imu>
+			</sensor>
+			<self_collide>0</self_collide>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+		</link>
+		<joint name='humerus' type='revolute'>
+			<child>humerus</child>
+			<parent>shoulder</parent>
+			<axis>
+				<xyz>0.999933 -0.011537 0</xyz>
+				<limit>
+					<lower>-3.14</lower>
+					<upper>0.345</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>5</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0.01</cfm>
+						<erp>0</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='elbow' type='revolute'>
+			<child>elbow</child>
+			<parent>humerus</parent>
+			<axis>
+				<xyz>0.011537 0.999933 0</xyz>
+				<limit>
+					<lower>-0.697</lower>
+					<upper>1.57</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>5</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0.01</cfm>
+						<erp>0</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='forearm' type='revolute'>
+			<child>forearm</child>
+			<parent>elbow</parent>
+			<axis>
+				<xyz>0 0 1</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>2.61</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>5</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0.01</cfm>
+						<erp>0</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='wristy' type='revolute'>
+			<child>wristy</child>
+			<parent>forearm</parent>
+			<axis>
+				<xyz>0.011537 0.999933 0</xyz>
+				<limit>
+					<lower>-1.57</lower>
+					<upper>1.57</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>5</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='wristx' type='revolute'>
+			<child>wristx</child>
+			<parent>wristy</parent>
+			<axis>
+				<xyz>0 0 -1</xyz>
+				<limit>
+					<lower>-0.261</lower>
+					<upper>0.785</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>5</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='wristz' type='revolute'>
+			<child>wristz</child>
+			<parent>wristx</parent>
+			<axis>
+				<xyz>0.999933 -0.011537 0</xyz>
+				<limit>
+					<lower>-1.04</lower>
+					<upper>1.04</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>5</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='index0' type='revolute'>
+			<child>index0</child>
+			<parent>wristz</parent>
+			<axis>
+				<xyz>-0.173637 0.002003 -0.984808</xyz>
+				<limit>
+					<lower>-0.345</lower>
+					<upper>0</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='index1' type='revolute'>
+			<child>index1</child>
+			<parent>index0</parent>
+			<axis>
+				<xyz>0.984742 -0.011362 -0.173648</xyz>
+				<limit>
+					<lower>-0.785</lower>
+					<upper>1.57</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='index2' type='revolute'>
+			<child>index2</child>
+			<parent>index1</parent>
+			<axis>
+				<xyz>0.984742 -0.011362 -0.173648</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>1.72</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='index3' type='revolute'>
+			<child>index3</child>
+			<parent>index2</parent>
+			<axis>
+				<xyz>0.984742 -0.011362 -0.173648</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>1.38</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='middle0' type='revolute'>
+			<child>middle0</child>
+			<parent>wristz</parent>
+			<axis>
+				<xyz>0.001006 0.08715 -0.996195</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>0</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='middle1' type='revolute'>
+			<child>middle1</child>
+			<parent>middle0</parent>
+			<axis>
+				<xyz>0.999933 -0.011537 0</xyz>
+				<limit>
+					<lower>-0.785</lower>
+					<upper>1.57</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='middle2' type='revolute'>
+			<child>middle2</child>
+			<parent>middle1</parent>
+			<axis>
+				<xyz>0.999933 -0.011537 0</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>1.73</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='middle3' type='revolute'>
+			<child>middle3</child>
+			<parent>middle2</parent>
+			<axis>
+				<xyz>0.999933 -0.011537 0</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>1.38</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='pinky0' type='revolute'>
+			<child>pinky0</child>
+			<parent>wristz</parent>
+			<axis>
+				<xyz>0.173637 -0.002003 -0.984808</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>0.345</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='pinky1' type='revolute'>
+			<child>pinky1</child>
+			<parent>pinky0</parent>
+			<axis>
+				<xyz>0.984742 -0.011362 0.173648</xyz>
+				<limit>
+					<lower>-0.785</lower>
+					<upper>1.57</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='pinky2' type='revolute'>
+			<child>pinky2</child>
+			<parent>pinky1</parent>
+			<axis>
+				<xyz>0.984742 -0.011362 0.173648</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>1.72</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='pinky3' type='revolute'>
+			<child>pinky3</child>
+			<parent>pinky2</parent>
+			<axis>
+				<xyz>0.984742 -0.011362 0.173648</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>1.38</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='ring0' type='revolute'>
+			<child>ring0</child>
+			<parent>wristz</parent>
+			<axis>
+				<xyz>0.173637 -0.002003 -0.984808</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>0.345</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='ring1' type='revolute'>
+			<child>ring1</child>
+			<parent>ring0</parent>
+			<axis>
+				<xyz>0.984742 -0.011362 0.173648</xyz>
+				<limit>
+					<lower>-0.785</lower>
+					<upper>1.57</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='ring2' type='revolute'>
+			<child>ring2</child>
+			<parent>ring1</parent>
+			<axis>
+				<xyz>0.984742 -0.011362 0.173648</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>1.72</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='ring3' type='revolute'>
+			<child>ring3</child>
+			<parent>ring2</parent>
+			<axis>
+				<xyz>0.984742 -0.011362 0.173648</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>1.38</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='thumb0' type='revolute'>
+			<child>thumb0</child>
+			<parent>wristz</parent>
+			<axis>
+				<xyz>0.269769 0.958967 0.087224</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>2.07</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='thumb1' type='revolute'>
+			<child>thumb1</child>
+			<parent>thumb0</parent>
+			<axis>
+				<xyz>0.053155 0.075614 -0.995719</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>1.03</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='thumb2' type='revolute'>
+			<child>thumb2</child>
+			<parent>thumb1</parent>
+			<axis>
+				<xyz>0.053155 0.075614 -0.995719</xyz>
+				<limit>
+					<lower>0</lower>
+					<upper>1.03</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<joint name='thumb3' type='revolute'>
+			<child>thumb3</child>
+			<parent>thumb2</parent>
+			<axis>
+				<xyz>0.053155 0.075614 -0.995719</xyz>
+				<limit>
+					<lower>-0.819</lower>
+					<upper>1.28</upper>
+					<effort>10000</effort>
+					<velocity>0.5</velocity>
+				</limit>
+				<dynamics>
+					<damping>0.8</damping>
+					<spring_reference>0</spring_reference>
+					<spring_stiffness>0</spring_stiffness>
+				</dynamics>
+				<use_parent_model_frame>1</use_parent_model_frame>
+			</axis>
+			<physics>
+				<provide_feedback>1</provide_feedback>
+				<ode>
+					<implicit_spring_damper>1</implicit_spring_damper>
+					<cfm_damping>1</cfm_damping>
+					<limit>
+						<cfm>0</cfm>
+						<erp>0.2</erp>
+					</limit>
+				</ode>
+			</physics>
+		</joint>
+		<pose>0.585 0 -0.03 0 0 -1.5707</pose>
+		<static>0</static>
+	</model>
+</sdf>

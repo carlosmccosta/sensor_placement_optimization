@@ -6,35 +6,39 @@
 			<uri>model://sun</uri>
 		</include>
 
-		<!-- <include> <static>1</static> <pose>0.105 0.688 -0.0366 0 0 0</pose> <uri>model://mpl_haptix_right_forearm</uri> </include> -->
+		<include>
+			<static>1</static>
+			<pose>0 0 0 0 0 0</pose>
+			<uri>model://mpl_right_arm_grasping</uri>
+		</include>
 
 		<include>
 			<static>1</static>
-			<pose>0 0 -0.81 0 0 1.5707</pose>
+			<pose>0 -0.3 -0.8 0 0 1.5707</pose>
 			<uri>model://tool_trolley</uri>
 		</include>
 
 		<include>
 			<static>1</static>
-			<pose>0 0 -0.01 0 0 0</pose>
+			<pose>0 -0.3 0 0 0 0</pose>
 			<uri>model://stacking_box</uri>
 		</include>
 
 		<include>
 			<static>1</static>
-			<pose>0.090696 0.054119 0 0 0 0</pose>
+			<pose>0.090696 -0.245881 0.01 0 0 0</pose>
 			<uri>model://alternator</uri>
 		</include>
 
 		<include>
 			<static>1</static>
-			<pose>0.084253 -0.044110 0.047 0 0 -0.659767</pose>
+			<pose>0.084253 -0.344110 0.147 0 0 -0.659767</pose>
 			<uri>model://differential_gearbox</uri>
 		</include>
 
 		<include>
 			<static>1</static>
-			<pose>-0.147778 0.098426 0.043 0 0 -0.843301</pose>
+			<pose>0 0.11 0.043 0 0 -1.5707</pose>
 			<uri>model://starter_motor</uri>
 		</include>
 
@@ -42,13 +46,14 @@
 		<!-- ============================== SENSORS ============================== -->
 		<population name="sensors_population_1">
 			<include>
+				<name>intel_realsense_sr300_sensor_population_1</name>
 				<uri>model://intel_realsense_sr300_sensor</uri>
 			</include>
 			<pose>0 0 0.4 0 0 0</pose>
 			<box>
-				<size>0.55 0.45 0.2</size>
+				<size>0.75 0.75 0.2</size>
 			</box>
-			<model_count>60</model_count>
+			<model_count>150</model_count>
 			<distribution>
 				<type>random</type>
 			</distribution>
@@ -56,29 +61,29 @@
 
 		<population name="sensors_population_2">
 			<include>
-				<uri>model://multisense_s7_sensor</uri>
+				<name>intel_realsense_sr300_sensor_population_2</name>
+				<uri>model://intel_realsense_sr300_sensor</uri>
 			</include>
-			<pose>0 0 0.55 0 0 0</pose>
-			<cylinder>
-				<radius>0.35</radius>
-				<length>0.1</length>
-			</cylinder>
-			<model_count>20</model_count>
+			<pose>0 0.5 0.55 -1.5707 0 0</pose>
+			<box>
+				<size>0.75 0.75 0.2</size>
+			</box>
+			<model_count>150</model_count>
 			<distribution>
-				<type>uniform</type>
+				<type>random</type>
 			</distribution>
 		</population>
-		
+
 		<population name="sensors_population_3">
 			<include>
-				<uri>model://kinect_xbox_360_sensor</uri>
+				<name>intel_realsense_sr300_sensor_population_3</name>
+				<uri>model://intel_realsense_sr300_sensor</uri>
 			</include>
-			<pose>0 0 0.55 0 0 0</pose>
-			<cylinder>
-				<radius>0.35</radius>
-				<length>0.1</length>
-			</cylinder>
-			<model_count>20</model_count>
+			<pose>-0.15 0 0.55 0 1.5707 0</pose>
+			<box>
+				<size>0.75 0.75 0.2</size>
+			</box>
+			<model_count>150</model_count>
 			<distribution>
 				<type>random</type>
 			</distribution>
@@ -86,15 +91,15 @@
 
 
 		<!-- ============================== PHYSICS ============================== -->
-		<gravity>0 0 -9.81</gravity>
+		<gravity>0 0 -18.81</gravity>
 		<physics name='default_physics' default='0' type='ode'>
-			<max_step_size>0.01</max_step_size>
+			<max_step_size>0.001</max_step_size>
 			<real_time_factor>1</real_time_factor>
-			<real_time_update_rate>100</real_time_update_rate>
+			<real_time_update_rate>1000</real_time_update_rate>
 			<ode>
 				<solver>
 					<type>quick</type>
-					<iters>1</iters>
+					<iters>50</iters>
 					<sor>1.4</sor>
 				</solver>
 				<constraints>
@@ -107,8 +112,8 @@
 		</physics>
 
 		<scene>
-			<ambient>0.4 0.4 0.4 1</ambient>
-			<background>0.7 0.7 0.7 1</background>
+			<ambient>1 1 1 1</ambient>
+			<background>1 1 1 1</background>
 			<shadows>1</shadows>
 		</scene>
 
@@ -116,7 +121,7 @@
 		<!-- ============================== GUI ============================== -->
 		<gui fullscreen='0'>
 			<camera name='user_camera'>
-				<pose frame=''>1.196978 0.046752 1.270833 0 0.830702 3.135191</pose>
+				<pose frame=''>1.668183 -0.298423 0.771006 0 0.510704 -3.136483</pose>
 				<view_controller>orbit</view_controller>
 				<projection_type>perspective</projection_type>
 			</camera>
@@ -125,7 +130,7 @@
 
 		<!-- ============================== PLUGINS ============================== -->
 		<plugin name="active_perception" filename="libactive_perception.so">
-			<numberOfSamplingSensors>100</numberOfSamplingSensors>
+			<numberOfSamplingSensors>450</numberOfSamplingSensors>
 			<numberOfIntendedSensors>1</numberOfIntendedSensors>
 			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
 			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
