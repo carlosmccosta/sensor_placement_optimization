@@ -312,13 +312,13 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='forearm_contact_sensor' type='contact'>
+			<!-- <sensor name='forearm_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<topic>~/forearm/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -377,12 +377,12 @@
 					<specular>0.9 0.9 0.9 1</specular>
 				</material>
 			</visual>
-			<sensor name='wristy_contact_sensor' type='contact'>
+			<!-- <sensor name='wristy_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/wristy/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -495,14 +495,14 @@
 					<specular>0.9 0.9 0.9 1</specular>
 				</material>
 			</visual>
-			<sensor name='wristx_contact_sensor' type='contact'>
+			<!-- <sensor name='wristx_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<collision>collision_2</collision>
 					<topic>~/wristx/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -602,12 +602,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='palm_contact_sensor' type='contact'>
+			<!-- <sensor name='palm_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision_palm</collision>
 					<topic>~/palm/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -667,12 +667,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='index0_contact_sensor' type='contact'>
+			<!-- <sensor name='index0_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/index0/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -732,12 +732,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='index1_contact_sensor' type='contact'>
+			<!-- <sensor name='index1_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/index1/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -823,13 +823,13 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='index2_contact_sensor' type='contact'>
+			<!-- <sensor name='index2_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<topic>~/index2/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -915,14 +915,14 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='index3_contact_sensor' type='contact'>
+			<!-- <sensor name='index3_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<topic>~/index3/contact</topic>
 				</contact>
-			</sensor>
-			<sensor name='index3_imu_sensor' type='imu'>
+			</sensor> -->
+			<!-- <sensor name='index3_imu_sensor' type='imu'>
 				<always_on>1</always_on>
 				<update_rate>1000</update_rate>
 				<imu>
@@ -979,7 +979,7 @@
 						</z>
 					</linear_acceleration>
 				</imu>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1039,12 +1039,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='middle0_contact_sensor' type='contact'>
+			<!-- <sensor name='middle0_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/middle0/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1104,12 +1104,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='middle1_contact_sensor' type='contact'>
+			<!-- <sensor name='middle1_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/middle1/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1195,13 +1195,13 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='middle2_contact_sensor' type='contact'>
+			<!-- <sensor name='middle2_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<topic>~/middle2/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1287,14 +1287,14 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='middle3_contact_sensor' type='contact'>
+			<!-- <sensor name='middle3_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<topic>~/middle3/contact</topic>
 				</contact>
-			</sensor>
-			<sensor name='middle3_imu_sensor' type='imu'>
+			</sensor> -->
+			<!-- <sensor name='middle3_imu_sensor' type='imu'>
 				<always_on>1</always_on>
 				<update_rate>1000</update_rate>
 				<imu>
@@ -1351,7 +1351,7 @@
 						</z>
 					</linear_acceleration>
 				</imu>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1411,12 +1411,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='pinky0_contact_sensor' type='contact'>
+			<!-- <sensor name='pinky0_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/pinky0/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1476,12 +1476,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='pinky1_contact_sensor' type='contact'>
+			<!-- <sensor name='pinky1_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/pinky0/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1541,12 +1541,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='pinky2_contact_sensor' type='contact'>
+			<!-- <sensor name='pinky2_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/pinky2/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1632,14 +1632,14 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='pinky3_contact_sensor' type='contact'>
+			<!-- <sensor name='pinky3_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<topic>~/pinky3/contact</topic>
 				</contact>
-			</sensor>
-			<sensor name='pinky3_imu_sensor' type='imu'>
+			</sensor> -->
+			<!-- <sensor name='pinky3_imu_sensor' type='imu'>
 				<always_on>1</always_on>
 				<update_rate>1000</update_rate>
 				<imu>
@@ -1696,7 +1696,7 @@
 						</z>
 					</linear_acceleration>
 				</imu>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1756,12 +1756,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='ring0_contact_sensor' type='contact'>
+			<!-- <sensor name='ring0_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/ring0/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1821,12 +1821,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='ring1_contact_sensor' type='contact'>
+			<!-- <sensor name='ring1_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/ring1/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -1912,12 +1912,12 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='ring2_contact_sensor' type='contact'>
+			<!-- <sensor name='ring2_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<topic>~/ring2/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -2003,14 +2003,14 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='ring3_contact_sensor' type='contact'>
+			<!-- <sensor name='ring3_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<topic>~/ring3/contact</topic>
 				</contact>
-			</sensor>
-			<sensor name='ring3_imu_sensor' type='imu'>
+			</sensor> -->
+			<!-- <sensor name='ring3_imu_sensor' type='imu'>
 				<always_on>1</always_on>
 				<update_rate>1000</update_rate>
 				<imu>
@@ -2067,7 +2067,7 @@
 						</z>
 					</linear_acceleration>
 				</imu>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -2153,13 +2153,13 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='thumb0_contact_sensor' type='contact'>
+			<!-- <sensor name='thumb0_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<topic>~/thumb0/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -2272,14 +2272,14 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='thumb1_contact_sensor' type='contact'>
+			<!-- <sensor name='thumb1_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<collision>collision_2</collision>
 					<topic>~/thumb1/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -2365,13 +2365,13 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='thumb2_contact_sensor' type='contact'>
+			<!-- <sensor name='thumb2_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<topic>~/thumb2/contact</topic>
 				</contact>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>
@@ -2457,14 +2457,14 @@
 					</script>
 				</material>
 			</visual>
-			<sensor name='thumb3_contact_sensor' type='contact'>
+			<!-- <sensor name='thumb3_contact_sensor' type='contact'>
 				<contact>
 					<collision>collision</collision>
 					<collision>collision_1</collision>
 					<topic>~/thumb3/contact</topic>
 				</contact>
-			</sensor>
-			<sensor name='thumb3_distal_imu_sensor' type='imu'>
+			</sensor> -->
+			<!-- <sensor name='thumb3_distal_imu_sensor' type='imu'>
 				<always_on>1</always_on>
 				<update_rate>1000</update_rate>
 				<imu>
@@ -2521,7 +2521,7 @@
 						</z>
 					</linear_acceleration>
 				</imu>
-			</sensor>
+			</sensor> -->
 			<self_collide>0</self_collide>
 			<enable_wind>0</enable_wind>
 			<kinematic>0</kinematic>

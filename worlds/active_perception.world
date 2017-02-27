@@ -64,7 +64,7 @@
 				<name>intel_realsense_sr300_sensor_population_2</name>
 				<uri>model://intel_realsense_sr300_sensor</uri>
 			</include>
-			<pose>0 0.5 0.55 -1.5707 0 0</pose>
+			<pose>0 0.75 0.55 -1.5707 0 0</pose>
 			<box>
 				<size>0.75 0.75 0.2</size>
 			</box>
