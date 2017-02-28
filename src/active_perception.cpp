@@ -595,6 +595,7 @@ void ActivePerception::ProcessSensorData() {
 		ROS_INFO_STREAM("Finished RANSAC with " << best_merged_point_cloud_surface_coverage_percentage << " surface coverage percentage after " << current_ransac_iteration << " iterations");
 		for (size_t i = 0; i < best_merged_pointclouds_indexes.size(); ++i) {
 			best_sensors_poses.poses.push_back(MathPoseToRosPose(sensors_models_[best_merged_pointclouds_indexes[i]]->GetWorldPose()));
+			if (i > 0) best_sensor_names << "|";
 			best_sensor_names << sensors_models_[best_merged_pointclouds_indexes[i]]->GetName();
 			ShowSensor(best_merged_pointclouds_indexes[i]);
 		}

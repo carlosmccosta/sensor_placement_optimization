@@ -32,7 +32,7 @@
 
 		<include>
 			<static>1</static>
-			<pose>0.084253 -0.344110 0.147 0 0 -0.659767</pose>
+			<pose>0.084253 -0.344110 0.058 0 0 -0.659767</pose>
 			<uri>model://differential_gearbox</uri>
 		</include>
 
@@ -44,14 +44,15 @@
 
 
 		<!-- ============================== SENSORS ============================== -->
+		<!-- top -->
 		<population name="sensors_population_1">
 			<include>
 				<name>intel_realsense_sr300_sensor_population_1</name>
 				<uri>model://intel_realsense_sr300_sensor</uri>
 			</include>
-			<pose>0 0 0.4 0 0 0</pose>
+			<pose>-0.05 -0.05 0.5 0 0 0</pose>
 			<box>
-				<size>0.75 0.75 0.2</size>
+				<size>0.65 0.75 0.1</size>
 			</box>
 			<model_count>150</model_count>
 			<distribution>
@@ -59,14 +60,15 @@
 			</distribution>
 		</population>
 
+		<!-- right -->
 		<population name="sensors_population_2">
 			<include>
 				<name>intel_realsense_sr300_sensor_population_2</name>
 				<uri>model://intel_realsense_sr300_sensor</uri>
 			</include>
-			<pose>0 0.75 0.55 -1.5707 0 0</pose>
+			<pose>0.05 0.5 0.55 -1.5707 0 0</pose>
 			<box>
-				<size>0.75 0.75 0.2</size>
+				<size>0.65 0.5 0.1</size>
 			</box>
 			<model_count>150</model_count>
 			<distribution>
@@ -74,6 +76,7 @@
 			</distribution>
 		</population>
 
+		<!-- back -->
 		<population name="sensors_population_3">
 			<include>
 				<name>intel_realsense_sr300_sensor_population_3</name>
@@ -81,7 +84,7 @@
 			</include>
 			<pose>-0.15 0 0.55 0 1.5707 0</pose>
 			<box>
-				<size>0.75 0.75 0.2</size>
+				<size>0.5 0.75 0.1</size>
 			</box>
 			<model_count>150</model_count>
 			<distribution>
