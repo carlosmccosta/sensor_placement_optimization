@@ -134,8 +134,8 @@
 		<!-- ============================== PLUGINS ============================== -->
 		<plugin name="active_perception" filename="libactive_perception.so">
 			<numberOfSamplingSensors>450</numberOfSamplingSensors>
-			<numberOfIntendedSensors>1</numberOfIntendedSensors>
-			<ransacNumberOfIterations>1000</ransacNumberOfIterations>
+			<numberOfIntendedSensors>3</numberOfIntendedSensors>
+			<ransacNumberOfIterations>10000</ransacNumberOfIterations>
 			<ransacSurfacePercentageStopThreshold>90</ransacSurfacePercentageStopThreshold>
 			<sensorsSequentialSceneRendering>false</sensorsSequentialSceneRendering>
 			<pollingSleepTime>0.2</pollingSleepTime>

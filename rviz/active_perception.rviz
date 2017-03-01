@@ -5,10 +5,9 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /TF1/Frames1
-        - /Merged sensor data1
+        - /World model1
         - /Depth Camera1
-        - /PoseArray best poses1
-        - /PoseArray sensor poses1
+        - /Depth Camera1/Image1
         - /CAD Markers1/Namespaces1
       Splitter Ratio: 0.620947659
     Tree Height: 570
@@ -96,7 +95,7 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00200000009
+      Size (m): 0.00300000003
       Style: Spheres
       Topic: /active_perception/scene_model
       Unreliable: false
@@ -115,7 +114,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: RGB8
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 4096
@@ -132,7 +131,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Class: rviz/Group
       Displays:
         - Alpha: 1
@@ -185,7 +184,7 @@ Visualization Manager:
       Axes Radius: 0.00999999978
       Class: rviz/PoseArray
       Color: 255; 85; 0
-      Enabled: true
+      Enabled: false
       Head Length: 0.0700000003
       Head Radius: 0.0599999987
       Name: PoseArray best poses
@@ -194,14 +193,14 @@ Visualization Manager:
       Shape: Arrow (3D)
       Topic: /active_perception/best_sensor_poses
       Unreliable: false
-      Value: true
+      Value: false
     - Alpha: 1
       Arrow Length: 0.300000012
       Axes Length: 0.0199999996
       Axes Radius: 0.00329999998
       Class: rviz/PoseArray
       Color: 255; 25; 0
-      Enabled: true
+      Enabled: false
       Head Length: 0.0700000003
       Head Radius: 0.0299999993
       Name: PoseArray sensor poses
@@ -210,42 +209,17 @@ Visualization Manager:
       Shape: Axes
       Topic: /active_perception/sensor_poses
       Unreliable: false
-      Value: true
+      Value: false
     - Class: rviz/Marker
       Enabled: true
       Marker Topic: /visualization_marker
       Name: CAD Markers
       Namespaces:
         alternator__link__visual: true
-        differential_gearbox__link__visual: true
-        mpl_right_arm_grasping__elbow__visual: true
-        mpl_right_arm_grasping__forearm__visual: true
-        mpl_right_arm_grasping__humerus__visual: true
-        mpl_right_arm_grasping__index0__visual: true
-        mpl_right_arm_grasping__index1__visual: true
-        mpl_right_arm_grasping__index2__visual: true
-        mpl_right_arm_grasping__index3__visual: true
-        mpl_right_arm_grasping__middle0__visual: true
-        mpl_right_arm_grasping__middle1__visual: true
-        mpl_right_arm_grasping__middle2__visual: true
-        mpl_right_arm_grasping__middle3__visual: true
-        mpl_right_arm_grasping__pinky0__visual: true
-        mpl_right_arm_grasping__pinky1__visual: true
-        mpl_right_arm_grasping__pinky2__visual: true
-        mpl_right_arm_grasping__pinky3__visual: true
-        mpl_right_arm_grasping__ring0__visual: true
-        mpl_right_arm_grasping__ring1__visual: true
-        mpl_right_arm_grasping__ring2__visual: true
-        mpl_right_arm_grasping__ring3__visual: true
-        mpl_right_arm_grasping__shoulder__visual: true
-        mpl_right_arm_grasping__thumb0__visual: true
-        mpl_right_arm_grasping__thumb1__visual: true
-        mpl_right_arm_grasping__thumb2__visual: true
-        mpl_right_arm_grasping__thumb3__visual: true
-        mpl_right_arm_grasping__wristx__visual: true
-        mpl_right_arm_grasping__wristy__visual: true
-        mpl_right_arm_grasping__wristz__visual: true
-        mpl_right_arm_grasping__wristz__visual_palm: true
+        differential_gearbox_1__link__visual: true
+        differential_gearbox_2__link__visual: true
+        differential_gearbox_3__link__visual: true
+        differential_gearbox_4__link__visual: true
         stacking_box__link__visual: true
         starter_motor__link__visual: true
         tool_trolley__link__visual: true
@@ -275,24 +249,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.83317721
+      Distance: 0.921228051
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.0521241389
-        Y: -0.175819382
-        Z: -0.0889498219
+        X: -0.00744166132
+        Y: 0.00744049111
+        Z: -0.240793824
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.249797374
+      Pitch: 1.56979632
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.0229015574
+      Yaw: 6.28105021
     Saved: ~
 Window Geometry:
   Displays:
