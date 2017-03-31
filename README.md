@@ -4,6 +4,11 @@
 
 ROS package for estimation of best sensor placement for active perception of the environment.
 
+This project has the following workin paper associated:
+
+[Best Views Estimation for Active Perception and Sensor Deployment](https://github.com/carlosmccosta/active_perception_article/releases).
+
+
 [![Active perception](http://img.youtube.com/vi/d68-ge69YkA/maxresdefault.jpg)](http://www.youtube.com/watch?v=d68-ge69YkA)
 
 Video 1: Gazebo visualization of the estimation of the best views for active perception.
