@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+	<model name="intel_realsense_d415_sensor">
+		<static>1</static>
+		<pose>0 0 0.0115 0 0 0</pose>
+		<link name="link">
+			<inertial>
+				<mass>0.1</mass>
+			</inertial>
+			<visual name="visual">
+				<transparency>0</transparency>
+				<geometry>
+					<mesh>
+						<uri>model://intel_realsense_d415_sensor/meshes/intel_realsense_d415_sensor.stl</uri>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>ActivePerception/LightGray</name>
+						<uri>file://materials/active_perception.material</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name="sensor" type="depth">
+				<update_rate>90</update_rate>
+				<camera>
+					<horizontal_fov>1.106539</horizontal_fov>
+					<image>
+						<width>1280</width>
+						<height>720</height>
+						<format>B8G8R8</format>
+					</image>
+					<clip>
+						<near>0.16</near>
+						<far>10.0</far>
+					</clip>
+				</camera>
+			</sensor>
+		</link>
+	</model>
+</sdf>

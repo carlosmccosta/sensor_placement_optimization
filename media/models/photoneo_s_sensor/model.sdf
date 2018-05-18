@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+	<model name="photoneo_s_sensor">
+		<static>1</static>
+		<pose>0 0 0.029 0 0 0</pose>
+		<link name="link">
+			<inertial>
+				<mass>0.1</mass>
+			</inertial>
+			<visual name="visual">
+				<transparency>0</transparency>
+				<geometry>
+					<mesh>
+						<uri>model://photoneo_s_sensor/meshes/photoneo_s_sensor.stl</uri>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<name>ActivePerception/LightGray</name>
+						<uri>file://materials/active_perception.material</uri>
+					</script>
+				</material>
+			</visual>
+			<sensor name="sensor" type="depth">
+				<update_rate>5</update_rate>
+				<camera>
+					<horizontal_fov>0.672088562</horizontal_fov>
+					<image>
+						<width>2064</width>
+						<height>1536</height>
+						<format>B8G8R8</format>
+					</image>
+					<clip>
+						<near>0.354</near>
+						<far>0.588</far>
+					</clip>
+				</camera>
+			</sensor>
+		</link>
+	</model>
+</sdf>
