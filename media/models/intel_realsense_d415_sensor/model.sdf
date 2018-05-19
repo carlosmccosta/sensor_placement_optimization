@@ -16,8 +16,8 @@
 				</geometry>
 				<material>
 					<script>
-						<name>ActivePerception/LightGray</name>
-						<uri>file://materials/active_perception.material</uri>
+						<name>SensorPlacementOptimization/LightGray</name>
+						<uri>file://materials/sensor_placement_optimization.material</uri>
 					</script>
 				</material>
 			</visual>

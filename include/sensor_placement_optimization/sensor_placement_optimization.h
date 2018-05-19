@@ -1,6 +1,6 @@
 #pragma once
 
-/**\file active_perception.h
+/**\file sensor_placement_optimization.h
  * \brief Description...
  *
  * @version 1.0
@@ -58,19 +58,19 @@
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </includes>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 namespace gazebo {
-// ############################################################################   ActivePerception   ###########################################################################
+// ############################################################################   SensorPlacementOptimization   ###########################################################################
 /**
- * \brief Class for estimating the best sensor disposition for active perception
+ * \brief Class for estimating the best sensor disposition for object recognition
  */
-class ActivePerception : public WorldPlugin {
+class SensorPlacementOptimization : public WorldPlugin {
 	// ========================================================================   <public-section>   ===========================================================================
 	public:
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <typedefs>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </typedefs>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <constructors-destructor>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-		ActivePerception();
-		virtual ~ActivePerception();
+		SensorPlacementOptimization();
+		virtual ~SensorPlacementOptimization();
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </constructors-destructor>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <member-functions>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -231,5 +231,5 @@ class ActivePerception : public WorldPlugin {
 		boost::thread callback_queue_thread_;
 	// ========================================================================   </protected-section>  ========================================================================
 };
-GZ_REGISTER_WORLD_PLUGIN(ActivePerception)
+GZ_REGISTER_WORLD_PLUGIN(SensorPlacementOptimization)
 } /* namespace gazebo */

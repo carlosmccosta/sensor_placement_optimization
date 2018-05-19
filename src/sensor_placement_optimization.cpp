@@ -1,4 +1,4 @@
-/**\file active_perception.cpp
+/**\file sensor_placement_optimization.cpp
  * \brief Description...
  *
  * @version 1.0
@@ -6,14 +6,14 @@
  */
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <includes>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-#include <active_perception/active_perception.h>
+#include <sensor_placement_optimization/sensor_placement_optimization.h>
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </includes>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 namespace gazebo {
 
 // =============================================================================  <public-section>  ============================================================================
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <constructors-destructor>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-ActivePerception::ActivePerception() :
+SensorPlacementOptimization::SensorPlacementOptimization() :
 		number_of_sampling_sensors_(100),
 		number_of_intended_sensors_(1),
 		ransac_number_of_iterations_(100),
@@ -33,11 +33,11 @@ ActivePerception::ActivePerception() :
 		voxel_grid_filter_leaf_size_(0.007) {
 }
 
-ActivePerception::~ActivePerception() {}
+SensorPlacementOptimization::~SensorPlacementOptimization() {}
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   </constructors-destructor>  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>   <member-functions>   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
+void SensorPlacementOptimization::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	world_ = _world;
 	sdf_ = _sdf;
 
@@ -72,7 +72,7 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 		observation_point_.point.z = oz;
 	}
 
-	sdf_sensors_name_prefix_ = "active_perception";
+	sdf_sensors_name_prefix_ = "sensor_placement_optimization";
 	if (sdf_->HasElement("sdfSensorsNamePrefix")) sdf_sensors_name_prefix_ = sdf_->GetElement("sdfSensorsNamePrefix")->Get<std::string>();
 
 	topics_sampling_sensors_prefix_ = "sampling_point_cloud_";
@@ -94,7 +94,7 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	if (sdf_->HasElement("topicModelNames")) topic_model_names = sdf_->GetElement("topicModelNames")->Get<std::string>();
 
 	// ros init
-	std::string robot_namespace = "active_perception";
+	std::string robot_namespace = "sensor_placement_optimization";
 	if (sdf_->HasElement("robotNamespace")) robot_namespace = sdf_->GetElement("robotNamespace")->Get<std::string>();
 
 	if (!ros::isInitialized()) {
@@ -105,8 +105,8 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	rosnode_.reset(new ros::NodeHandle(robot_namespace));
 	rosnode_->setCallbackQueue(&queue_);
 
-	observation_point_subscriber_ = rosnode_->subscribe(topic_observation_point, 1, &ActivePerception::ProcessNewObservationPoint, this);
-	scene_model_path_subscriber_ = rosnode_->subscribe(topic_model_names, 1, &ActivePerception::ProcessNewSceneModelPath, this);
+	observation_point_subscriber_ = rosnode_->subscribe(topic_observation_point, 1, &SensorPlacementOptimization::ProcessNewObservationPoint, this);
+	scene_model_path_subscriber_ = rosnode_->subscribe(topic_model_names, 1, &SensorPlacementOptimization::ProcessNewSceneModelPath, this);
 	scene_model_publisher_ = rosnode_->advertise<sensor_msgs::PointCloud2>("scene_model", 1, true);
 	sensors_poses_publisher_ = rosnode_->advertise<geometry_msgs::PoseArray>("sensor_poses", 1, true);
 	sensors_names_publisher_ = rosnode_->advertise<std_msgs::String>("sensor_names", 1, true);
@@ -117,23 +117,23 @@ void ActivePerception::Load(physics::WorldPtr _world, sdf::ElementPtr _sdf) {
 	sensors_best_merged_pointcloud_publisher_ = rosnode_->advertise<sensor_msgs::PointCloud2>("best_merged_pointcloud", 1, true);
 }
 
-void ActivePerception::Init() {
-	callback_queue_thread_ = boost::thread(boost::bind(&ActivePerception::QueueThread, this));
-	processing_thread_ = boost::thread(boost::bind(&ActivePerception::ProcessingThread, this));
+void SensorPlacementOptimization::Init() {
+	callback_queue_thread_ = boost::thread(boost::bind(&SensorPlacementOptimization::QueueThread, this));
+	processing_thread_ = boost::thread(boost::bind(&SensorPlacementOptimization::ProcessingThread, this));
 }
 
-void ActivePerception::QueueThread() {
+void SensorPlacementOptimization::QueueThread() {
 	while (rosnode_->ok())
 		queue_.callAvailable(ros::WallDuration(0.01));
 }
 
-void ActivePerception::ProcessNewObservationPoint(const geometry_msgs::PointStampedConstPtr& _msg) {
+void SensorPlacementOptimization::ProcessNewObservationPoint(const geometry_msgs::PointStampedConstPtr& _msg) {
 	boost::mutex::scoped_lock scoped_lock(observation_point_mutex_);
 	observation_point_ = *_msg;
 	new_observation_point_available_ = true;
 }
 
-void ActivePerception::ProcessNewSceneModelPath(const std_msgs::StringConstPtr& _msg) {
+void SensorPlacementOptimization::ProcessNewSceneModelPath(const std_msgs::StringConstPtr& _msg) {
 	if (!_msg->data.empty()) {
 		scene_model_path_mutex_.lock();
 		SetNewSceneModelPath(_msg->data);
@@ -142,7 +142,7 @@ void ActivePerception::ProcessNewSceneModelPath(const std_msgs::StringConstPtr& 
 	}
 }
 
-void ActivePerception::SetNewSceneModelPath(std::string _path_and_model) {
+void SensorPlacementOptimization::SetNewSceneModelPath(std::string _path_and_model) {
 	if (_path_and_model.find('|') != std::string::npos) {
 		std::replace(_path_and_model.begin(), _path_and_model.end(), '|', ' ');
 		std::stringstream scene_model_ss(_path_and_model);
@@ -156,7 +156,7 @@ void ActivePerception::SetNewSceneModelPath(std::string _path_and_model) {
 	if (!scene_model_path_.empty()) new_scene_model_path_available_ = true;
 }
 
-void ActivePerception::ProcessingThread() {
+void SensorPlacementOptimization::ProcessingThread() {
 	LoadSensors();
 	OrientSensorsToObservationPoint(sensor_orientation_random_roll_);
 	PublishSensorsPoses();
@@ -169,7 +169,7 @@ void ActivePerception::ProcessingThread() {
 	HideSensors();
 	ConnectDataCallBacks();
 
-	ROS_INFO_STREAM("ActivePerception has started with " << sensors_.size() << " sampling sensors for finding the optimal placement for " << number_of_intended_sensors_ << (number_of_intended_sensors_ == 1 ? " sensor" : " sensors"));
+	ROS_INFO_STREAM("SensorPlacementOptimization has started with " << sensors_.size() << " sampling sensors for finding the optimal placement for " << number_of_intended_sensors_ << (number_of_intended_sensors_ == 1 ? " sensor" : " sensors"));
 	bool sensor_analysis_required = true;
 
 	while (rosnode_->ok()) {
@@ -197,7 +197,7 @@ void ActivePerception::ProcessingThread() {
 	}
 }
 
-void ActivePerception::LoadSensors() {
+void SensorPlacementOptimization::LoadSensors() {
 	sensors_.clear();
 	sensors_models_.clear();
 	color_image_connections_.clear();
@@ -247,21 +247,21 @@ void ActivePerception::LoadSensors() {
 	sensors_names_publisher_.publish(sensor_names_msg);
 }
 
-void ActivePerception::ConnectDataCallBacks() {
+void SensorPlacementOptimization::ConnectDataCallBacks() {
 	for (size_t i = 0; i < sensors_.size(); ++i) {
-		color_image_connections_.push_back(sensors_[i]->DepthCamera()->ConnectNewImageFrame(std::bind(&ActivePerception::OnNewImageFrame,
+		color_image_connections_.push_back(sensors_[i]->DepthCamera()->ConnectNewImageFrame(std::bind(&SensorPlacementOptimization::OnNewImageFrame,
 				this, std::placeholders::_1, std::placeholders::_2,
 				std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
-		depth_image_connections_.push_back(sensors_[i]->DepthCamera()->ConnectNewDepthFrame(std::bind(&ActivePerception::OnNewPointCloud,
+		depth_image_connections_.push_back(sensors_[i]->DepthCamera()->ConnectNewDepthFrame(std::bind(&SensorPlacementOptimization::OnNewPointCloud,
 				this, std::placeholders::_1, std::placeholders::_2,
 				std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
-		color_pointcloud_connections_.push_back(sensors_[i]->DepthCamera()->ConnectNewRGBPointCloud(std::bind(&ActivePerception::OnNewPointCloud,
+		color_pointcloud_connections_.push_back(sensors_[i]->DepthCamera()->ConnectNewRGBPointCloud(std::bind(&SensorPlacementOptimization::OnNewPointCloud,
 				this, std::placeholders::_1, std::placeholders::_2,
 				std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, i)));
 	}
 }
 
-size_t ActivePerception::CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix) {
+size_t SensorPlacementOptimization::CountNumberOfSamplingSensors(sensors::Sensor_V& _sensors, const std::string& _sensor_name_prefix) {
 	size_t sensor_count = 0;
 	for (size_t i = 0; i < _sensors.size(); ++i) {
 		sensors::SensorPtr sensor = _sensors[i];
@@ -272,7 +272,7 @@ size_t ActivePerception::CountNumberOfSamplingSensors(sensors::Sensor_V& _sensor
 	return sensor_count;
 }
 
-void ActivePerception::OrientSensorsToObservationPoint(bool _sensor_orientation_random_roll) {
+void SensorPlacementOptimization::OrientSensorsToObservationPoint(bool _sensor_orientation_random_roll) {
 	ignition::math::Vector3d observation_point(observation_point_.point.x, observation_point_.point.y, observation_point_.point.z);
 	for (size_t i = 0; i < sensors_models_.size(); ++i) {
 		math::Pose model_pose = sensors_models_[i]->GetWorldPose();
@@ -292,19 +292,19 @@ void ActivePerception::OrientSensorsToObservationPoint(bool _sensor_orientation_
 	}
 }
 
-void ActivePerception::HideSensors() {
+void SensorPlacementOptimization::HideSensors() {
 	for (size_t i = 0; i < sensors_models_.size(); ++i) {
 		sensors_models_[i]->SetScale(ignition::math::Vector3d(0.00001,0.00001,0.00001), true);
 	}
 }
 
-void ActivePerception::ShowSensor(size_t _sensor_index) {
+void SensorPlacementOptimization::ShowSensor(size_t _sensor_index) {
 	if (_sensor_index < sensors_models_.size()) {
 		sensors_models_[_sensor_index]->SetScale(ignition::math::Vector3d(1,1,1), true);
 	}
 }
 
-void ActivePerception::PublishSensorsPoses() {
+void SensorPlacementOptimization::PublishSensorsPoses() {
 	geometry_msgs::PoseArray sensor_poses;
 	sensor_poses.header.frame_id = published_msgs_world_frame_id_;
 	sensor_poses.header.stamp.fromSec(world_->SimTime().Double());
@@ -314,7 +314,7 @@ void ActivePerception::PublishSensorsPoses() {
 	sensors_poses_publisher_.publish(sensor_poses);
 }
 
-void ActivePerception::LoadSceneModel() {
+void SensorPlacementOptimization::LoadSceneModel() {
 	scene_model_path_mutex_.lock();
 	if (new_scene_model_path_available_ && !scene_model_path_.empty()) {
 		scene_model_ = typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr(new pcl::PointCloud<pcl::PointXYZRGB>());
@@ -364,13 +364,13 @@ void ActivePerception::LoadSceneModel() {
 	scene_model_path_mutex_.unlock();
 }
 
-void ActivePerception::SetSensorsState(bool _active) {
+void SensorPlacementOptimization::SetSensorsState(bool _active) {
 	for (size_t i = 0; i < sensors_.size(); ++i) {
 		sensors_[i]->SetActive(_active);
 	}
 }
 
-void ActivePerception::OnNewImageFrame(const unsigned char* _image, unsigned int _width, unsigned int _height, unsigned int _depth, const std::string& _format, size_t _sensor_index) {
+void SensorPlacementOptimization::OnNewImageFrame(const unsigned char* _image, unsigned int _width, unsigned int _height, unsigned int _depth, const std::string& _format, size_t _sensor_index) {
 	if (_image == NULL) {
 		ROS_WARN_STREAM("Received NULL color image from sensor " << _sensor_index << " with [width: " << _width << " | height: " << _height << " | depth: " << _depth << " | format: " << _format << "]");
 		return;
@@ -396,7 +396,7 @@ void ActivePerception::OnNewImageFrame(const unsigned char* _image, unsigned int
 	}
 }
 
-void ActivePerception::OnNewPointCloud(const float *_pcd,
+void SensorPlacementOptimization::OnNewPointCloud(const float *_pcd,
 				unsigned int _width, unsigned int _height,
 				unsigned int _depth, const std::string &_format, size_t _sensor_index) {
 	if (_pcd == NULL) {
@@ -432,7 +432,7 @@ void ActivePerception::OnNewPointCloud(const float *_pcd,
 	}
 }
 
-typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr ActivePerception::SegmentSensorDataFromDepthSensor(const float* _data, const std::string &_format, unsigned int _width, unsigned int _height, Eigen::Affine3f &_transform_sensor_to_world, size_t _sensor_index) {
+typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr SensorPlacementOptimization::SegmentSensorDataFromDepthSensor(const float* _data, const std::string &_format, unsigned int _width, unsigned int _height, Eigen::Affine3f &_transform_sensor_to_world, size_t _sensor_index) {
 	typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud(new pcl::PointCloud<pcl::PointXYZRGB>());
 	sensor_msgs::Image::Ptr color_image = sampling_sensors_images_[_sensor_index];
 	if (color_image) {
@@ -479,7 +479,7 @@ typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr ActivePerception::SegmentSensorD
 	return pointcloud;
 }
 
-bool ActivePerception::GetSensorTransformToWorld(size_t _sensor_index, Eigen::Affine3f &_transform_sensor_to_world) {
+bool SensorPlacementOptimization::GetSensorTransformToWorld(size_t _sensor_index, Eigen::Affine3f &_transform_sensor_to_world) {
 	if (_sensor_index < sensors_.size()) {
 		ignition::math::Pose3d pose = sensors_[_sensor_index]->DepthCamera()->WorldPose();
 		_transform_sensor_to_world = PoseToTransform<float>(pose);
@@ -488,7 +488,7 @@ bool ActivePerception::GetSensorTransformToWorld(size_t _sensor_index, Eigen::Af
 	return false;
 }
 
-bool ActivePerception::GetModelTransformToWorld(std::string _model_name, Eigen::Affine3f &_transform) {
+bool SensorPlacementOptimization::GetModelTransformToWorld(std::string _model_name, Eigen::Affine3f &_transform) {
 	physics::ModelPtr model = world_->ModelByName(_model_name);
 	if (model) {
 		math::Pose pose = model->GetWorldPose();
@@ -498,12 +498,12 @@ bool ActivePerception::GetModelTransformToWorld(std::string _model_name, Eigen::
 	return false;
 }
 
-bool ActivePerception::IsPointWithinValidRange(const sensors::DepthCameraSensorPtr& _depth_camera, float _point) {
+bool SensorPlacementOptimization::IsPointWithinValidRange(const sensors::DepthCameraSensorPtr& _depth_camera, float _point) {
 	if (_point >= _depth_camera->DepthCamera()->NearClip() && _point <= _depth_camera->DepthCamera()->FarClip()) return true;
 	return false;
 }
 
-void ActivePerception::GetSensorIntrinsics(const sensors::DepthCameraSensorPtr& _depth_camera, float &_fx_inverse, float &_fy_inverse, float &_cx, float &_cy) {
+void SensorPlacementOptimization::GetSensorIntrinsics(const sensors::DepthCameraSensorPtr& _depth_camera, float &_fx_inverse, float &_fy_inverse, float &_cx, float &_cy) {
 	_fx_inverse = 1.0 / (_depth_camera->DepthCamera()->ImageWidth() / (2 * std::tan(_depth_camera->DepthCamera()->HFOV().Radian() / 2.0)));
 	_fy_inverse = 1.0 / (_depth_camera->DepthCamera()->ImageHeight() / (2 * std::tan(_depth_camera->DepthCamera()->VFOV().Radian() / 2.0)));
 	_cx = _depth_camera->DepthCamera()->ImageWidth() / 2.0;
@@ -511,7 +511,7 @@ void ActivePerception::GetSensorIntrinsics(const sensors::DepthCameraSensorPtr& 
 
 }
 
-bool ActivePerception::FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr &_pointcloud) {
+bool SensorPlacementOptimization::FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr &_pointcloud) {
 	typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr pointcloud_filtered(new pcl::PointCloud<pcl::PointXYZRGB>());
 	pcl::VoxelGrid<pcl::PointXYZRGB> filter;
 	filter.setLeafSize(voxel_grid_filter_leaf_size_, voxel_grid_filter_leaf_size_, voxel_grid_filter_leaf_size_);
@@ -521,7 +521,7 @@ bool ActivePerception::FilterPointCloud(typename pcl::PointCloud<pcl::PointXYZRG
 	return _pointcloud->size() > 0;
 }
 
-bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr &_pointcloud, size_t _pubisher_index) {
+bool SensorPlacementOptimization::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZRGB>::Ptr &_pointcloud, size_t _pubisher_index) {
 	if (_pointcloud && _pubisher_index < sampling_sensors_pointcloud_publishers_.size() &&
 			(!publish_messages_only_when_there_is_subscribers_ || sampling_sensors_pointcloud_publishers_[_pubisher_index].getNumSubscribers() > 0)) {
 		sensor_msgs::PointCloud2Ptr cloud_msg(new sensor_msgs::PointCloud2());
@@ -532,7 +532,7 @@ bool ActivePerception::PublishPointCloud(typename pcl::PointCloud<pcl::PointXYZR
 	return false;
 }
 
-void ActivePerception::WaitForSensorData() {
+void SensorPlacementOptimization::WaitForSensorData() {
 	if (sensors_sequential_scene_rendering_) {
 		SetSensorsState(false);
 		if (!sensors_.empty()) sensors_[0]->SetActive(true);
@@ -546,7 +546,7 @@ void ActivePerception::WaitForSensorData() {
 	SetSensorsState(false);
 }
 
-void ActivePerception::ProcessSensorData() {
+void SensorPlacementOptimization::ProcessSensorData() {
 	while (!scene_model_) {
 		ROS_WARN("Waiting for scene model");
 		common::Time::Sleep(polling_sleep_time_);
@@ -614,7 +614,7 @@ void ActivePerception::ProcessSensorData() {
 	sensors_best_names_publisher_.publish(best_sensor_names_msg);
 }
 
-void ActivePerception::FillUniqueRandomIntNumbers(size_t _number_of_random_numbers, int _min, int _max, std::vector<int>& _random_numbers) {
+void SensorPlacementOptimization::FillUniqueRandomIntNumbers(size_t _number_of_random_numbers, int _min, int _max, std::vector<int>& _random_numbers) {
 	_random_numbers.clear();
 	std::set<int> number_set;
 	while (_random_numbers.size() < _number_of_random_numbers) {
@@ -626,7 +626,7 @@ void ActivePerception::FillUniqueRandomIntNumbers(size_t _number_of_random_numbe
 	}
 }
 
-size_t ActivePerception::PublishAnalysisSurfaceCoverageAnalysis() {
+size_t SensorPlacementOptimization::PublishAnalysisSurfaceCoverageAnalysis() {
 	size_t best_coverage_sensor_index = 0;
 	double best_coverage_percentage = 0;
 	std_msgs::Float32MultiArray sensors_coverage;
@@ -643,7 +643,7 @@ size_t ActivePerception::PublishAnalysisSurfaceCoverageAnalysis() {
 	return best_coverage_sensor_index;
 }
 
-void ActivePerception::PrepareNextAnalysis() {
+void SensorPlacementOptimization::PrepareNextAnalysis() {
 	ResetNumberOfSamplingSensorsPointcloudsReceived();
 	sampling_sensors_pointclouds_.clear();
 	sampling_sensors_pointclouds_.resize(number_of_sampling_sensors_);
@@ -651,7 +651,7 @@ void ActivePerception::PrepareNextAnalysis() {
 	sampling_sensors_images_.resize(number_of_sampling_sensors_);
 }
 
-geometry_msgs::Pose ActivePerception::MathPoseToRosPose(math::Pose _math_pose) {
+geometry_msgs::Pose SensorPlacementOptimization::MathPoseToRosPose(math::Pose _math_pose) {
 	geometry_msgs::Pose ros_pose;
 	ros_pose.position.x = _math_pose.pos.x;
 	ros_pose.position.y = _math_pose.pos.y;
@@ -663,25 +663,25 @@ geometry_msgs::Pose ActivePerception::MathPoseToRosPose(math::Pose _math_pose) {
 	return ros_pose;
 }
 
-void ActivePerception::ResetNumberOfSamplingSensorsPointcloudsReceived() {
+void SensorPlacementOptimization::ResetNumberOfSamplingSensorsPointcloudsReceived() {
 	number_of_sampling_sensors_pointclouds_received_mutex_.lock();
 	number_of_sampling_sensors_pointclouds_received_ = 0;
 	number_of_sampling_sensors_pointclouds_received_mutex_.unlock();
 }
 
-void ActivePerception::SetNumberOfSamplingSensorsPointcloudsReceived(size_t value) {
+void SensorPlacementOptimization::SetNumberOfSamplingSensorsPointcloudsReceived(size_t value) {
 	number_of_sampling_sensors_pointclouds_received_mutex_.lock();
 	number_of_sampling_sensors_pointclouds_received_ = value;
 	number_of_sampling_sensors_pointclouds_received_mutex_.unlock();
 }
 
-void ActivePerception::IncrementNumberOfSamplingSensorsPointcloudsReceived() {
+void SensorPlacementOptimization::IncrementNumberOfSamplingSensorsPointcloudsReceived() {
 	number_of_sampling_sensors_pointclouds_received_mutex_.lock();
 	++number_of_sampling_sensors_pointclouds_received_;
 	number_of_sampling_sensors_pointclouds_received_mutex_.unlock();
 }
 
-size_t ActivePerception::GetNumberOfSamplingSensorsPointcloudsReceived() {
+size_t SensorPlacementOptimization::GetNumberOfSamplingSensorsPointcloudsReceived() {
 	size_t number;
 	number_of_sampling_sensors_pointclouds_received_mutex_.lock();
 	number = number_of_sampling_sensors_pointclouds_received_;

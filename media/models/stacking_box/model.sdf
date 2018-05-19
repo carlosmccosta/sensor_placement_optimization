@@ -27,8 +27,8 @@
 				</geometry>
 				<material>
 					<script>
-						<name>ActivePerception/DarkBlue</name>
-						<uri>file://materials/active_perception.material</uri>
+						<name>SensorPlacementOptimization/DarkBlue</name>
+						<uri>file://materials/sensor_placement_optimization.material</uri>
 					</script>
 				</material>
 			</visual>

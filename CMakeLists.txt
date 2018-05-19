@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(active_perception)
+project(sensor_placement_optimization)
 
 
 #######################################################################################################################
@@ -42,7 +42,7 @@ catkin_package(
     INCLUDE_DIRS
         include
     LIBRARIES
-        active_perception
+        sensor_placement_optimization
     CATKIN_DEPENDS
         ${${PROJECT_NAME}_CATKIN_COMPONENTS}
     DEPENDS
@@ -81,8 +81,8 @@ link_directories(
     ${GAZEBO_LIBRARY_DIRS}
 )
 
-add_library(active_perception
-    src/active_perception.cpp
+add_library(sensor_placement_optimization
+    src/sensor_placement_optimization.cpp
 )
 
 
@@ -91,8 +91,8 @@ add_library(active_perception
 # executables
 #==============================================================================
 
-#add_executable(active_perception_node
-#    src/active_perception_node.cpp
+#add_executable(sensor_placement_optimization_node
+#    src/sensor_placement_optimization_node.cpp
 #)
 
 
@@ -101,7 +101,7 @@ add_library(active_perception
 # library link
 #==============================================================================
 
-target_link_libraries(active_perception
+target_link_libraries(sensor_placement_optimization
     ${catkin_LIBRARIES}
     ${GAZEBO_LIBRARIES}
     ${PCL_LIBRARIES}
@@ -113,7 +113,7 @@ target_link_libraries(active_perception
 # executables link
 #==============================================================================
 
-#target_link_libraries(active_perception_node
-#    active_perception
+#target_link_libraries(sensor_placement_optimization_node
+#    sensor_placement_optimization
 #    ${catkin_LIBRARIES}
 #)

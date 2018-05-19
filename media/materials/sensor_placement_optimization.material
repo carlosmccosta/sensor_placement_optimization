@@ -1,4 +1,4 @@
-material ActivePerception/Red
+material SensorPlacementOptimization/Red
 {
   technique
   {
@@ -13,7 +13,7 @@ material ActivePerception/Red
   }
 }
 
-material ActivePerception/Green
+material SensorPlacementOptimization/Green
 {
   technique
   {
@@ -28,7 +28,7 @@ material ActivePerception/Green
   }
 }
 
-material ActivePerception/Blue
+material SensorPlacementOptimization/Blue
 {
   technique
   {
@@ -43,7 +43,7 @@ material ActivePerception/Blue
   }
 }
 
-material ActivePerception/DarkBlue
+material SensorPlacementOptimization/DarkBlue
 {
   technique
   {
@@ -58,7 +58,7 @@ material ActivePerception/DarkBlue
   }
 }
 
-material ActivePerception/Gray
+material SensorPlacementOptimization/Gray
 {
   technique
   {
@@ -73,7 +73,7 @@ material ActivePerception/Gray
   }
 }
 
-material ActivePerception/LightGray
+material SensorPlacementOptimization/LightGray
 {
   technique
   {
@@ -88,7 +88,7 @@ material ActivePerception/LightGray
   }
 }
 
-material ActivePerception/Silver
+material SensorPlacementOptimization/Silver
 {
   technique
   {

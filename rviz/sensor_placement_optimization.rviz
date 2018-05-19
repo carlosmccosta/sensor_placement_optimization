@@ -97,7 +97,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.00300000003
       Style: Spheres
-      Topic: /active_perception/scene_model
+      Topic: /sensor_placement_optimization/scene_model
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -127,7 +127,7 @@ Visualization Manager:
       Size (Pixels): 20
       Size (m): 0.00700000022
       Style: Spheres
-      Topic: /active_perception/best_merged_pointcloud
+      Topic: /sensor_placement_optimization/best_merged_pointcloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -159,14 +159,14 @@ Visualization Manager:
           Size (Pixels): 3
           Size (m): 0.00499999989
           Style: Spheres
-          Topic: /active_perception/sampling_point_cloud_asus_xtion_pro_live_sensor_clone_0_pointcloud
+          Topic: /sensor_placement_optimization/sampling_point_cloud_asus_xtion_pro_live_sensor_clone_0_pointcloud
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
           Value: false
         - Class: rviz/Image
           Enabled: true
-          Image Topic: /active_perception/sampling_point_cloud_intel_realsense_sr300_sensor_clone_7_color_image
+          Image Topic: /sensor_placement_optimization/sampling_point_cloud_intel_realsense_sr300_sensor_clone_7_color_image
           Max Value: 1
           Median window: 5
           Min Value: 0
@@ -191,7 +191,7 @@ Visualization Manager:
       Shaft Length: 0.150000006
       Shaft Radius: 0.0299999993
       Shape: Arrow (3D)
-      Topic: /active_perception/best_sensor_poses
+      Topic: /sensor_placement_optimization/best_sensor_poses
       Unreliable: false
       Value: false
     - Alpha: 1
@@ -207,7 +207,7 @@ Visualization Manager:
       Shaft Length: 0.0900000036
       Shaft Radius: 0.00999999978
       Shape: Axes
-      Topic: /active_perception/sensor_poses
+      Topic: /sensor_placement_optimization/sensor_poses
       Unreliable: false
       Value: false
     - Class: rviz/Marker

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-	<env name="GAZEBO_RESOURCE_PATH" value='$(find active_perception)/media:$(optenv GAZEBO_RESOURCE_PATH "")' />
-	<env name="GAZEBO_MODEL_PATH" value='$(find active_perception)/media/models:$(optenv GAZEBO_MODEL_PATH "")' />
+	<env name="GAZEBO_RESOURCE_PATH" value='$(find sensor_placement_optimization)/media:$(optenv GAZEBO_RESOURCE_PATH "")' />
+	<env name="GAZEBO_MODEL_PATH" value='$(find sensor_placement_optimization)/media/models:$(optenv GAZEBO_MODEL_PATH "")' />
 	<arg name="paused" default="false" />
 	<arg name="use_gazebo_gui" default="true" />
 	<arg name="use_gazebo2rviz" default="true" />
 	<arg name="show_rviz" default="true" />
-	<arg name="world_folder" default="$(find active_perception)/worlds/" />
-	<arg name="world_name" default="active_perception.world" />
-	<arg name="rviz_config" default="-d $(find active_perception)/rviz/active_perception.rviz" />
+	<arg name="world_folder" default="$(find sensor_placement_optimization)/worlds/" />
+	<arg name="world_name" default="sensor_placement_optimization.world" />
+	<arg name="rviz_config" default="-d $(find sensor_placement_optimization)/rviz/sensor_placement_optimization.rviz" />
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
 		<arg name="world_name" default="$(arg world_folder)$(arg world_name)" />

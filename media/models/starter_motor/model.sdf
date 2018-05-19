@@ -28,8 +28,8 @@
 				</geometry>
 				<material>
 					<script>
-						<name>ActivePerception/Green</name>
-						<uri>file://materials/active_perception.material</uri>
+						<name>SensorPlacementOptimization/Green</name>
+						<uri>file://materials/sensor_placement_optimization.material</uri>
 					</script>
 				</material>
 			</visual>

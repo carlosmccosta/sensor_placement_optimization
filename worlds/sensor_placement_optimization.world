@@ -132,7 +132,7 @@
 
 
 		<!-- ============================== PLUGINS ============================== -->
-		<plugin name="active_perception" filename="libactive_perception.so">
+		<plugin name="sensor_placement_optimization" filename="libsensor_placement_optimization.so">
 			<numberOfSamplingSensors>450</numberOfSamplingSensors>
 			<numberOfIntendedSensors>3</numberOfIntendedSensors>
 			<ransacNumberOfIterations>10000</ransacNumberOfIterations>
@@ -142,7 +142,7 @@
 			<sensorOrientationRandomRoll>true</sensorOrientationRandomRoll>
 			<sensorDataSegmentationColorRGB>0 255 0</sensorDataSegmentationColorRGB>
 			<voxelGridFilterLeafSize>0.005</voxelGridFilterLeafSize>
-			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/active_perception/media/models/starter_motor/meshes/starter_motor.ply|starter_motor</sceneModelPath>
+			<sceneModelPath>/home/carloscosta/catkin_ws_simulation/src/sensor_placement_optimization/media/models/starter_motor/meshes/starter_motor.ply|starter_motor</sceneModelPath>
 			<observationPoint>0 0 0</observationPoint>
 			<sdfSensorsNamePrefix>sensor</sdfSensorsNamePrefix>
 			<topicsSamplingSensorsPointcloudPrefix>sampling_point_cloud_</topicsSamplingSensorsPointcloudPrefix>
@@ -151,7 +151,7 @@
 			<publishMessagesOnlyWhenThereIsSubscribers>false</publishMessagesOnlyWhenThereIsSubscribers>
 			<topicObservationPoint>set_observation_point</topicObservationPoint>
 			<topicModelNames>set_model_names</topicModelNames>
-			<robotNamespace>active_perception</robotNamespace>
+			<robotNamespace>sensor_placement_optimization</robotNamespace>
 		</plugin>
 	</world>
 </sdf>

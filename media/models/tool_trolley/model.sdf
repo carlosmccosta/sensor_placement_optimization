@@ -27,8 +27,8 @@
 				</geometry>
 				<material>
 					<script>
-						<name>ActivePerception/Gray</name>
-						<uri>file://materials/active_perception.material</uri>
+						<name>SensorPlacementOptimization/Gray</name>
+						<uri>file://materials/sensor_placement_optimization.material</uri>
 					</script>
 				</material>
 			</visual>
